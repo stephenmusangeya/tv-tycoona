@@ -18,7 +18,7 @@ import { useGame, useGameStore } from './src/store/gameStore';
 import { DeskRoom } from './src/ui/screens/DeskRoom';
 import { DevelopmentScreen } from './src/ui/screens/DevelopmentScreen';
 import { IndustryScreen } from './src/ui/screens/IndustryScreen';
-import { ShowDetailScreen } from './src/ui/screens/ShowDetailScreen';
+import { ShowDetailScreen, type ShowSubject } from './src/ui/screens/ShowDetailScreen';
 import { SlateScreen } from './src/ui/screens/SlateScreen';
 import { TalentScreen } from './src/ui/screens/TalentScreen';
 import { InboxScreen, useUnreadCount } from './src/ui/screens/InboxScreen';
@@ -58,7 +58,9 @@ function Root() {
   const unread = useUnreadCount();
 
   const [tab, setTab] = useState<TabKey>('dashboard');
-  const [openShowId, setOpenShowId] = useState<string | null>(null);
+  // The modal can be pointed at a real production or at an idea from the catalogue,
+  // so it holds a tagged subject rather than a bare id.
+  const [openShow, setOpenShow] = useState<ShowSubject | null>(null);
   // Bumped when "Make a Show" is pressed, to remount Development on its Commission
   // tab even if the player is already looking at that screen.
   const [makeShowNonce, setMakeShowNonce] = useState(0);
@@ -108,18 +110,22 @@ function Root() {
   const shows = playerShows(game);
 
   const navItems: NavItem<TabKey>[] = [
-    { key: 'dashboard', label: 'The Desk', glyph: '▣' },
-    { key: 'slate', label: 'My Shows', glyph: '☰', badge: shows.length || undefined },
+    { key: 'dashboard', label: 'The Desk', icon: 'television' },
+    { key: 'slate', label: 'My Shows', icon: 'shelf', badge: shows.length || undefined },
     {
       key: 'development',
       label: 'New Shows',
-      glyph: '✦',
+      icon: 'bulb',
       badge: game.pitches.length + game.offers.length || undefined,
     },
-    { key: 'inbox', label: 'Inbox', glyph: '✉', badge: unread || undefined },
-    { key: 'talent', label: 'Talent', glyph: '☺' },
-    { key: 'industry', label: 'Industry', glyph: '◈' },
+    { key: 'inbox', label: 'Inbox', icon: 'envelope', badge: unread || undefined },
+    { key: 'talent', label: 'Talent', icon: 'star' },
+    { key: 'industry', label: 'Industry', icon: 'broadcast' },
   ];
+
+  // Screens hand over a bare production id and always have; archetype opening is an
+  // extra entry point rather than a replacement, so this signature stays a string.
+  const openProduction = (id: string) => setOpenShow({ kind: 'production', id });
 
   const goMakeShow = () => {
     setTab('development');
@@ -146,15 +152,15 @@ function Root() {
 
         <View style={{ flex: 1 }}>
           {tab === 'dashboard' ? (
-            <DeskRoom onOpenShow={setOpenShowId} onMakeShow={goMakeShow} />
+            <DeskRoom onOpenShow={openProduction} onMakeShow={goMakeShow} />
           ) : null}
           {tab === 'slate' ? (
-            <SlateScreen onOpenShow={setOpenShowId} onMakeShow={goMakeShow} />
+            <SlateScreen onOpenShow={openProduction} onMakeShow={goMakeShow} />
           ) : null}
           {tab === 'development' ? (
             <DevelopmentScreen
               key={`dev-${makeShowNonce}`}
-              onOpenShow={setOpenShowId}
+              onOpenShow={openProduction}
               forceCatalogue={makeShowNonce > 0}
             />
           ) : null}
@@ -182,14 +188,20 @@ function Root() {
       </Modal>
 
       <Modal
-        visible={openShowId !== null}
+        visible={openShow !== null}
         animationType="slide"
         presentationStyle="pageSheet"
-        onRequestClose={() => setOpenShowId(null)}
+        onRequestClose={() => setOpenShow(null)}
       >
         <SafeAreaView style={styles.app} edges={['top']}>
-          {openShowId ? (
-            <ShowDetailScreen productionId={openShowId} onClose={() => setOpenShowId(null)} />
+          {openShow ? (
+            <ShowDetailScreen
+              subject={openShow}
+              onClose={() => setOpenShow(null)}
+              // Commissioning an idea turns it into a production; keep the modal open
+              // and re-point it, so the player lands on the show they just made.
+              onOpenProduction={openProduction}
+            />
           ) : null}
         </SafeAreaView>
       </Modal>

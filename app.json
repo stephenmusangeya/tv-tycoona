@@ -1,17 +1,22 @@
 {
   "expo": {
-    "name": "tv-tycoon",
+    "name": "TV Tycoon",
     "slug": "tv-tycoon",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "tvtycoon",
     "userInterfaceStyle": "light",
+    "backgroundColor": "#DCD4C4",
+    "primaryColor": "#B0342A",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.stephenmusangeya.tvtycoon"
     },
     "android": {
+      "package": "com.stephenmusangeya.tvtycoon",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#B0342A",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -20,6 +25,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#B0342A"
+        }
+      ]
+    ]
   }
 }

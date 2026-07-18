@@ -59,7 +59,40 @@ export function generatePitches(
   // A better-regarded studio hears from more people. This is the practical payoff of
   // critical standing: prestige is not a score, it is deal flow.
   const standing = (studio.criticalStanding + studio.popularStanding) / 2;
-  const weeklyChance = 0.06 + (standing / 100) * 0.18;
+  let weeklyChance = 0.06 + (standing / 100) * 0.18;
+
+  /*
+   * The dry-spell guarantee.
+   *
+   * At a new studio's standing the roll above lands around 8%, which means a player
+   * could press "next week" ten times in a row and be offered nothing — the game
+   * simply stalled with no decision available. That is the worst thing a management
+   * sim can do, and it happened most often to a brand-new player, who has the least
+   * patience for it.
+   *
+   * So the odds now scale with how little the player has on their plate. With an
+   * empty tray and nothing on air, work is all but guaranteed to arrive; once there
+   * are decisions pending or shows running, the original curve takes over and
+   * standing goes back to being what governs deal flow.
+   *
+   * Derived from existing state on purpose — a "weeks since last pitch" counter would
+   * be a new saved field, and every one of those needs a backfill in migrate.ts or it
+   * crashes old saves on the weekly tick.
+   */
+  const pending = state.pitches.length + state.offers.length;
+  const running = Object.values(state.productions).filter(
+    (p) =>
+      p.ownerId === studioId &&
+      p.status !== 'cancelled' &&
+      p.status !== 'ended',
+  ).length;
+
+  if (pending === 0) {
+    // Nothing to decide. How hard the game pushes depends on whether the player at
+    // least has shows to watch while they wait.
+    weeklyChance = running === 0 ? 0.9 : 0.45;
+  }
+
   if (!rng.chance(weeklyChance)) return;
 
   const available = Object.values(state.talent).filter(

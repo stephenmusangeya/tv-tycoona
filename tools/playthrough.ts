@@ -207,6 +207,40 @@ expect('cancelled shows release their slots', noZombies);
 const eventsBounded = state.events.length <= 400;
 expect('event log stays bounded', eventsBounded, `${state.events.length} events`);
 
+// ---------------------------------------------------------------------------
+// [6] The game never goes quiet
+// ---------------------------------------------------------------------------
+// A passive player — someone who only ever presses "next week" — used to be left
+// with an empty tray for ten weeks at a stretch, because a pitch arrived on a flat
+// ~8% roll. A management sim with nothing to decide is a broken one, and it hit new
+// players hardest. This drives a fresh game with a player who never acts and asserts
+// that work keeps arriving.
+log('\n[6] The game never goes quiet');
+
+const idle = newGame({ seed: seed + 101, studioName: 'Idle Pictures' });
+let longestDrySpell = 0;
+let currentDrySpell = 0;
+
+for (let i = 0; i < 120; i++) {
+  advanceWeek(idle);
+  const hasWork = idle.pitches.length + idle.offers.length > 0;
+  currentDrySpell = hasWork ? 0 : currentDrySpell + 1;
+  longestDrySpell = Math.max(longestDrySpell, currentDrySpell);
+}
+
+// Six weeks is the pitch lifetime, so a gap longer than that means the tray was
+// genuinely empty rather than just between offers.
+expect(
+  'a passive player is never left with nothing to do',
+  longestDrySpell <= 6,
+  `longest dry spell ${longestDrySpell} weeks over 120`,
+);
+expect(
+  'work actually arrives for a studio with no reputation',
+  idle.events.filter((e) => e.kind === 'pitch').length >= 8,
+  `${idle.events.filter((e) => e.kind === 'pitch').length} pitches in 120 weeks`,
+);
+
 log(`\n${failures === 0 ? 'ALL CHECKS PASSED' : `${failures} CHECK(S) FAILED`}\n`);
 process.exit(failures === 0 ? 0 : 1);
 

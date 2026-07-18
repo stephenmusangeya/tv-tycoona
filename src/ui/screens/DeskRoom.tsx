@@ -13,6 +13,7 @@ import {
   playerStudio,
   rerunIncome,
   totalCash,
+  totalDebt,
   weeklyNet,
 } from '../../store/selectors';
 import { TVScreen } from '../TVScreen';
@@ -141,6 +142,11 @@ export function DeskRoom({
               </Text>
             </View>
 
+            {/* The ledger used to run its figures at the top, pin its gauges to the
+                bottom, and leave a large hole between them. Runway fills it with the
+                one number a studio losing money actually needs: how long it has. */}
+            <Runway cash={cash} net={net} debt={totalDebt(game)} />
+
             <View style={styles.gauges}>
               <Readout label="LIBRARY" value={formatMoneyShort(libraryWorth(game))} size="sm" />
               <Readout
@@ -197,6 +203,65 @@ export function DeskRoom({
 
       <WeekSweep trigger={game.absoluteWeek} />
     </Room>
+  );
+}
+
+/**
+ * How many weeks the studio can survive at its current burn.
+ *
+ * A weekly loss is abstract; "9 WEEKS LEFT" is not. When the studio is profitable the
+ * same space carries the debt position instead, so the block is never dead weight.
+ */
+function Runway({ cash, net, debt }: { cash: number; net: number; debt: number }) {
+  const losing = net < 0;
+  // Twenty-six weeks — half a broadcast year — is the point past which the runway
+  // stops being the thing you worry about, so that is where the bar tops out.
+  const weeks = losing ? Math.max(0, Math.floor(cash / Math.abs(net))) : Infinity;
+  const fill = losing ? Math.min(1, weeks / 26) : 1;
+  const bad = losing && weeks <= 8;
+
+  return (
+    <View style={styles.runway}>
+      <View style={styles.runwayHead}>
+        <Text style={styles.runwayLabel}>{losing ? 'RUNWAY' : 'POSITION'}</Text>
+        <Text
+          style={[
+            styles.runwayValue,
+            { color: bad ? colors.negative : losing ? colors.text : colors.positive },
+          ]}
+        >
+          {losing
+            ? weeks >= 26
+              ? '26+ WEEKS'
+              : `${weeks} WEEK${weeks === 1 ? '' : 'S'}`
+            : 'PROFITABLE'}
+        </Text>
+      </View>
+
+      <View style={styles.runwayTrack}>
+        <View
+          style={[
+            styles.runwayFill,
+            {
+              width: `${fill * 100}%`,
+              backgroundColor: bad ? colors.negative : losing ? colors.warning : colors.positive,
+            },
+          ]}
+        />
+      </View>
+
+      <View style={styles.runwayFoot}>
+        <Text style={styles.runwayFootLabel}>DEBT</Text>
+        <Text
+          style={[
+            styles.runwayFootValue,
+            { color: debt > 0 ? colors.negative : colors.textDim },
+          ]}
+        >
+          {debt > 0 ? formatMoneyShort(debt) : 'NONE'}
+        </Text>
+      </View>
+    </View>
   );
 }
 
@@ -286,6 +351,23 @@ const styles = StyleSheet.create({
   },
   netLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1.2, color: colors.textDim },
   netValue: { fontSize: 16, fontWeight: '900', fontVariant: ['tabular-nums'] },
+
+  runway: { marginTop: space.md, gap: 5 },
+  runwayHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  runwayLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1.2, color: colors.textDim },
+  runwayValue: { fontSize: 12, fontWeight: '900', fontVariant: ['tabular-nums'] },
+  runwayTrack: {
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: colors.surfaceHigh,
+    borderWidth: 1,
+    borderColor: colors.border,
+    overflow: 'hidden',
+  },
+  runwayFill: { height: '100%' },
+  runwayFoot: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  runwayFootLabel: { fontSize: 8, fontWeight: '800', letterSpacing: 1.1, color: colors.textFaint },
+  runwayFootValue: { fontSize: 10, fontWeight: '900', fontVariant: ['tabular-nums'] },
 
   gauges: {
     flexDirection: 'row',

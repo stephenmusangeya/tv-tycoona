@@ -3,6 +3,14 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "paths": { "react-native": ["./node_modules/react-native-web"] }
+    // Every file in react-native-svg reaches `react-native` through a CommonJS
+    // require, which Node resolves itself — the alias below never applies inside
+    // node_modules, so the harness pulled the native build and died on Flow syntax.
+    // The stub emits the same SVG DOM the web build does. See tools/stubs.
+    "paths": {
+      "react-native": ["./node_modules/react-native-web"],
+      "react-native-svg": ["./tools/stubs/react-native-svg.tsx"],
+      "expo-linear-gradient": ["./tools/stubs/expo-linear-gradient.tsx"]
+    }
   }
 }

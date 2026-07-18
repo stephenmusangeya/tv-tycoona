@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { colors, formatMoneyShort, space } from './theme';
+import { Clapper, Icon, Plus, Sliders, type IconName } from './icons';
 
 /**
  * Left navigation rail.
@@ -17,7 +18,7 @@ import { colors, formatMoneyShort, space } from './theme';
 export interface NavItem<K extends string> {
   key: K;
   label: string;
-  glyph: string;
+  icon: IconName;
   badge?: number;
 }
 
@@ -48,7 +49,7 @@ export function Sidebar<K extends string>({
     <View style={[styles.rail, compact ? styles.railCompact : styles.railFull]}>
       {/* --- Brand --- */}
       <View style={styles.brandBlock}>
-        <Text style={styles.brandMark}>▣</Text>
+        <Clapper size={22} color={colors.accent} />
         {!compact ? (
           <View style={{ flex: 1 }}>
             <Text style={styles.brand}>TV TYCOON</Text>
@@ -70,7 +71,12 @@ export function Sidebar<K extends string>({
           </Text>
         </View>
       ) : (
+        // The compact rail still has to show the money — dropping it meant a phone
+        // player could not see their cash without opening another screen.
         <View style={styles.compactWeek}>
+          <Text style={styles.compactCash} numberOfLines={1}>
+            {formatMoneyShort(cash)}
+          </Text>
           <Text style={styles.vitalDate}>W{week}</Text>
         </View>
       )}
@@ -81,7 +87,7 @@ export function Sidebar<K extends string>({
         onPress={onMakeShow}
         style={({ pressed }) => [styles.makeShow, pressed && { opacity: 0.8 }]}
       >
-        <Text style={styles.makeShowGlyph}>＋</Text>
+        <Plus size={14} color="#25150C" />
         {!compact ? <Text style={styles.makeShowLabel}>MAKE A SHOW</Text> : null}
       </Pressable>
 
@@ -102,9 +108,14 @@ export function Sidebar<K extends string>({
               ]}
             >
               {isActive ? <View style={styles.activeBar} /> : null}
-              <Text style={[styles.navGlyph, isActive && styles.navGlyphActive]}>
-                {item.glyph}
-              </Text>
+              <View style={styles.navGlyph}>
+                <Icon
+                  name={item.icon}
+                  size={19}
+                  color={isActive ? colors.accent : colors.textDim}
+                  opacity={isActive ? 1 : 0.75}
+                />
+              </View>
               {!compact ? (
                 <Text style={[styles.navLabel, isActive && styles.navLabelActive]}>
                   {item.label}
@@ -126,7 +137,7 @@ export function Sidebar<K extends string>({
         onPress={onOpenMenu}
         style={({ pressed }) => [styles.menuButton, pressed && { opacity: 0.7 }]}
       >
-        <Text style={styles.menuGlyph}>⚙</Text>
+        <Sliders size={15} color={colors.textDim} />
         {!compact ? <Text style={styles.menuLabel}>Menu</Text> : null}
       </Pressable>
     </View>
@@ -164,6 +175,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   compactWeek: { marginTop: space.md, alignItems: 'center' },
+  compactCash: {
+    fontSize: 12,
+    fontWeight: '900',
+    color: colors.text,
+    fontVariant: ['tabular-nums'],
+    letterSpacing: -0.3,
+  },
   vitalCash: {
     fontSize: 15,
     fontWeight: '800',
@@ -189,7 +207,6 @@ const styles = StyleSheet.create({
     gap: 6,
     width: '100%',
   },
-  makeShowGlyph: { fontSize: 15, fontWeight: '800', color: '#25150C' },
   makeShowLabel: { fontSize: 11, fontWeight: '800', letterSpacing: 0.9, color: '#25150C' },
 
   navItem: {
@@ -213,8 +230,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     backgroundColor: colors.accent,
   },
-  navGlyph: { fontSize: 15, color: colors.textFaint, width: 20, textAlign: 'center' },
-  navGlyphActive: { color: colors.accent },
+  navGlyph: { width: 20, alignItems: 'center', justifyContent: 'center' },
   navLabel: { flex: 1, fontSize: 12, fontWeight: '600', color: colors.textDim },
   navLabelActive: { color: colors.text },
 
@@ -245,6 +261,5 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     width: '100%',
   },
-  menuGlyph: { fontSize: 14, color: colors.textDim },
   menuLabel: { fontSize: 12, fontWeight: '600', color: colors.textDim },
 });

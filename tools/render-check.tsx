@@ -2,6 +2,7 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { TVScreen } from '../src/ui/TVScreen';
 import { SeasonTimeline } from '../src/ui/SeasonTimeline';
+import { Poster } from '../src/ui/Poster';
 import { Sidebar } from '../src/ui/Sidebar';
 import { newGame } from '../src/engine/setup';
 import { advanceWeek } from '../src/engine/tick';
@@ -63,8 +64,8 @@ check('SeasonTimeline', timeline, ['BROADCAST YEAR 2', 'UPF', 'PRM', 'SWP']);
 
 // --- Sidebar full + compact ---
 const nav = [
-  { key: 'dashboard' as const, label: 'The Desk', glyph: '▣' },
-  { key: 'slate' as const, label: 'My Shows', glyph: '☰', badge: 3 },
+  { key: 'dashboard' as const, label: 'The Desk', icon: 'television' as const },
+  { key: 'slate' as const, label: 'My Shows', icon: 'shelf' as const, badge: 3 },
 ];
 const sidebar = renderToStaticMarkup(
   <Sidebar items={nav} active="dashboard" onSelect={() => {}} compact={false}
@@ -83,6 +84,27 @@ const compact = renderToStaticMarkup(
     onMakeShow={() => {}} onOpenMenu={() => {}} />
 );
 check('Sidebar — compact', compact, ['$119.9M']);
+
+// --- Artwork is ours, not the platform's ---
+// Emoji render as another vendor's artwork inside our own and differ per platform.
+// These two checks are what stop them creeping back in one convenient glyph at a time.
+const posters = renderToStaticMarkup(
+  <>
+    {SHOW_ARCHETYPES.slice(0, 24).map((a) => (
+      <Poster key={a.id} seed={a.id} format={a.format} title={a.title} size="md" />
+    ))}
+  </>
+);
+check('Posters draw real icon paths', posters, ['<svg', '<path']);
+
+const EMOJI = /\p{Extended_Pictographic}/u;
+for (const [label, markup] of [
+  ['posters', posters],
+  ['sidebar', sidebar],
+  ['the TV', live],
+] as const) {
+  check(`no emoji in ${label}`, EMOJI.test(markup) ? '' : markup, []);
+}
 
 console.log(fails === 0 ? '\nALL RENDER CHECKS PASSED\n' : `\n${fails} RENDER CHECK(S) FAILED\n`);
 process.exit(fails === 0 ? 0 : 1);

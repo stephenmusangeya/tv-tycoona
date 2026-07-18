@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-na
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { avatarColor, initialsOf, posterFor } from './art';
+import { Icon } from './icons';
 import type { Format } from '../engine/types';
 
 /**
@@ -59,7 +60,10 @@ export function Poster({
         ) : null}
       </View>
 
-      <Text style={[styles.glyph, metrics.glyph]}>{art.glyph}</Text>
+      {/* The genre mark, in white on the gradient — our own artwork, not an emoji. */}
+      <View style={styles.glyph}>
+        <Icon name={art.icon} size={metrics.glyph} color="#FFFFFF" opacity={0.92} />
+      </View>
 
       {live ? (
         <View style={styles.liveBadge}>
@@ -113,17 +117,17 @@ export function Avatar({
 const SIZES = {
   sm: {
     frame: { width: 40, height: 52, borderRadius: 6 },
-    glyph: { fontSize: 20 },
+    glyph: 20,
     caption: { fontSize: 8 },
   },
   md: {
     frame: { width: 92, height: 120, borderRadius: 10 },
-    glyph: { fontSize: 34 },
+    glyph: 34,
     caption: { fontSize: 10 },
   },
   lg: {
     frame: { width: 132, height: 172, borderRadius: 12 },
-    glyph: { fontSize: 48 },
+    glyph: 48,
     caption: { fontSize: 12 },
   },
 } as const;
@@ -167,7 +171,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.14)',
   },
 
-  glyph: { textShadowColor: 'rgba(0,0,0,0.35)', textShadowRadius: 6 },
+  // A soft drop shadow keeps the mark legible on the lighter end of every gradient.
+  glyph: { filter: 'drop-shadow(0px 2px 5px rgba(0,0,0,0.35))' },
 
   liveBadge: {
     position: 'absolute',

@@ -1,4 +1,5 @@
 import type { Format } from '../engine/types';
+import type { IconName } from './icons';
 
 /**
  * Procedural artwork.
@@ -33,28 +34,34 @@ const PALETTES: Array<[string, string]> = [
   ['#84CC16', '#3F6212'],
 ];
 
-/** A glyph per format — instant, readable genre signalling at any size. */
-export const FORMAT_GLYPH: Record<Format, string> = {
-  sitcom: '😄',
-  drama: '🎭',
-  procedural: '🔍',
-  reality: '📹',
-  competition: '🏆',
-  documentary: '🎞️',
-  animation: '🎨',
-  talkshow: '🎙️',
-  gameshow: '🎰',
-  sketch: '🤹',
-  soap: '💔',
-  anthology: '🗝️',
-  kids: '🧸',
-  news: '📰',
+/**
+ * An icon per format — instant, readable genre signalling at any size.
+ *
+ * These were emoji until the cinema icon set landed. Emoji rendered as another
+ * vendor's artwork inside our own, and varied by platform; these are our paths, in
+ * our colours. See `icons.tsx`.
+ */
+export const FORMAT_ICON: Record<Format, IconName> = {
+  sitcom: 'popcorn',
+  drama: 'masks',
+  procedural: 'magnifier',
+  reality: 'camcorder',
+  competition: 'trophy',
+  documentary: 'filmStrip',
+  animation: 'palette',
+  talkshow: 'microphone',
+  gameshow: 'wheel',
+  sketch: 'spotlight',
+  soap: 'heart',
+  anthology: 'key',
+  kids: 'teddy',
+  news: 'newspaper',
 };
 
 export interface PosterArt {
   from: string;
   to: string;
-  glyph: string;
+  icon: IconName;
   /** 0–3: which geometric motif to overlay. */
   motif: number;
   /** Rotation for the motif, in degrees. */
@@ -68,7 +75,7 @@ export function posterFor(seed: string, format: Format): PosterArt {
   return {
     from,
     to,
-    glyph: FORMAT_GLYPH[format] ?? '📺',
+    icon: FORMAT_ICON[format] ?? 'television',
     motif: (hash >> 3) % 4,
     angle: ((hash >> 5) % 8) * 15 - 60,
   };

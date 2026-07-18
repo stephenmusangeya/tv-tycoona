@@ -202,12 +202,39 @@ export function TVScreen({
               {airing.episodesPerSeason}
             </Text>
 
-            {breakdown ? (
-              <View style={styles.demoWrap}>
-                <Text style={styles.demoLabel}>AUDIENCE</Text>
-                <SegmentBar breakdown={breakdown} height={7} />
+            {/* Everything below is pinned to the foot of the picture. The set used to
+                centre a short stack of text in a tall screen, which left a large dead
+                area under it — the single most-noted flaw in the room. Filling the
+                bottom with the season's run and the show's standing uses the height
+                for information instead of for emptiness. */}
+            <View style={styles.pictureFoot}>
+              <View style={styles.runWrap}>
+                <View style={styles.runHead}>
+                  <Text style={styles.demoLabel}>THIS SEASON</Text>
+                  <Text style={styles.runCount}>
+                    {airing.episodesAiredThisSeason}/{airing.episodesPerSeason}
+                  </Text>
+                </View>
+                {/* One notch per episode, lit as it airs — a season reads as a run of
+                    programmes rather than a fraction. */}
+                <View style={styles.runStrip}>
+                  {Array.from({ length: Math.min(airing.episodesPerSeason, 40) }).map(
+                    (_, i) => {
+                      const scale = airing.episodesPerSeason / Math.min(airing.episodesPerSeason, 40);
+                      const aired = (i + 1) * scale <= airing.episodesAiredThisSeason;
+                      return <View key={i} style={[styles.runNotch, aired && styles.runNotchOn]} />;
+                    },
+                  )}
+                </View>
               </View>
-            ) : null}
+
+              {breakdown ? (
+                <View style={styles.demoWrap}>
+                  <Text style={styles.demoLabel}>AUDIENCE</Text>
+                  <SegmentBar breakdown={breakdown} height={7} />
+                </View>
+              ) : null}
+            </View>
           </View>
         ) : (
           <View style={styles.picture}>
@@ -357,6 +384,25 @@ const styles = StyleSheet.create({
   },
 
   picture: { flex: 1, padding: space.lg, zIndex: 3, justifyContent: 'center' },
+
+  /** Pinned to the foot of the picture, so a tall screen is filled rather than hollow. */
+  pictureFoot: { marginTop: 'auto', gap: space.md },
+  runWrap: { gap: 5 },
+  runHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  runCount: {
+    fontSize: 10,
+    fontWeight: '900',
+    color: colors.tvTextDim,
+    fontVariant: ['tabular-nums'],
+  },
+  runStrip: { flexDirection: 'row', gap: 2, alignItems: 'center' },
+  runNotch: {
+    flex: 1,
+    height: 6,
+    borderRadius: 1,
+    backgroundColor: 'rgba(247,241,228,0.14)',
+  },
+  runNotchOn: { backgroundColor: colors.accent },
 
   nowLabel: {
     fontSize: 9,

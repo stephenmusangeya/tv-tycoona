@@ -5,19 +5,24 @@ import { useAction, useGame } from '../../store/gameStore';
 import {
   archetypeOf,
   episodesToSyndication,
+  estimateNewShow,
   latestBreakdown,
   latestViewers,
   roster,
   rosterCostPerEpisode,
   showEconomics,
+  totalCash,
 } from '../../store/selectors';
 import {
   cancelOwnShow,
+  developOriginal,
   licenseReruns,
   rerunBidsFor,
   sellRights,
   setBudget,
 } from '../../engine/actions';
+import { potentialAudience } from '../../engine/audience';
+import { ARCHETYPES_BY_ID } from '../../data';
 import {
   RERUN_MINIMUM_EPISODES,
   canSellReruns,
@@ -26,7 +31,7 @@ import {
 } from '../../engine/economy';
 import { budgetScore } from '../../engine/quality';
 import { formatSlotKey } from '../../engine/schedule';
-import { AXES } from '../../engine/types';
+import { AXES, type ShowArchetype } from '../../engine/types';
 import {
   Button,
   Card,
@@ -40,16 +45,69 @@ import {
   Stat,
 } from '../components';
 import { colors, deltaColor, formatMoneyShort, scoreColor, space, type } from '../theme';
+import { Icon } from '../icons';
 import { Poster, Avatar } from '../Poster';
 import { CountUp } from '../motion';
 
 /**
- * Show detail — the screen where a player actually makes decisions about a production.
+ * What the detail modal is looking at.
+ *
+ * A poster can name a show the player owns, a rival's show, or an idea nobody has
+ * commissioned yet. The first two are `Production`s and carry history; the third is
+ * only a `ShowArchetype` from the content database. Naming the kind up front keeps
+ * the two views honest — the archetype view cannot accidentally reach for ratings
+ * that do not exist.
+ */
+export type ShowSubject =
+  | { kind: 'production'; id: string }
+  | { kind: 'archetype'; id: string };
+
+/** A bare string still means "a production", because that is what every caller sends. */
+export type ShowRef = string | ShowSubject;
+
+export function toShowSubject(ref: ShowRef): ShowSubject {
+  return typeof ref === 'string' ? { kind: 'production', id: ref } : ref;
+}
+
+/**
+ * Show detail.
+ *
+ * Dispatches on the subject rather than branching inside one component: the two views
+ * share almost no data, and keeping them apart means neither one needs a guard on
+ * every field.
+ */
+export function ShowDetailScreen({
+  subject,
+  onClose,
+  onOpenProduction,
+}: {
+  subject: ShowRef;
+  onClose: () => void;
+  /** Where to go once an idea becomes a real production. */
+  onOpenProduction?: (id: string) => void;
+}) {
+  const resolved = toShowSubject(subject);
+
+  if (resolved.kind === 'archetype') {
+    return (
+      <ArchetypeDetail
+        archetypeId={resolved.id}
+        onClose={onClose}
+        onOpenProduction={onOpenProduction}
+      />
+    );
+  }
+
+  return <ProductionDetail productionId={resolved.id} onClose={onClose} />;
+}
+
+/**
+ * The production view — where a player actually makes decisions about a show.
  *
  * The budget control is the heart of it: moving the slider re-derives quality live, so
  * the diminishing-returns curve is something you feel rather than read about.
  */
-export function ShowDetailScreen({
+function ProductionDetail({
   productionId,
   onClose,
 }: {
@@ -284,6 +342,7 @@ export function ShowDetailScreen({
             return (
               <Pressable
                 key={multiplier}
+                testID={`budget-${multiplier}x`}
                 disabled={!canEditBudget}
                 onPress={() => adjustBudget(multiplier)}
                 style={[
@@ -454,6 +513,7 @@ export function ShowDetailScreen({
                       </View>
                       <Button
                         label="Sell"
+                        testID={`license-reruns-${bid.buyerId}`}
                         variant="secondary"
                         onPress={() => run((g) => licenseReruns(g, production.id, bid.buyerId))}
                       />
@@ -487,12 +547,14 @@ export function ShowDetailScreen({
                 <View style={{ flexDirection: 'row', gap: space.sm, marginTop: space.md }}>
                   <Button
                     label="Keep it"
+                    testID="cancel-sell-rights"
                     variant="secondary"
                     style={{ flex: 1 }}
                     onPress={() => setConfirmSell(false)}
                   />
                   <Button
                     label="Sell it"
+                    testID="confirm-sell-rights"
                     variant="danger"
                     style={{ flex: 1 }}
                     onPress={() => {
@@ -505,6 +567,7 @@ export function ShowDetailScreen({
             ) : (
               <Button
                 label={`Sell the show for ${formatMoneyShort(rightsSaleValue(production))}`}
+                testID="sell-rights"
                 variant="ghost"
                 style={{ marginTop: space.md }}
                 onPress={() => setConfirmSell(true)}
@@ -534,12 +597,14 @@ export function ShowDetailScreen({
           <View style={{ flexDirection: 'row', gap: space.sm, marginTop: space.md }}>
             <Button
               label="Keep it"
+              testID="keep-show"
               variant="secondary"
               style={{ flex: 1 }}
               onPress={() => setConfirmCancel(false)}
             />
             <Button
               label="Stop it"
+              testID="confirm-cancel-show"
               variant="danger"
               style={{ flex: 1 }}
               onPress={() => {
@@ -550,7 +615,255 @@ export function ShowDetailScreen({
           </View>
         </Card>
       ) : (
-        <Button label="Stop making this show" variant="danger" onPress={() => setConfirmCancel(true)} />
+        <Button
+          label="Stop making this show"
+          testID="cancel-show"
+          variant="danger"
+          onPress={() => setConfirmCancel(true)}
+        />
+      )}
+
+      <View style={{ height: space.xxl }} />
+    </ScrollView>
+  );
+}
+
+/* ------------------------------------------------------------------------- */
+/* The idea view                                                              */
+/* ------------------------------------------------------------------------- */
+
+/**
+ * An idea nobody has made yet.
+ *
+ * There is no ratings history, no cast, no P&L — so where the production view prints
+ * what happened, this prints what would happen: the estimate from `estimateNewShow`
+ * and the audience the attribute profile would reach at its ceiling. Everything on
+ * screen is a projection, and the PROJECTED banner says so once rather than hedging
+ * every figure.
+ */
+function ArchetypeDetail({
+  archetypeId,
+  onClose,
+  onOpenProduction,
+}: {
+  archetypeId: string;
+  onClose: () => void;
+  onOpenProduction?: (id: string) => void;
+}) {
+  const game = useGame();
+  const run = useAction();
+
+  const archetype: ShowArchetype | undefined = ARCHETYPES_BY_ID[archetypeId];
+
+  // A show already in production anywhere in the world blocks a second commission,
+  // so find it once and offer it as a destination instead of a dead button.
+  const existing = useMemo(() => {
+    if (!game || !archetype) return undefined;
+    return Object.values(game.productions).find(
+      (p) =>
+        p.archetypeId === archetype.id && p.status !== 'cancelled' && p.status !== 'ended',
+    );
+  }, [game, archetype]);
+
+  const audience = useMemo(
+    () => (archetype ? potentialAudience(archetype.attributes) : undefined),
+    [archetype],
+  );
+
+  if (!game || !archetype || !audience) {
+    return (
+      <View style={styles.screen}>
+        <Header title="Show" onClose={onClose} />
+        <EmptyState title="No such show." />
+      </View>
+    );
+  }
+
+  const est = estimateNewShow(archetype);
+  const cash = totalCash(game);
+  const after = cash + est.perSeries;
+  const affordable = after > 0;
+  const reach = Object.values(audience).reduce((sum, v) => sum + v, 0);
+  const best = Object.entries(audience).sort((a, b) => b[1] - a[1])[0];
+  const mine = existing ? existing.ownerId === game.player.studioId : false;
+
+  return (
+    <ScrollView
+      style={styles.screen}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
+      <Header title={archetype.title} onClose={onClose} />
+
+      <View style={styles.heroRow}>
+        <Poster seed={archetype.id} format={archetype.format} size="lg" />
+        <View style={{ flex: 1 }}>
+          <Text style={styles.logline}>{archetype.logline}</Text>
+        </View>
+      </View>
+
+      <View style={styles.tagRow}>
+        <Pill label={archetype.format} tone="accent" />
+        <Pill label={archetype.genre} />
+        <Pill label={archetype.era} />
+        {existing ? <Pill label={mine ? 'yours' : 'taken'} tone="info" /> : null}
+      </View>
+
+      {/* --- What it would cost --- */}
+      <SectionHeader title="Projection" />
+      <Card>
+        <View style={styles.projectedHead}>
+          <Icon name="bulb" size={12} color={colors.textFaint} />
+          <Text style={styles.projectedLabel}>NOT COMMISSIONED — ESTIMATES</Text>
+        </View>
+
+        <View style={styles.statRow}>
+          <Stat label="Cost / ep" value={formatMoneyShort(est.costPerEpisode)} />
+          <Stat label="Episodes" value={String(est.episodes)} align="right" />
+        </View>
+        <Divider />
+        <View style={styles.statRow}>
+          <Stat
+            label="Whole series"
+            value={formatMoneyShort(est.seriesCost)}
+            sub={`budget ${formatMoneyShort(est.budget)} + ads ${formatMoneyShort(est.marketing)}`}
+          />
+          <Stat
+            label="Fee / ep"
+            value={formatMoneyShort(est.expectedFee)}
+            sub="channel pays"
+            align="right"
+          />
+        </View>
+
+        <View style={styles.moneyTotalRow}>
+          <Text style={styles.moneyTotalLabel}>Per episode</Text>
+          <Text style={[styles.moneyTotalValue, { color: deltaColor(est.perEpisode) }]}>
+            {est.perEpisode >= 0 ? '+' : '−'}
+            {formatMoneyShort(Math.abs(est.perEpisode))}
+          </Text>
+        </View>
+
+        <View style={styles.moneySeriesRow}>
+          <Text style={styles.moneySeriesLabel}>Per series ({est.episodes} episodes)</Text>
+          <Text style={[styles.moneySeriesValue, { color: deltaColor(est.perSeries) }]}>
+            {est.perSeries >= 0 ? '+' : '−'}
+            {formatMoneyShort(Math.abs(est.perSeries))}
+          </Text>
+        </View>
+
+        <View style={styles.repeatTarget}>
+          <View style={styles.repeatTargetRow}>
+            <Text style={styles.repeatTargetLabel}>Cash now</Text>
+            <Text style={styles.repeatTargetValue}>{formatMoneyShort(cash)}</Text>
+          </View>
+          <View style={styles.repeatTargetRow}>
+            <Text style={styles.repeatTargetLabel}>Cash after</Text>
+            <Text style={[styles.repeatTargetValue, { color: deltaColor(after) }]}>
+              {formatMoneyShort(after)}
+            </Text>
+          </View>
+          <View style={styles.repeatTargetRow}>
+            <Text style={styles.repeatTargetLabel}>Needed for repeats</Text>
+            <Text style={styles.repeatTargetValue}>{RERUN_MINIMUM_EPISODES}</Text>
+          </View>
+          <View style={styles.repeatTargetRow}>
+            <Text style={styles.repeatTargetLabel}>Series until repeats</Text>
+            <Text style={styles.repeatTargetValue}>{est.seriesToRepeats}</Text>
+          </View>
+        </View>
+      </Card>
+
+      {/* --- Who it is aimed at: the ceiling, not a forecast of week one --- */}
+      <SectionHeader title="Audience" />
+      <Card>
+        <View style={styles.statRow}>
+          <Stat label="Ceiling" value={`${reach.toFixed(1)}M`} sub="if everyone knew" />
+          <Stat
+            label="Best fit"
+            value={segmentLabel(best?.[0] ?? '')}
+            sub={`${(best?.[1] ?? 0).toFixed(1)}M`}
+            align="right"
+          />
+        </View>
+        <View style={{ marginTop: space.md }}>
+          <SegmentBar breakdown={audience} height={12} />
+          <SegmentLegend breakdown={audience} />
+        </View>
+      </Card>
+
+      {/* --- Creative profile --- */}
+      <SectionHeader title="Profile" />
+      <Card>
+        {AXES.map((axis) => (
+          <ScoreBar key={axis} label={axisLabel(axis)} value={archetype.attributes[axis]} />
+        ))}
+      </Card>
+
+      {/* --- What it takes to make --- */}
+      <SectionHeader title="Shoot" />
+      <Card>
+        <View style={styles.statRow}>
+          <Stat label="Cast & crew" value={String(archetype.castSize)} />
+          <Stat
+            label="Standard cost"
+            value={`${formatMoneyShort(archetype.baseCostPerEpisode)}/ep`}
+            align="right"
+          />
+        </View>
+        {archetype.requiredRoles.length > 0 ? (
+          <View style={styles.repeatTarget}>
+            {archetype.requiredRoles.map((role) => (
+              <View key={role} style={styles.repeatTargetRow}>
+                <Text style={styles.repeatTargetLabel}>{role}</Text>
+                <Text style={styles.repeatTargetValue}>required</Text>
+              </View>
+            ))}
+          </View>
+        ) : null}
+      </Card>
+
+      {/* --- Commission --- */}
+      <SectionHeader title="Actions" />
+      {existing ? (
+        <Card>
+          <View style={styles.statRow}>
+            <Stat
+              label="In production"
+              value={game.companies[existing.ownerId]?.name ?? 'another studio'}
+              sub={existing.status}
+            />
+            <Stat label="Season" value={String(existing.season)} align="right" />
+          </View>
+          <Button
+            label="Open the production"
+            testID="open-production"
+            variant="secondary"
+            style={{ marginTop: space.md }}
+            onPress={() => onOpenProduction?.(existing.id)}
+          />
+        </Card>
+      ) : (
+        <>
+          <Button
+            label={`Commission for ${formatMoneyShort(est.seriesCost)}`}
+            testID="commission-archetype"
+            disabled={!affordable}
+            onPress={() => {
+              const production = run((g) => developOriginal(g, archetype.id));
+              // Straight into the production view — the idea is now a real thing.
+              if (production) onOpenProduction?.(production.id);
+            }}
+          />
+          {!affordable ? (
+            <View style={styles.lockedBox}>
+              <Text style={styles.lockedLabel}>SHORT BY</Text>
+              <Text style={[styles.lockedValue, { color: colors.negative }]}>
+                {formatMoneyShort(Math.abs(after))}
+              </Text>
+            </View>
+          ) : null}
+        </>
       )}
 
       <View style={{ height: space.xxl }} />
@@ -569,6 +882,13 @@ function Header({ title, onClose }: { title: string; onClose: () => void }) {
       </Pressable>
     </View>
   );
+}
+
+/** Segment ids are camelCase keys; the legend prints the same short forms. */
+function segmentLabel(id: string): string {
+  if (!id) return '—';
+  if (id === 'youngAdults') return 'Young';
+  return id.charAt(0).toUpperCase() + id.slice(1);
 }
 
 function axisLabel(axis: string): string {
@@ -625,6 +945,14 @@ const styles = StyleSheet.create({
   budgetChipTextActive: { color: '#1A1206' },
 
   hint: { fontSize: 11, color: colors.textFaint, marginTop: space.md, lineHeight: 16 },
+
+  projectedHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginBottom: space.sm,
+  },
+  projectedLabel: { fontSize: 9, fontWeight: '800', letterSpacing: 1.2, color: colors.textFaint },
 
   castRow: {
     flexDirection: 'row',
