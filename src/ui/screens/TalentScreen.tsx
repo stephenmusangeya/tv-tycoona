@@ -63,7 +63,15 @@ export function TalentScreen() {
 
   // Casting is locked once a season is on air, so only these shows can take a signing.
   const castable = shows.filter((p) => p.status !== 'airing');
-  const selected = selectedId ? (agents.find((p) => p.id === selectedId) ?? null) : null;
+
+  // A card the player actually pulled out of the index.
+  const pulled = selectedId ? (agents.find((p) => p.id === selectedId) ?? null) : null;
+  // An empty dossier is a quarter of the room showing nothing, so when no card is
+  // pulled the file already open is the best free agent in the index — the one a
+  // player would have reached for anyway. The panel is never blank.
+  const selected = pulled ?? agents[0] ?? null;
+
+  const empty = signed.length === 0;
 
   return (
     <Room>
@@ -82,11 +90,32 @@ export function TalentScreen() {
         </View>
       </View>
 
-      {/* ---------------- Upper deck: the pavement ---------------- */}
-      <Deck flex={wide ? 3 : 2}>
-        <Panel title="WALK OF FAME" flex={1} accent="#C08A1E">
-          {signed.length === 0 ? (
-            <EmptyPavement />
+      {/* ---------------- Upper deck: the pavement ----------------
+          An empty trophy case must not be the biggest thing in the room, so with
+          nobody signed the pavement collapses to a slim band and hands its height
+          to the index below. It only claims a deck once there are stars on it. */}
+      {/* The pavement is one row of slabs however many stars are on it, so it takes
+          the height of a slab and not a share of the room — a third of this deck was
+          cream under the stars before. Everything it does not need goes to the index. */}
+      {/* A plain View, not a Deck with flex={0}. React Native compiles `flex: 0` to
+          `flexBasis: 0%`, and in a column container flex-basis sets the main size —
+          so it beat the explicit height and collapsed the pavement to nothing. The
+          stars were in the DOM and invisible, which is exactly the class of bug that
+          only shows up when you look at the screen. */}
+      <View
+        style={[
+          styles.pavementDeck,
+          empty ? styles.bandDeck : { height: wide ? 196 : 172 },
+        ]}
+      >
+        <Panel
+          title={empty ? undefined : 'WALK OF FAME'}
+          flex={1}
+          accent="#C08A1E"
+          style={empty ? styles.bandPanel : undefined}
+        >
+          {empty ? (
+            <EmptyPavement best={agents[0]} wide={wide} />
           ) : (
             <ScrollView
               horizontal
@@ -105,11 +134,11 @@ export function TalentScreen() {
             </ScrollView>
           )}
         </Panel>
-      </Deck>
+      </View>
 
       {/* ---------------- Lower deck: the card index, and the dossier -------------- */}
-      <Deck flex={wide ? 4 : 5} style={!wide && { flexDirection: 'column' }}>
-        <Panel title="ROLODEX" flex={wide ? 5 : selected ? 3 : 1}>
+      <Deck flex={1} style={!wide && { flexDirection: 'column' }}>
+        <Panel title="ROLODEX" flex={wide ? 5 : pulled ? 3 : 1}>
           <View style={styles.filters}>
             <View style={styles.searchBox}>
               <Icon name="magnifier" size={13} color={colors.textFaint} />
@@ -156,9 +185,12 @@ export function TalentScreen() {
               <Text style={styles.emptyLine}>Clear the name or pick ALL.</Text>
             </View>
           ) : (
+            /* The index was one horizontal row of cards in a panel four times that
+               tall. A card index is a drawer, not a shelf: the cards wrap and fill
+               the height they are given, so sixty free agents are all in the room
+               instead of five plus a scrollbar. */
             <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
               testID="rolodex-scroll"
               contentContainerStyle={styles.index}
@@ -167,7 +199,7 @@ export function TalentScreen() {
                 <RolodexCard
                   key={person.id}
                   person={person}
-                  selected={selectedId === person.id}
+                  selected={selected?.id === person.id}
                   onPress={() => setSelectedId(selectedId === person.id ? null : person.id)}
                 />
               ))}
@@ -175,26 +207,23 @@ export function TalentScreen() {
           )}
         </Panel>
 
-        {/* The dossier is always present when wide; on a phone it only earns its space
-            once a card is actually pulled out of the index. */}
-        {wide || selected ? (
-          <Panel title="DOSSIER" flex={wide ? 4 : 2} accent={colors.accent}>
-            {selected ? (
-              <Dossier
-                person={selected}
-                castable={castable}
-                onCast={(productionId) => {
-                  const result = run((g) => castTalent(g, productionId, selected.id));
-                  if (result) setSelectedId(null);
-                }}
-              />
-            ) : (
-              <View style={styles.emptyIndex}>
-                <Icon name="teddy" size={22} color={colors.textFaint} />
-                <Text style={styles.emptyTitle}>NO CARD PULLED</Text>
-                <Text style={styles.emptyLine}>Tap a card to read the file.</Text>
-              </View>
-            )}
+        {/* The dossier is always present when wide; on a phone it only earns its
+            space once a card is actually pulled out of the index. */}
+        {(wide && selected) || pulled ? (
+          <Panel
+            title={pulled ? 'DOSSIER' : 'DOSSIER · TOP OF THE INDEX'}
+            flex={wide ? 4 : 2}
+            accent={colors.accent}
+          >
+            <Dossier
+              person={selected!}
+              field={agents}
+              castable={castable}
+              onCast={(productionId) => {
+                const result = run((g) => castTalent(g, productionId, selected!.id));
+                if (result) setSelectedId(null);
+              }}
+            />
           </Panel>
         ) : null}
       </Deck>
@@ -307,19 +336,38 @@ function RolodexCard({
 /** The pulled card, read in full — attributes, best formats, and where they can go. */
 function Dossier({
   person,
+  field,
   castable,
   onCast,
 }: {
   person: TalentState;
+  field: TalentState[];
   castable: Production[];
   onCast: (productionId: string) => void;
 }) {
+  // Every format they have an opinion about, as bars. Four pills left most of the
+  // panel empty and told you less: a bar says how much better the top format is
+  // than the fourth, which is the thing you are actually choosing between.
   const affinities = Object.entries(person.genreAffinity)
     .sort(([, a], [, b]) => (b ?? 0) - (a ?? 0))
-    .slice(0, 4);
+    .slice(0, 8);
+
+  // Where they sit in the sixty cards on the table. A craft of 84 means nothing on
+  // its own; "3rd of 60 for craft" is a decision.
+  const rank = (key: 'craft' | 'starPower') =>
+    field.filter((p) => p[key] > person[key]).length + 1;
+  const fee = person.baseSalaryPerEpisode;
+  const feeRank = field.filter((p) => p.baseSalaryPerEpisode > fee).length + 1;
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+      // The file reads top-down and the thing you do about it sits on the bottom
+      // edge, so a short dossier leaves one gap in the middle rather than a long
+      // tail of nothing under the last line.
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <View style={styles.dossierHead}>
         <Avatar name={person.name} size={40} />
         <View style={{ flex: 1 }}>
@@ -346,11 +394,33 @@ function Dossier({
         <Stat label="MOOD" value={person.morale} big />
       </View>
 
+      {/* Standing in the index — the three ranks that decide whether the numbers
+          above are a bargain or a mistake. */}
+      <View style={styles.ranks}>
+        <RankLine label="CRAFT" place={rank('craft')} of={field.length} />
+        <RankLine label="STAR" place={rank('starPower')} of={field.length} />
+        <RankLine label="FEE" place={feeRank} of={field.length} invert />
+      </View>
+
       {affinities.length > 0 ? (
         <View style={styles.affinities}>
+          <Text style={styles.sectionLabel}>FORMATS</Text>
           {affinities.map(([format, value]) => (
-            <View key={format} style={styles.affinity}>
-              <Text style={styles.affinityLabel}>{format.toUpperCase()}</Text>
+            <View key={format} style={styles.affinityRow}>
+              <Text style={styles.affinityLabel} numberOfLines={1}>
+                {format.toUpperCase()}
+              </Text>
+              <View style={styles.affinityTrack}>
+                <View
+                  style={[
+                    styles.affinityFill,
+                    {
+                      width: `${Math.max(2, Math.min(100, value ?? 0))}%`,
+                      backgroundColor: scoreColor(value ?? 0),
+                    },
+                  ]}
+                />
+              </View>
               <Text style={[styles.affinityValue, { color: scoreColor(value ?? 0) }]}>
                 {Math.round(value ?? 0)}
               </Text>
@@ -401,16 +471,67 @@ function Stat({ label, value, big }: { label: string; value: number; big?: boole
   );
 }
 
-/** A new player has signed nobody, and the empty pavement should say what to do. */
-function EmptyPavement() {
+/** Placing in the field, as a filled track. Cheap is good, so FEE counts backwards. */
+function RankLine({
+  label,
+  place,
+  of,
+  invert,
+}: {
+  label: string;
+  place: number;
+  of: number;
+  invert?: boolean;
+}) {
+  const share = of <= 1 ? 1 : (of - place) / (of - 1);
+  const good = invert ? 1 - share : share;
+
   return (
-    <View style={styles.emptyPavement}>
-      <WalkOfFameStar size={64} brass="#BFB49C" stone="#DED5C1" />
-      <View style={{ flex: 1 }}>
-        <Text style={styles.emptyTitle}>NO STARS YET</Text>
-        <Text style={styles.emptyLine}>Pull a card below, attach them to a show.</Text>
-        <Text style={styles.emptyLine}>Craft builds quality. Star power builds audience.</Text>
+    <View style={styles.rankLine}>
+      <Text style={styles.rankLabel}>{label}</Text>
+      <View style={styles.rankTrack}>
+        <View
+          style={[
+            styles.rankFill,
+            { width: `${Math.max(3, share * 100)}%`, backgroundColor: scoreColor(good * 100) },
+          ]}
+        />
       </View>
+      <Text style={styles.rankValue}>
+        {place}/{of}
+      </Text>
+    </View>
+  );
+}
+
+/**
+ * A new player has signed nobody.
+ *
+ * This used to be a full deck of cream with one small block floating in it — the
+ * emptiest thing in the game given the most room. It is now a single band the height
+ * of its own text, and it spends that band on the one figure worth having here: the
+ * best card currently in the index, so the pavement points at the drawer below.
+ */
+function EmptyPavement({ best, wide }: { best?: TalentState; wide: boolean }) {
+  return (
+    <View style={styles.emptyPavement} testID="walk-of-fame-empty">
+      <WalkOfFameStar size={26} brass="#BFB49C" stone="#DED5C1" />
+      <Text style={styles.bandTitle}>WALK OF FAME</Text>
+      <Text style={styles.bandHint}>EMPTY · ATTACH TALENT TO A SHOW</Text>
+
+      {best && wide ? (
+        <View style={styles.bandBest}>
+          <Text style={styles.bandBestLabel}>BEST FREE</Text>
+          <Text style={styles.bandBestName} numberOfLines={1}>
+            {best.name.toUpperCase()}
+          </Text>
+          <Stat label="CFT" value={best.craft} />
+          <Stat label="STR" value={best.starPower} />
+          <Text style={styles.bandBestFee}>
+            {formatMoneyShort(best.baseSalaryPerEpisode)}/EP
+          </Text>
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -490,7 +611,35 @@ const styles = StyleSheet.create({
     fontVariant: ['tabular-nums'],
   },
 
-  emptyPavement: { flexDirection: 'row', alignItems: 'center', gap: space.md, flex: 1 },
+  // ---- the collapsed pavement band ---------------------------------------
+  pavementDeck: { flexDirection: 'row', gap: space.sm },
+  bandDeck: { height: 46 },
+  bandPanel: { paddingVertical: 4, paddingHorizontal: space.md },
+  emptyPavement: { flexDirection: 'row', alignItems: 'center', gap: space.sm, flex: 1 },
+  bandTitle: { fontSize: 9, fontWeight: '900', letterSpacing: 1.6, color: colors.textDim },
+  bandHint: {
+    flex: 1,
+    fontSize: 8,
+    fontWeight: '800',
+    letterSpacing: 1,
+    color: colors.textFaint,
+  },
+  bandBest: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  bandBestLabel: { fontSize: 7, fontWeight: '900', letterSpacing: 1, color: colors.textFaint },
+  bandBestName: {
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 0.6,
+    color: colors.text,
+    maxWidth: 170,
+  },
+  bandBestFee: {
+    fontSize: 10,
+    fontWeight: '900',
+    color: colors.textDim,
+    fontVariant: ['tabular-nums'],
+  },
+
   emptyIndex: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 3 },
   emptyTitle: {
     fontSize: 11,
@@ -537,7 +686,13 @@ const styles = StyleSheet.create({
   tabTextActive: { color: '#FBF6EA' },
 
   // ---- the card index -----------------------------------------------------
-  index: { flexDirection: 'row', gap: space.sm, alignItems: 'flex-start' },
+  index: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: space.sm,
+    alignItems: 'flex-start',
+    paddingBottom: space.sm,
+  },
   card: {
     width: 96,
     alignItems: 'center',
@@ -606,26 +761,75 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
 
-  affinities: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: space.sm },
-  affinity: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: radius.sm,
-    backgroundColor: colors.surfaceAlt,
+  // ---- ranks and formats --------------------------------------------------
+  sectionLabel: {
+    fontSize: 8,
+    fontWeight: '900',
+    letterSpacing: 1.4,
+    color: colors.textDim,
+    marginBottom: 2,
+  },
+  ranks: { marginTop: space.sm, gap: 4 },
+  rankLine: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  rankLabel: {
+    width: 34,
+    fontSize: 8,
+    fontWeight: '900',
+    letterSpacing: 0.8,
+    color: colors.textDim,
+  },
+  rankTrack: {
+    flex: 1,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.surfaceHigh,
     borderWidth: 1,
     borderColor: colors.border,
+    overflow: 'hidden',
   },
-  affinityLabel: { fontSize: 7, fontWeight: '900', letterSpacing: 0.8, color: colors.textDim },
-  affinityValue: { fontSize: 11, fontWeight: '900', fontVariant: ['tabular-nums'] },
+  rankFill: { height: '100%' },
+  rankValue: {
+    width: 44,
+    textAlign: 'right',
+    fontSize: 9,
+    fontWeight: '900',
+    color: colors.textDim,
+    fontVariant: ['tabular-nums'],
+  },
+
+  affinities: { marginTop: space.md, gap: 3 },
+  affinityRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  affinityLabel: {
+    width: 74,
+    fontSize: 8,
+    fontWeight: '900',
+    letterSpacing: 0.8,
+    color: colors.textDim,
+  },
+  affinityTrack: {
+    flex: 1,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.surfaceHigh,
+    borderWidth: 1,
+    borderColor: colors.border,
+    overflow: 'hidden',
+  },
+  affinityFill: { height: '100%' },
+  affinityValue: {
+    width: 22,
+    textAlign: 'right',
+    fontSize: 11,
+    fontWeight: '900',
+    fontVariant: ['tabular-nums'],
+  },
 
   attachHead: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    marginTop: space.md,
+    marginTop: 'auto',
+    paddingTop: space.md,
     marginBottom: space.xs,
   },
   attachTitle: { fontSize: 8, fontWeight: '900', letterSpacing: 1.4, color: colors.textDim },

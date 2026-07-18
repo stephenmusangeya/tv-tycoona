@@ -22,6 +22,7 @@ import { CountUp, WeekSweep } from '../motion';
 import type { ResultLine } from '../TVScreen';
 import { DecisionDeck } from '../DecisionDeck';
 import { Room, Deck, Panel, Readout } from '../game/Room';
+import { Plus } from '../icons';
 import { PlayButton } from '../game/PlayButton';
 import { colors, deltaColor, formatMoneyShort, scoreColor, space } from '../theme';
 import type { Production } from '../../engine/types';
@@ -84,10 +85,14 @@ export function DeskRoom({
   return (
     <Room>
       {/* ---------------- Title bar: identity left, time control right ------------- */}
-      <View style={styles.topBar}>
-        <Text style={styles.studioName} numberOfLines={1}>
-          {studio?.name ?? 'STUDIO'}
-        </Text>
+      <View style={[styles.topBar, !wide && { justifyContent: 'flex-end' }]}>
+        {/* On a phone the studio name is already in the status bar above, so printing
+            it again here just spent a line of a short screen saying it twice. */}
+        {wide ? (
+          <Text style={styles.studioName} numberOfLines={1}>
+            {studio?.name ?? 'STUDIO'}
+          </Text>
+        ) : null}
         <PlayButton
           year={game.year}
           week={game.week}
@@ -173,7 +178,10 @@ export function DeskRoom({
       </Deck>
 
       {/* ---------------- Lower deck: shelf, decisions, dial ---------------- */}
-      <Deck flex={wide ? 2 : 3}>
+      {/* Side by side is right on a desk; on a phone it gave the in-tray about 180px
+          and the decision cards inside it wrapped one letter per line. Below the wide
+          breakpoint the two panels stack and each gets the full width. */}
+      <Deck flex={wide ? 2 : 3} style={!wide && { flexDirection: 'column' }}>
         <Panel title="YOUR SHOWS" flex={5}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.shelf}>
@@ -186,8 +194,10 @@ export function DeskRoom({
               ))}
 
               <Pressable testID="new-show-tile" onPress={onMakeShow} style={styles.newCard}>
-                <Text style={styles.newPlus}>＋</Text>
-                <Text style={styles.newLabel}>NEW SHOW</Text>
+                <Plus size={20} color={colors.accent} />
+                <Text style={styles.newLabel} numberOfLines={1}>
+                  NEW SHOW
+                </Text>
               </Pressable>
             </View>
           </ScrollView>

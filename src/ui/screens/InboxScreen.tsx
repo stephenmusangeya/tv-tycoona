@@ -110,7 +110,13 @@ export function InboxScreen() {
   const shown =
     active.kinds.length === 0 ? news : news.filter((e) => active.kinds.includes(e.kind));
 
-  const open = openId ? (news.find((e) => e.id === openId) ?? null) : null;
+  // The letter the player actually picked up.
+  const picked = openId ? (news.find((e) => e.id === openId) ?? null) : null;
+  // A bare desk was two fifths of the room showing an envelope outline. Post that
+  // has just arrived is already in front of you, so with nothing picked up the desk
+  // holds the newest letter in the current tray — open, readable, and replaced the
+  // moment the player picks another.
+  const open = picked ?? shown[0] ?? news[0] ?? null;
 
   return (
     <Room>
@@ -167,7 +173,7 @@ export function InboxScreen() {
                     event={event}
                     index={index}
                     unread={unreadAtOpen.has(event.id)}
-                    open={openId === event.id}
+                    open={open?.id === event.id}
                     onPress={() => setOpenId(openId === event.id ? null : event.id)}
                   />
                 ))}
@@ -180,8 +186,21 @@ export function InboxScreen() {
         </Panel>
 
         {/* ------------------- The desk beside the tray ------------------- */}
-        <Panel title={open ? 'OPENED' : 'DESK'} flex={wide ? 2 : 4}>
-          {open ? <OpenLetter event={open} onClose={() => setOpenId(null)} /> : <NoLetter />}
+        <Panel title={picked ? 'OPENED' : open ? 'DESK · LATEST' : 'DESK'} flex={wide ? 2 : 4}>
+          {open ? (
+            <OpenLetter
+              event={open}
+              picked={picked !== null}
+              onClose={() => setOpenId(null)}
+            />
+          ) : (
+            <NoLetter />
+          )}
+
+          {/* What the tray holds, by desk. The bottom of this panel was blank under
+              every letter short enough to fit; a tally is the one thing that is
+              worth reading whichever letter happens to be open. */}
+          <Tally news={news} unread={unreadAtOpen} />
         </Panel>
       </Deck>
     </Room>
@@ -209,8 +228,11 @@ function Letter({
   onPress: () => void;
 }) {
   const sender = senderFor(event.kind);
-  const tilt = (jitter(event.id, 1) - 0.5) * (unread ? 2.4 : 1.4);
-  const slide = (jitter(event.id, 2) - 0.5) * 10;
+  // A wide letter rotated even a degree lifts its far edge by more than the overlap,
+  // which was burying the line of text above it. Paper in a tray is barely askew;
+  // keep the tilt small enough that the stack reads as a stack and stays legible.
+  const tilt = (jitter(event.id, 1) - 0.5) * (unread ? 0.9 : 0.5);
+  const slide = (jitter(event.id, 2) - 0.5) * 8;
 
   return (
     <Pressable
@@ -218,7 +240,7 @@ function Letter({
       onPress={onPress}
       style={({ pressed }) => [
         styles.letter,
-        index > 0 && { marginTop: -6 },
+        index > 0 && { marginTop: -3 },
         {
           transform: [{ rotate: `${tilt.toFixed(2)}deg` }, { translateX: slide }],
           zIndex: open ? 999 : undefined,
@@ -258,7 +280,15 @@ function Letter({
 }
 
 /** The letter you picked up, flattened out on the desk and readable. */
-function OpenLetter({ event, onClose }: { event: GameEvent; onClose: () => void }) {
+function OpenLetter({
+  event,
+  picked,
+  onClose,
+}: {
+  event: GameEvent;
+  picked: boolean;
+  onClose: () => void;
+}) {
   const sender = senderFor(event.kind);
 
   return (
@@ -273,15 +303,59 @@ function OpenLetter({ event, onClose }: { event: GameEvent; onClose: () => void 
             Y{event.year} W{String(event.week).padStart(2, '0')}
           </Text>
         </View>
-        <Pressable testID="inbox-letter-close" onPress={onClose} style={styles.putBack}>
-          <Text style={styles.putBackText}>PUT BACK</Text>
-        </Pressable>
+        {/* Nothing to put back when this is just the newest post sitting on the
+            desk — the button would return you to the letter you are already on. */}
+        {picked ? (
+          <Pressable testID="inbox-letter-close" onPress={onClose} style={styles.putBack}>
+            <Text style={styles.putBackText}>PUT BACK</Text>
+          </Pressable>
+        ) : (
+          <Text style={styles.deskFlag}>NEWEST</Text>
+        )}
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} style={styles.sheet}>
         <Text style={styles.sheetSubject}>{event.headline}</Text>
         {event.body ? <Text style={styles.sheetBody}>{event.body}</Text> : null}
       </ScrollView>
+    </View>
+  );
+}
+
+/**
+ * What is in the tray, by desk.
+ *
+ * Counts rather than sentences: which desks are writing to you, and how much of it
+ * you have not read. It sits at the foot of the desk panel so that panel is never
+ * part letter and part nothing.
+ */
+function Tally({ news, unread }: { news: GameEvent[]; unread: Set<string> }) {
+  const rows = FILTERS.filter((f) => f.kinds.length > 0).map((f) => {
+    const of = news.filter((e) => f.kinds.includes(e.kind));
+    return {
+      key: f.key,
+      label: f.label,
+      total: of.length,
+      unread: of.filter((e) => unread.has(e.id)).length,
+    };
+  });
+
+  return (
+    <View style={styles.tally}>
+      {rows.map((row) => (
+        <View key={row.key} style={styles.tallyCell}>
+          <Text style={styles.tallyLabel}>{row.label}</Text>
+          <Text style={styles.tallyValue}>{row.total}</Text>
+          <Text
+            style={[
+              styles.tallyUnread,
+              { color: row.unread > 0 ? colors.accent : colors.textFaint },
+            ]}
+          >
+            {row.unread} NEW
+          </Text>
+        </View>
+      ))}
     </View>
   );
 }
@@ -297,16 +371,23 @@ function NoLetter() {
   );
 }
 
-/** An empty tray should look like an empty tray: bare rails and a floor. */
+/**
+ * An empty tray.
+ *
+ * Filtering to a desk that has sent nothing used to hollow out the whole tray — the
+ * largest panel in the room, containing one icon. The rails and the floor still show
+ * that this is a tray, but it states its emptiness in a band and gives the rest of
+ * its height back to nothing rather than spreading itself over it.
+ */
 function EmptyTray() {
   return (
-    <View testID="inbox-empty" style={[styles.trayWell, styles.trayEmpty]}>
-      <View style={styles.rail} />
-      <View style={[styles.rail, { top: '38%' }]} />
-      <View style={[styles.rail, { top: '64%' }]} />
-      <Icon name="envelope" size={34} color={colors.border} />
-      <Text style={styles.blankLabel}>TRAY EMPTY</Text>
-      <Text style={styles.blankHint}>0 LETTERS</Text>
+    <View testID="inbox-empty" style={styles.trayEmptyWrap}>
+      <View style={[styles.trayWell, styles.trayEmpty]}>
+        <View style={styles.rail} />
+        <Icon name="envelope" size={18} color={colors.border} />
+        <Text style={styles.blankLabel}>TRAY EMPTY</Text>
+        <Text style={styles.blankHint}>0 LETTERS · TRY ALL</Text>
+      </View>
     </View>
   );
 }
@@ -372,7 +453,15 @@ const styles = StyleSheet.create({
     paddingTop: space.sm,
     paddingHorizontal: space.sm,
   },
-  trayEmpty: { alignItems: 'center', justifyContent: 'center', gap: 4 },
+  /** Empty states are a band, not a canyon: the tray states it and stops. */
+  trayEmptyWrap: { flex: 1 },
+  trayEmpty: {
+    flex: 0,
+    height: 58,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 2,
+  },
   rail: {
     position: 'absolute',
     left: 0,
@@ -488,6 +577,34 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceHigh,
   },
   putBackText: { fontSize: 8, fontWeight: '900', letterSpacing: 1, color: colors.textDim },
+  deskFlag: { fontSize: 8, fontWeight: '900', letterSpacing: 1.2, color: colors.textFaint },
+
+  tally: {
+    flexDirection: 'row',
+    gap: space.xs,
+    marginTop: space.sm,
+    paddingTop: space.sm,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  tallyCell: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 1,
+    paddingVertical: 4,
+    borderRadius: 5,
+    backgroundColor: colors.surfaceAlt,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  tallyLabel: { fontSize: 7, fontWeight: '900', letterSpacing: 0.9, color: colors.textFaint },
+  tallyValue: {
+    fontSize: 15,
+    fontWeight: '900',
+    color: colors.text,
+    fontVariant: ['tabular-nums'],
+  },
+  tallyUnread: { fontSize: 7, fontWeight: '900', letterSpacing: 0.8 },
 
   sheet: { flex: 1, marginTop: space.sm },
   sheetSubject: { fontSize: 15, fontWeight: '800', color: colors.text, lineHeight: 20 },

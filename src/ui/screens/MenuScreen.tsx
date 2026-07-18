@@ -5,6 +5,7 @@ import { useGame, useGameStore } from '../../store/gameStore';
 import { AUTOSAVE_ID, deleteSlot, formatSavedAt } from '../../store/saves';
 import { Button, Card, EmptyState } from '../components';
 import { colors, formatMoneyShort, space, type } from '../theme';
+import { useOnboarding } from '../Onboarding';
 
 /**
  * Pause menu — save, load, quit.
@@ -20,6 +21,7 @@ export function MenuScreen({ onClose }: { onClose: () => void }) {
   const saveAs = useGameStore((s) => s.saveAs);
   const loadSlot = useGameStore((s) => s.loadSlot);
   const quitToTitle = useGameStore((s) => s.quitToTitle);
+  const onboarding = useOnboarding();
 
   const [saveName, setSaveName] = useState('');
   const [busy, setBusy] = useState(false);
@@ -183,6 +185,21 @@ export function MenuScreen({ onClose }: { onClose: () => void }) {
           )}
         </Card>
       ) : null}
+
+      {/* The introduction explains that a studio licenses shows to channels and lives
+          on the library. That is the premise of the whole game, and someone who
+          skipped it on day one has no other way to find it out. */}
+      <Card style={{ marginTop: space.lg }}>
+        <Button
+          label="Replay the introduction"
+          variant="ghost"
+          testID="replay-onboarding"
+          onPress={() => {
+            onboarding.replay();
+            onClose();
+          }}
+        />
+      </Card>
 
       <View style={{ height: space.xxl }} />
     </ScrollView>

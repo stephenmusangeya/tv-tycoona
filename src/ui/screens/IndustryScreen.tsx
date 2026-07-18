@@ -51,6 +51,18 @@ const CHART_SIZE = 12;
 /** Slow enough that each placing lands, fast enough that a week is not a wait. */
 const REVEAL_MS = 240;
 
+/**
+ * The chart is dealt to fit its panel rather than stacked from the top.
+ *
+ * A fixed row height left a dead third of the panel below number twelve on a desktop
+ * viewport — the chart looked like a list that had run out rather than a board that
+ * had been filled. Rows are measured against the space available and clamped: they
+ * breathe at 1440 and stay legible at 390, where the panel scrolls instead.
+ */
+const ROW_GAP = 3;
+const ROW_MIN = 34;
+const ROW_MAX = 58;
+
 type RivalTab = Company['type'];
 
 const TAB_ICON: Record<RivalTab, IconName> = {
@@ -71,6 +83,10 @@ export function IndustryScreen() {
   const [runId, setRunId] = useState(0);
   const [revealed, setRevealed] = useState(0);
   const shown = useRef(0);
+
+  // Height of the chart's viewport, measured rather than assumed — the panel's share
+  // of the room depends on the window, so only layout knows what a row may be worth.
+  const [chartHeight, setChartHeight] = useState(0);
 
   const week = game?.absoluteWeek ?? 0;
   useEffect(() => {
@@ -110,6 +126,14 @@ export function IndustryScreen() {
   const playing = revealed < count;
   const best = board.findIndex((entry) => mine.has(entry.production.ownerId));
   const onAir = playerShows(game).filter((p) => p.status === 'airing').length;
+
+  const rowHeight =
+    count > 0 && chartHeight > 0
+      ? Math.max(
+          ROW_MIN,
+          Math.min(ROW_MAX, Math.floor((chartHeight - ROW_GAP * (count - 1)) / count)),
+        )
+      : ROW_MIN;
 
   const chart = (
     <Panel title="THE CHART" flex={1} accent={colors.accent}>
@@ -151,29 +175,37 @@ export function IndustryScreen() {
       {count === 0 ? (
         <NothingAired />
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.chartList}>
-          {board.map((entry, index) => {
-            // The countdown fills from the bottom: the last rows are on screen first
-            // and number one lands last, which is the whole reason to watch it.
-            const isOut = index >= count - revealed;
-            const rank = index + 1;
+        <View
+          style={styles.chartViewport}
+          onLayout={(e) => setChartHeight(e.nativeEvent.layout.height)}
+        >
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.chartList}>
+            {board.map((entry, index) => {
+              // The countdown fills from the bottom: the last rows are on screen first
+              // and number one lands last, which is the whole reason to watch it.
+              const isOut = index >= count - revealed;
+              const rank = index + 1;
 
-            if (!isOut) return <ChartSlot key={entry.production.id} rank={rank} />;
+              if (!isOut) {
+                return <ChartSlot key={entry.production.id} rank={rank} height={rowHeight} />;
+              }
 
-            return (
-              <ChartRow
-                key={`${runId}-${entry.production.id}`}
-                rank={rank}
-                title={entry.production.title}
-                format={entry.production.format}
-                seed={entry.production.id}
-                channel={entry.network?.name ?? entry.owner?.name ?? 'UNSOLD'}
-                viewers={entry.viewers}
-                yours={mine.has(entry.production.ownerId)}
-              />
-            );
-          })}
-        </ScrollView>
+              return (
+                <ChartRow
+                  key={`${runId}-${entry.production.id}`}
+                  rank={rank}
+                  height={rowHeight}
+                  title={entry.production.title}
+                  format={entry.production.format}
+                  seed={entry.production.id}
+                  channel={entry.network?.name ?? entry.owner?.name ?? 'UNSOLD'}
+                  viewers={entry.viewers}
+                  yours={mine.has(entry.production.ownerId)}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
       )}
     </Panel>
   );
@@ -222,8 +254,11 @@ export function IndustryScreen() {
         held
         figures={[
           ['WORTH', formatMoneyShort(worth), worth >= 0 ? colors.text : colors.negative],
+          ['CASH', formatMoneyShort(studio?.cash ?? 0), colors.text],
+          ['DEBT', formatMoneyShort(studio?.debt ?? 0), (studio?.debt ?? 0) > 0 ? colors.negative : colors.textDim],
           ['RANK', empireRank(game), colors.accent],
           ['FAME', String(Math.round(standing)), scoreColor(standing)],
+          ['ON AIR', String(onAir), colors.text],
         ]}
       />
 
@@ -240,6 +275,17 @@ export function IndustryScreen() {
                   `${Math.round((game.companies[game.player.networkId]?.reach ?? 0) * 100)}%`,
                   colors.accent,
                 ],
+                [
+                  'WORTH',
+                  formatMoneyShort(companyWorth(game, game.player.networkId)),
+                  colors.text,
+                ],
+                [
+                  'FAME',
+                  String(Math.round(game.companies[game.player.networkId]?.popularStanding ?? 0)),
+                  scoreColor(game.companies[game.player.networkId]?.popularStanding ?? 0),
+                ],
+                ['SHOWS', String(airingOn(game, game.player.networkId)), colors.text],
               ]
             : [
                 ['COST', formatMoneyShort(ECONOMY.acquisitionCost.network), colors.text],
@@ -250,7 +296,19 @@ export function IndustryScreen() {
                     ? colors.positive
                     : colors.negative,
                 ],
+                [
+                  'CASH',
+                  formatMoneyShort(studio?.cash ?? 0),
+                  (studio?.cash ?? 0) >= ECONOMY.acquisitionCost.network
+                    ? colors.positive
+                    : colors.negative,
+                ],
               ]
+        }
+        gate={
+          game.player.networkId
+            ? null
+            : { value: standing, target: ECONOMY.acquisitionStandingRequired.network }
         }
         actions={
           game.player.networkId
@@ -282,6 +340,17 @@ export function IndustryScreen() {
                   formatMoneyShort(game.companies[game.player.streamerId]?.monthlyPrice ?? 0),
                   colors.text,
                 ],
+                [
+                  'WORTH',
+                  formatMoneyShort(companyWorth(game, game.player.streamerId)),
+                  colors.text,
+                ],
+                [
+                  'FAME',
+                  String(Math.round(game.companies[game.player.streamerId]?.popularStanding ?? 0)),
+                  scoreColor(game.companies[game.player.streamerId]?.popularStanding ?? 0),
+                ],
+                ['SHOWS', String(airingOn(game, game.player.streamerId)), colors.text],
               ]
             : [
                 ['COST', formatMoneyShort(ECONOMY.acquisitionCost.streamer), colors.text],
@@ -292,7 +361,19 @@ export function IndustryScreen() {
                     ? colors.positive
                     : colors.negative,
                 ],
+                [
+                  'CASH',
+                  formatMoneyShort(studio?.cash ?? 0),
+                  (studio?.cash ?? 0) >= ECONOMY.acquisitionCost.streamer
+                    ? colors.positive
+                    : colors.negative,
+                ],
               ]
+        }
+        gate={
+          game.player.streamerId
+            ? null
+            : { value: standing, target: ECONOMY.acquisitionStandingRequired.streamer }
         }
         actions={
           game.player.streamerId
@@ -339,9 +420,9 @@ export function IndustryScreen() {
  * see how far there is left to climb, and the gap above is visibly reserved for a
  * number that has not been announced.
  */
-function ChartSlot({ rank }: { rank: number }) {
+function ChartSlot({ rank, height }: { rank: number; height: number }) {
   return (
-    <View style={styles.slot}>
+    <View style={[styles.slot, { height }]}>
       <Text style={styles.slotRank}>{rank}</Text>
       <View style={styles.slotBar} />
     </View>
@@ -351,6 +432,7 @@ function ChartSlot({ rank }: { rank: number }) {
 /** A placing, announced. */
 function ChartRow({
   rank,
+  height,
   title,
   format,
   seed,
@@ -359,6 +441,7 @@ function ChartRow({
   yours,
 }: {
   rank: number;
+  height: number;
   title: string;
   format: React.ComponentProps<typeof Poster>['format'];
   seed: string;
@@ -367,7 +450,7 @@ function ChartRow({
   yours: boolean;
 }) {
   return (
-    <View style={[styles.row, yours && styles.rowMine, rank === 1 && styles.rowTop]}>
+    <View style={[styles.row, { height }, yours && styles.rowMine, rank === 1 && styles.rowTop]}>
       <Text style={[styles.rank, rank === 1 && styles.rankTop, yours && { color: colors.accent }]}>
         {rank}
       </Text>
@@ -511,18 +594,27 @@ function RivalRow({ game, company }: { game: GameState; company: Company }) {
   );
 }
 
-/** One rung of the ladder: held, or priced. */
+/**
+ * One rung of the ladder: held, or priced.
+ *
+ * The rungs used to carry two or three figures apiece and left most of their panel
+ * blank. A held rung now reports the whole holding, and a locked one shows the gate
+ * it is measured against, so the three panels along the bottom carry comparable
+ * weight instead of trailing off into empty console.
+ */
 function Rung({
   icon,
   label,
   held,
   figures,
+  gate,
   actions,
 }: {
   icon: IconName;
   label: string;
   held: boolean;
   figures: [string, string, string][];
+  gate?: { value: number; target: number } | null;
   actions?: { testID: string; label: string; onPress: () => void }[] | null;
 }) {
   return (
@@ -535,14 +627,29 @@ function Rung({
         </Text>
       </View>
 
-      <View style={styles.rungFigures}>
+      <View
+        style={[
+          styles.rungFigures,
+          // With nothing below them the figures own the panel, so they spread into it
+          // rather than huddling under the header above a blank half.
+          !gate && !actions?.length && styles.rungFiguresFill,
+        ]}
+      >
         {figures.map(([figureLabel, value, color]) => (
-          <Readout key={figureLabel} label={figureLabel} value={value} size="sm" color={color} />
+          <View key={figureLabel} style={styles.rungFigure}>
+            <Readout label={figureLabel} value={value} size="sm" color={color} />
+          </View>
         ))}
       </View>
 
+      {gate ? <GateMeter value={gate.value} target={gate.target} /> : null}
+
       {actions && actions.length > 0 ? (
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.rungActions}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.rungActions}
+          contentContainerStyle={styles.rungActionsList}
+        >
           {actions.map((action) => (
             <Pressable
               key={action.testID}
@@ -560,6 +667,42 @@ function Rung({
       ) : null}
     </Panel>
   );
+}
+
+/** How close the studio's fame is to opening a locked rung. */
+function GateMeter({ value, target }: { value: number; target: number }) {
+  const pct = target <= 0 ? 1 : Math.max(0, Math.min(1, value / target));
+  const met = pct >= 1;
+  const short = Math.max(0, Math.ceil(target - value));
+
+  return (
+    <View style={styles.gate}>
+      <View style={styles.gateTrack}>
+        <View
+          style={[
+            styles.gateFill,
+            { width: `${pct * 100}%`, backgroundColor: met ? colors.positive : colors.accent },
+          ]}
+        />
+      </View>
+      <Text style={[styles.gateNumber, { color: met ? colors.positive : colors.textFaint }]}>
+        {met ? 'OPEN' : `-${short}`}
+      </Text>
+    </View>
+  );
+}
+
+/** Net worth of any company in the world. */
+function companyWorth(game: GameState, companyId: string): number {
+  const company = game.companies[companyId];
+  return company ? company.cash - company.debt : 0;
+}
+
+/** Shows currently airing on a given channel. */
+function airingOn(game: GameState, companyId: string): number {
+  return Object.values(game.productions).filter(
+    (p) => p.status === 'airing' && (p.deal?.networkId === companyId || p.ownerId === companyId),
+  ).length;
 }
 
 /** Where the player sits on net worth against every company in the world. */
@@ -600,9 +743,10 @@ const styles = StyleSheet.create({
     color: colors.accent,
   },
 
-  chartList: { gap: 3, paddingBottom: space.xs },
+  chartViewport: { flex: 1 },
+  chartList: { gap: ROW_GAP },
 
-  slot: { flexDirection: 'row', alignItems: 'center', gap: space.sm, height: 34, opacity: 0.4 },
+  slot: { flexDirection: 'row', alignItems: 'center', gap: space.sm, opacity: 0.4 },
   slotRank: {
     width: 22,
     fontSize: 12,
@@ -709,17 +853,49 @@ const styles = StyleSheet.create({
   rungFigures: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: space.md,
+    columnGap: space.md,
+    rowGap: space.sm,
     marginTop: space.sm,
   },
-  rungActions: { marginTop: space.sm },
+  // Three to a row, so six figures read as a 2x3 grid filling the panel rather than
+  // as one long line that wrapped. space-evenly keeps the rows apart by the same
+  // amount they are kept from the edges — a spread band, not two bands with a hole.
+  rungFiguresFill: { flex: 1, alignContent: 'space-evenly' },
+  rungFigure: { flexBasis: '29%', minWidth: 64 },
+
+  gate: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.sm,
+    marginTop: space.sm,
+  },
+  gateTrack: {
+    flex: 1,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: colors.border,
+    overflow: 'hidden',
+  },
+  gateFill: { height: 5, borderRadius: 3 },
+  gateNumber: {
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 0.8,
+    fontVariant: ['tabular-nums'],
+  },
+
+  rungActions: { flex: 1, marginTop: space.sm },
+  rungActionsList: { flexGrow: 1, gap: 4 },
   buy: {
+    flex: 1,
+    minHeight: 26,
+    // A lone call to action takes the whole tray rather than leaving a tail under it;
+    // a stack of three still lands at a sane button height.
+    maxHeight: 76,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    paddingVertical: 5,
     paddingHorizontal: space.sm,
-    marginBottom: 3,
     borderRadius: 6,
     borderWidth: 1,
     borderColor: colors.accent,

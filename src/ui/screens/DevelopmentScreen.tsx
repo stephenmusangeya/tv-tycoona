@@ -21,14 +21,15 @@ import {
   greenlightPitch,
   passOnPitch,
 } from '../../engine/actions';
-import { SHOW_ARCHETYPES } from '../../data';
+import { AUDIENCE_SEGMENTS, SHOW_ARCHETYPES } from '../../data';
 import { formatSlotKey } from '../../engine/schedule';
-import { appealProfile } from '../../engine/audience';
+import { appealProfile, potentialAudience } from '../../engine/audience';
 import {
   AXES,
   type Attributes,
   type Format,
   type GameState,
+  type SegmentId,
   type ShowArchetype,
 } from '../../engine/types';
 import { ScoreBar, SegmentBar, SegmentLegend } from '../components';
@@ -266,6 +267,7 @@ export function DevelopmentScreen({
                   {...responder.panHandlers}
                   style={[
                     styles.cardShell,
+                    styles.cardLive,
                     {
                       transform: [
                         { translateX: pan.x },
@@ -385,7 +387,10 @@ type TableCard = {
   from?: string;
   fromStats?: Figure[];
   attributes?: Attributes;
+  /** The three figures printed across the face of the card. */
   figures: Figure[];
+  /** The same decision, as the three figures at the head of the numbers column. */
+  headline: Figure[];
   detail: Figure[];
   /** False when the whole run would bankrupt the studio — shown, not enforced late. */
   affordable: boolean;
@@ -483,6 +488,23 @@ function CardFace({ card }: { card: TableCard }) {
         </View>
       ) : null}
 
+      {/* The other half of the decision. The card used to stretch to the whole table
+          and left ~280px of nothing here; what belongs in it is the thing a
+          commissioner actually weighs — what the show is *like*, on the eight axes the
+          taste model scores. Two columns, because eight stacked rows is a page. */}
+      {card.attributes ? (
+        <View style={styles.profile}>
+          <Text style={styles.appealLabel}>WHAT IT'S LIKE</Text>
+          <View style={styles.axisGrid}>
+            {AXES.map((axis) => (
+              <View key={axis} style={styles.axisCell}>
+                <AxisMeter label={axisLabel(axis)} value={card.attributes![axis]} />
+              </View>
+            ))}
+          </View>
+        </View>
+      ) : null}
+
       <View style={styles.figures}>
         {card.figures.map((f) => (
           <Readout key={f.label} label={f.label} value={f.value} color={f.color} size="md" />
@@ -506,6 +528,31 @@ function CardFace({ card }: { card: TableCard }) {
   );
 }
 
+/**
+ * One axis, small enough that eight of them fit on a card.
+ *
+ * `ScoreBar` is the app-wide version and is right for a full-width panel, but its
+ * 96px label column leaves no track at all in a half-card column, so the label sits
+ * above the bar here rather than beside it.
+ */
+function AxisMeter({ label, value }: { label: string; value: number }) {
+  const pct = Math.max(0, Math.min(1, value / 100));
+
+  return (
+    <View style={styles.axis}>
+      <View style={styles.axisHead}>
+        <Text style={styles.axisLabel} numberOfLines={1}>
+          {label}
+        </Text>
+        <Text style={styles.axisValue}>{Math.round(value)}</Text>
+      </View>
+      <View style={styles.axisTrack}>
+        <View style={[styles.axisFill, { width: `${pct * 100}%` }]} />
+      </View>
+    </View>
+  );
+}
+
 /** The next card down — outline only; it exists to give the pile thickness. */
 function UnderCard({ depth }: { depth: 1 | 2 }) {
   return (
@@ -523,37 +570,119 @@ function UnderCard({ depth }: { depth: 1 | 2 }) {
   );
 }
 
+/**
+ * The numbers beside the table.
+ *
+ * This used to be seven rows and a bar in a 780px column, so two thirds of the panel
+ * was blank cream. The column is now the whole case for or against the show, in the
+ * order a commissioner would ask for it: what it nets, what it costs, and — the part
+ * the card can only give as percentages — how many people that actually is.
+ *
+ * `contentContainerStyle` grows to the panel and spreads the blocks, so a short card
+ * fills the column instead of stacking at the top; a long one simply scrolls.
+ */
 function Details({ card, full }: { card: TableCard; full: boolean }) {
   const appeal = card.attributes ? appealProfile(card.attributes) : null;
+  const reach = card.attributes ? potentialAudience(card.attributes) : null;
+  const totalReach = reach ? Object.values(reach).reduce((sum, v) => sum + v, 0) : 0;
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {card.detail.map((f) => (
-        <View key={f.label} style={styles.detailRow}>
-          <Text style={styles.detailLabel} numberOfLines={1}>
-            {f.label}
-          </Text>
-          <Text style={[styles.detailValue, f.color ? { color: f.color } : null]}>
-            {f.value}
-          </Text>
-        </View>
-      ))}
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.detailBody}
+    >
+      {/* The three figures the decision turns on, at the top where the eye lands. */}
+      <View style={styles.headline}>
+        {card.headline.map((f) => (
+          <Readout key={f.label} label={f.label} value={f.value} color={f.color} size="sm" />
+        ))}
+      </View>
 
-      {appeal ? (
-        <>
+      <View>
+        <Text style={styles.detailHead}>THE MONEY</Text>
+        {card.detail.map((f) => (
+          <View key={f.label} style={styles.detailRow}>
+            <Text style={styles.detailLabel} numberOfLines={1}>
+              {f.label}
+            </Text>
+            <Text style={[styles.detailValue, f.color ? { color: f.color } : null]}>
+              {f.value}
+            </Text>
+          </View>
+        ))}
+      </View>
+
+      {/* Millions, not percentages. The card carries the share split; what it cannot
+          show is the size of the pool, which is what a channel is actually buying. */}
+      {appeal && reach ? (
+        <View>
           <Text style={styles.detailHead}>WHO WATCHES</Text>
           <SegmentBar breakdown={appeal} height={8} />
-          {full ? <SegmentLegend breakdown={appeal} /> : null}
-        </>
+          <View style={styles.reachHead}>
+            <View style={styles.reachHeadSpacer} />
+            <Text style={styles.reachHeadCell}>SHARE</Text>
+            <Text style={styles.reachHeadCell}>VIEWERS</Text>
+          </View>
+          {AUDIENCE_SEGMENTS.map((segment) => {
+            const id = segment.id as SegmentId;
+            const share = totalReach > 0 ? reach[id] / totalReach : 0;
+            return (
+              <View key={segment.id} style={styles.reachRow}>
+                <View
+                  style={[
+                    styles.reachDot,
+                    { backgroundColor: colors.segments[segment.id] ?? colors.textFaint },
+                  ]}
+                />
+                <Text style={styles.reachLabel} numberOfLines={1}>
+                  {segment.name}
+                </Text>
+                <Text style={styles.reachCell}>{`${Math.round(share * 100)}%`}</Text>
+                <Text style={[styles.reachCell, styles.reachCellStrong]}>
+                  {`${reach[id].toFixed(1)}M`}
+                </Text>
+              </View>
+            );
+          })}
+          <View style={[styles.reachRow, styles.reachTotal]}>
+            <Text style={styles.reachLabel}>Ceiling</Text>
+            <Text style={[styles.reachCell, styles.reachCellStrong]}>
+              {`${totalReach.toFixed(1)}M`}
+            </Text>
+          </View>
+        </View>
       ) : null}
 
+      {card.from ? (
+        <View>
+          <Text style={styles.detailHead}>
+            {card.kind === 'offers' ? 'THE CHANNEL' : 'THE PITCH'}
+          </Text>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel} numberOfLines={2}>
+              {card.from}
+            </Text>
+          </View>
+          {(card.fromStats ?? []).map((f) => (
+            <View key={f.label} style={styles.detailRow}>
+              <Text style={styles.detailLabel} numberOfLines={1}>
+                {f.label}
+              </Text>
+              <Text style={styles.detailValue}>{f.value}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
+
+      {/* DETAILS opens the axes. The card shows them as bars; this is the graded
+          version, and it is what makes the toggle worth pressing on a wide screen. */}
       {full && card.attributes ? (
-        <>
+        <View>
           <Text style={styles.detailHead}>WHAT IT'S LIKE</Text>
           {AXES.map((axis) => (
             <ScoreBar key={axis} label={axisLabel(axis)} value={card.attributes![axis]} />
           ))}
-        </>
+        </View>
       ) : null}
     </ScrollView>
   );
@@ -705,6 +834,7 @@ function buildPile({
           : undefined,
         attributes: pitch.attributes,
         figures: costFigures(est),
+        headline: costHeadline(est, after),
         detail: [
           ...costDetail(est, after),
           { label: 'Expires', value: `wk ${pitch.expiresWeek}` },
@@ -752,6 +882,23 @@ function buildPile({
             { label: 'EPISODES', value: String(episodes) },
             { label: 'PER SERIES', value: formatMoneyShort(perSeries), color: colors.positive },
           ],
+          headline: [
+            {
+              label: 'FEE / EP',
+              value: formatMoneyShort(offer.licenseFeePerEpisode),
+              color: colors.positive,
+            },
+            {
+              label: 'WHOLE DEAL',
+              value: formatMoneyShort(perSeries * offer.seasons),
+              color: colors.positive,
+            },
+            {
+              label: 'CASH AFTER',
+              value: formatMoneyShort(cash + perSeries),
+              color: deltaColor(cash + perSeries),
+            },
+          ],
           detail: [
             { label: 'Channel', value: network.name },
             { label: 'Reach', value: `${((network.reach ?? 0) * 100).toFixed(0)}%` },
@@ -792,6 +939,7 @@ function buildPile({
       logline: arch.logline,
       attributes: arch.attributes,
       figures: costFigures(est),
+      headline: costHeadline(est, after),
       detail: [
         ...costDetail(est, after),
         { label: 'Series until repeats', value: String(est.seriesToRepeats) },
@@ -816,6 +964,19 @@ function costFigures(est: Estimate): Figure[] {
     { label: 'COST / EP', value: formatMoneyShort(est.costPerEpisode) },
     { label: 'EPISODES', value: String(est.episodes) },
     { label: 'WHOLE SERIES', value: formatMoneyShort(est.seriesCost) },
+  ];
+}
+
+/** The same decision, sized for the top of the numbers column. */
+function costHeadline(est: Estimate, after: number): Figure[] {
+  return [
+    { label: 'NET / EP', value: formatMoneyShort(est.perEpisode), color: deltaColor(est.perEpisode) },
+    {
+      label: 'NET / SERIES',
+      value: formatMoneyShort(est.perSeries),
+      color: deltaColor(est.perSeries),
+    },
+    { label: 'CASH AFTER', value: formatMoneyShort(after), color: deltaColor(after) },
   ];
 }
 
@@ -909,23 +1070,17 @@ function makeStyles() {
       borderColor: colors.border,
       padding: space.sm,
     },
-    // Capped rather than stretched: a card that fills a 1440px panel is a page again,
-    // and the two beneath only read as a pile if there is room for them to peek out.
+    // No height: the stack takes the height of the card lying on top of it, and the
+    // felt centres it. Stretching the card to the table left a hollow middle, and a
+    // 440×780 rectangle of mostly-nothing does not read as a card anyway.
     stack: {
       width: '100%',
       maxWidth: 440,
-      height: '100%',
-      maxHeight: 520,
       alignSelf: 'center',
       marginBottom: 18,
     },
 
     cardShell: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
       borderRadius: radius.md,
       backgroundColor: colors.surface,
       borderWidth: 1,
@@ -933,15 +1088,47 @@ function makeStyles() {
       overflow: 'hidden',
       boxShadow: '0px 6px 18px rgba(60,45,30,0.22)',
     },
-    under: { backgroundColor: colors.surfaceAlt },
+    // The live card is the one in flow — it is what gives the stack its size. zIndex
+    // is load-bearing: absolutely positioned siblings otherwise paint over it and the
+    // blank under-cards would cover the pitch.
+    cardLive: { position: 'relative', zIndex: 1 },
+    under: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: colors.surfaceAlt,
+    },
 
-    card: { flex: 1, padding: space.md, gap: space.sm },
+    card: { padding: space.md, gap: space.sm },
     cardTop: { flexDirection: 'row', gap: space.md },
     cardHead: { flex: 1, gap: 3 },
     cardTitle: { fontSize: 19, fontWeight: '900', color: colors.text, letterSpacing: -0.3 },
     tabBar: { flexDirection: 'row', paddingHorizontal: space.sm },
     tagRow: { flexDirection: 'row', gap: 6, alignItems: 'center', flexWrap: 'wrap' },
     appeal: { gap: 3 },
+    profile: { gap: 5, paddingTop: space.xs },
+    axisGrid: { flexDirection: 'row', flexWrap: 'wrap', columnGap: space.md, rowGap: 5 },
+    // Two columns exactly — `flexBasis: 48%` rather than flex so the last row of an
+    // odd count keeps its column width instead of spanning.
+    axisCell: { flexBasis: '47%', flexGrow: 1 },
+    axis: { gap: 2 },
+    axisHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    axisLabel: { fontSize: 9, fontWeight: '700', color: colors.textDim, flexShrink: 1 },
+    axisValue: {
+      fontSize: 9,
+      fontWeight: '900',
+      color: colors.text,
+      fontVariant: ['tabular-nums'],
+    },
+    axisTrack: {
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: colors.surfaceHigh,
+      overflow: 'hidden',
+    },
+    axisFill: { height: '100%', borderRadius: 2, backgroundColor: colors.accent },
     appealLabel: {
       fontSize: 8,
       fontWeight: '900',
@@ -984,7 +1171,6 @@ function makeStyles() {
     figures: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginTop: 'auto',
       paddingTop: space.sm,
       borderTopWidth: 1,
       borderTopColor: colors.border,
@@ -1042,6 +1228,18 @@ function makeStyles() {
       color: colors.textDim,
     },
 
+    // flexGrow so a short card spreads down the column rather than piling at the top;
+    // once the content is taller than the panel this does nothing and it scrolls.
+    detailBody: { flexGrow: 1, justifyContent: 'space-between', gap: space.sm },
+    headline: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      gap: space.xs,
+      paddingBottom: space.sm,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+
     detailRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -1063,6 +1261,40 @@ function makeStyles() {
       color: colors.textFaint,
       marginTop: space.md,
       marginBottom: space.xs,
+    },
+
+    reachHead: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      marginTop: space.sm,
+      marginBottom: 2,
+    },
+    reachHeadSpacer: { flex: 1 },
+    reachHeadCell: {
+      width: 42,
+      textAlign: 'right',
+      fontSize: 7,
+      fontWeight: '900',
+      letterSpacing: 0.9,
+      color: colors.textFaint,
+    },
+    reachRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 2 },
+    reachDot: { width: 7, height: 7, borderRadius: 4 },
+    reachLabel: { flex: 1, fontSize: 10, color: colors.textDim },
+    reachCell: {
+      width: 42,
+      textAlign: 'right',
+      fontSize: 10,
+      color: colors.textDim,
+      fontVariant: ['tabular-nums'],
+    },
+    reachCellStrong: { fontWeight: '900', color: colors.text },
+    reachTotal: {
+      marginTop: 3,
+      paddingTop: 4,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
     },
 
     pileRow: {

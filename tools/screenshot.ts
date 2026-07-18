@@ -105,6 +105,14 @@ async function main() {
     await mustTap(page, 'new-game', 600);
     await shoot(page, '01b-title-naming');
     await mustTap(page, 'start-game', 4000);
+
+    // A first run opens with the introduction over the desk. Shoot it — it is the
+    // first thing a new player sees and deserves the same scrutiny as a room — then
+    // dismiss it, because it is a modal scrim and every later tap lands on it instead
+    // of the control underneath.
+    await shoot(page, '02a-onboarding');
+    await mustTap(page, 'onboarding-skip', 700);
+
     await shoot(page, '02-desk-empty');
 
     await mustTap(page, 'make-show', 900);
@@ -155,6 +163,10 @@ async function main() {
     await shoot(page, '09-talent');
 
     await mustTap(page, 'nav-industry');
+    // Industry plays the chart as a countdown, so arriving and shooting immediately
+    // catches it mid-reveal — most placings still empty rules. Skip to the finished
+    // chart, then let the figures finish rolling up before the shutter.
+    await mustTap(page, 'chart-skip', 1200);
     await shoot(page, '10-industry');
 
     await mustTap(page, 'open-menu', 900);

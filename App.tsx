@@ -12,6 +12,8 @@ import {
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { Sidebar, type NavItem } from './src/ui/Sidebar';
+import { PhoneStatusBar, PhoneTabBar } from './src/ui/PhoneChrome';
+import { Onboarding, useOnboarding } from './src/ui/Onboarding';
 import { playerShows, playerStudio, totalCash } from './src/store/selectors';
 
 import { useGame, useGameStore } from './src/store/gameStore';
@@ -56,6 +58,7 @@ function Root() {
   const setNotice = useGameStore((s) => s.setNotice);
   const { width } = useWindowDimensions();
   const unread = useUnreadCount();
+  const onboarding = useOnboarding();
 
   const [tab, setTab] = useState<TabKey>('dashboard');
   // The modal can be pointed at a real production or at an idea from the catalogue,
@@ -105,7 +108,18 @@ function Root() {
     );
   }
 
-  const compactRail = width < 760;
+  /*
+   * Phones get their own chrome rather than a squeezed rail.
+   *
+   * The rail is right on a desktop or tablet — vital signs and the two driving
+   * actions permanently on screen, the way a control panel should work. On a phone it
+   * costs 74px of a 390px viewport, so a fifth of the width is furniture before the
+   * game gets any, and the rooms are tight at that size already. Below 700px the same
+   * controls move to a status bar on top and a tab bar at the bottom: cheaper in
+   * space, and where thumbs already are.
+   */
+  const phone = width < 700;
+  const compactRail = width < 900;
   const studio = playerStudio(game);
   const shows = playerShows(game);
 
@@ -136,12 +150,8 @@ function Root() {
     <SafeAreaView style={styles.app} edges={['top', 'bottom', 'left']}>
       <StatusBar style="light" />
 
-      <View style={styles.shell}>
-        <Sidebar
-          items={navItems}
-          active={tab}
-          onSelect={setTab}
-          compact={compactRail}
+      {phone ? (
+        <PhoneStatusBar
           studioName={studio?.name ?? 'Studio'}
           cash={totalCash(game)}
           year={game.year}
@@ -149,6 +159,23 @@ function Root() {
           onMakeShow={goMakeShow}
           onOpenMenu={() => setMenuOpen(true)}
         />
+      ) : null}
+
+      <View style={styles.shell}>
+        {!phone ? (
+          <Sidebar
+            items={navItems}
+            active={tab}
+            onSelect={setTab}
+            compact={compactRail}
+            studioName={studio?.name ?? 'Studio'}
+            cash={totalCash(game)}
+            year={game.year}
+            week={game.week}
+            onMakeShow={goMakeShow}
+            onOpenMenu={() => setMenuOpen(true)}
+          />
+        ) : null}
 
         <View style={{ flex: 1 }}>
           {tab === 'dashboard' ? (
@@ -170,11 +197,17 @@ function Root() {
         </View>
       </View>
 
+      {phone ? <PhoneTabBar items={navItems} active={tab} onSelect={setTab} /> : null}
+
       {notice ? (
         <View style={styles.notice}>
           <Text style={styles.noticeText}>{notice}</Text>
         </View>
       ) : null}
+
+      {/* Shown over the desk on a first run, never over the title screen — the point
+          is to explain the room the player has just walked into. */}
+      {onboarding.show ? <Onboarding onDone={onboarding.dismiss} /> : null}
 
       <Modal
         visible={menuOpen}
