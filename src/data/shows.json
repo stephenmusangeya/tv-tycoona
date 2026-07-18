@@ -1,0 +1,3776 @@
+[
+  {
+    "id": "meet-the-mulligans",
+    "title": "Meet the Mulligans",
+    "format": "sitcom",
+    "genre": "domestic farce",
+    "logline": "A scheming housewife drags her bandleader husband into one disastrous get-rich scheme after another.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 88,
+      "prestige": 62,
+      "violence": 4,
+      "wholesomeness": 82,
+      "edginess": 10,
+      "humor": 92,
+      "heart": 70,
+      "complexity": 8
+    },
+    "baseCostPerEpisode": 1400000,
+    "episodesPerSeason": 24,
+    "castSize": 5,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "director"
+    ],
+    "tags": [
+      "multicam",
+      "slapstick",
+      "classic"
+    ]
+  },
+  {
+    "id": "saturday-spotlight-revue",
+    "title": "The Saturday Spotlight Revue",
+    "format": "sketch",
+    "genre": "variety hour",
+    "logline": "Comics, crooners and acrobats crowd a smoky soundstage for ninety live minutes every Saturday night.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 48,
+      "violence": 2,
+      "wholesomeness": 74,
+      "edginess": 18,
+      "humor": 80,
+      "heart": 48,
+      "complexity": 6
+    },
+    "baseCostPerEpisode": 900000,
+    "episodesPerSeason": 30,
+    "castSize": 9,
+    "requiredRoles": [
+      "host",
+      "writer",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "live",
+      "variety",
+      "vaudeville"
+    ]
+  },
+  {
+    "id": "the-twilight-corridor",
+    "title": "The Twilight Corridor",
+    "format": "anthology",
+    "genre": "speculative morality tales",
+    "logline": "Each week an ordinary person steps through a door and confronts the price of their own wanting.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 74,
+      "prestige": 88,
+      "violence": 32,
+      "wholesomeness": 30,
+      "edginess": 48,
+      "humor": 18,
+      "heart": 52,
+      "complexity": 66
+    },
+    "baseCostPerEpisode": 3200000,
+    "episodesPerSeason": 26,
+    "castSize": 4,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "director",
+      "lead-actor"
+    ],
+    "tags": [
+      "anthology",
+      "allegory",
+      "black-and-white"
+    ]
+  },
+  {
+    "id": "marshal-of-copper-gulch",
+    "title": "Marshal of Copper Gulch",
+    "format": "drama",
+    "genre": "western",
+    "logline": "A weary frontier lawman keeps a silver-boom town from tearing itself apart, one bad man at a time.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 58,
+      "violence": 62,
+      "wholesomeness": 44,
+      "edginess": 22,
+      "humor": 16,
+      "heart": 50,
+      "complexity": 24
+    },
+    "baseCostPerEpisode": 3400000,
+    "episodesPerSeason": 26,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "director"
+    ],
+    "tags": [
+      "western",
+      "frontier",
+      "episodic"
+    ]
+  },
+  {
+    "id": "two-rooms-on-the-avenue",
+    "title": "Two Rooms on the Avenue",
+    "format": "sitcom",
+    "genre": "working-class comedy",
+    "logline": "A hot-tempered trolley driver and his patient wife bicker their way through a cramped tenement flat.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 56,
+      "violence": 6,
+      "wholesomeness": 66,
+      "edginess": 20,
+      "humor": 86,
+      "heart": 72,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 1200000,
+    "episodesPerSeason": 22,
+    "castSize": 4,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer"
+    ],
+    "tags": [
+      "multicam",
+      "blue-collar",
+      "live"
+    ]
+  },
+  {
+    "id": "whats-my-racket",
+    "title": "What's My Racket?",
+    "format": "gameshow",
+    "genre": "celebrity panel",
+    "logline": "Blindfolded panelists in evening wear guess the strange occupations of very nervous guests.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 58,
+      "prestige": 34,
+      "violence": 0,
+      "wholesomeness": 78,
+      "edginess": 8,
+      "humor": 54,
+      "heart": 36,
+      "complexity": 6
+    },
+    "baseCostPerEpisode": 180000,
+    "episodesPerSeason": 160,
+    "castSize": 5,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "panel",
+      "live",
+      "parlor-game"
+    ]
+  },
+  {
+    "id": "the-bellamy-family-hour",
+    "title": "The Bellamy Family Hour",
+    "format": "sitcom",
+    "genre": "family comedy",
+    "logline": "A pipe-smoking insurance man dispenses gentle wisdom to three children in a spotless suburban house.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 62,
+      "prestige": 42,
+      "violence": 2,
+      "wholesomeness": 94,
+      "edginess": 4,
+      "humor": 58,
+      "heart": 80,
+      "complexity": 8
+    },
+    "baseCostPerEpisode": 1300000,
+    "episodesPerSeason": 24,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer"
+    ],
+    "tags": [
+      "suburban",
+      "wholesome",
+      "multicam"
+    ]
+  },
+  {
+    "id": "precinct-report",
+    "title": "Precinct Report",
+    "format": "procedural",
+    "genre": "police procedural",
+    "logline": "Two flat-voiced detectives work a city case file exactly as it happened, names changed for the innocent.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 64,
+      "prestige": 60,
+      "violence": 42,
+      "wholesomeness": 40,
+      "edginess": 18,
+      "humor": 8,
+      "heart": 26,
+      "complexity": 22
+    },
+    "baseCostPerEpisode": 2600000,
+    "episodesPerSeason": 26,
+    "castSize": 4,
+    "requiredRoles": [
+      "lead-actor",
+      "writer",
+      "director"
+    ],
+    "tags": [
+      "procedural",
+      "docu-style",
+      "noir"
+    ]
+  },
+  {
+    "id": "kiddie-carnival-clubhouse",
+    "title": "Kiddie Carnival Clubhouse",
+    "format": "kids",
+    "genre": "children's variety",
+    "logline": "A grinning ringmaster, a sock puppet lion and a studio full of sugared-up kids run a daily circus.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 66,
+      "prestige": 18,
+      "violence": 2,
+      "wholesomeness": 92,
+      "edginess": 4,
+      "humor": 62,
+      "heart": 66,
+      "complexity": 4
+    },
+    "baseCostPerEpisode": 420000,
+    "episodesPerSeason": 52,
+    "castSize": 4,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "writer"
+    ],
+    "tags": [
+      "puppets",
+      "live-audience",
+      "preschool"
+    ]
+  },
+  {
+    "id": "the-evening-ledger",
+    "title": "The Evening Ledger",
+    "format": "news",
+    "genre": "nightly newscast",
+    "logline": "A gravel-voiced anchor reads the nation its day in fifteen unblinking minutes of black and white.",
+    "era": "1950s",
+    "attributes": {
+      "entertainment": 38,
+      "prestige": 72,
+      "violence": 20,
+      "wholesomeness": 52,
+      "edginess": 14,
+      "humor": 4,
+      "heart": 30,
+      "complexity": 30
+    },
+    "baseCostPerEpisode": 260000,
+    "episodesPerSeason": 200,
+    "castSize": 3,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "writer"
+    ],
+    "tags": [
+      "nightly-news",
+      "live",
+      "institutional"
+    ]
+  },
+  {
+    "id": "a-pinch-of-magic",
+    "title": "A Pinch of Magic",
+    "format": "sitcom",
+    "genre": "fantasy comedy",
+    "logline": "A witch marries a nervous adman and promises to stop solving their problems with her nose.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 82,
+      "prestige": 44,
+      "violence": 4,
+      "wholesomeness": 84,
+      "edginess": 14,
+      "humor": 80,
+      "heart": 70,
+      "complexity": 12
+    },
+    "baseCostPerEpisode": 1600000,
+    "episodesPerSeason": 30,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "director"
+    ],
+    "tags": [
+      "fantasy",
+      "multicam",
+      "suburban"
+    ]
+  },
+  {
+    "id": "voyages-of-the-ardent",
+    "title": "Voyages of the Ardent",
+    "format": "drama",
+    "genre": "space adventure",
+    "logline": "An exploratory starship crew argues ethics at the edge of known space and usually survives it.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 70,
+      "violence": 40,
+      "wholesomeness": 58,
+      "edginess": 28,
+      "humor": 30,
+      "heart": 62,
+      "complexity": 52
+    },
+    "baseCostPerEpisode": 4200000,
+    "episodesPerSeason": 26,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "sci-fi",
+      "optimist",
+      "ensemble"
+    ]
+  },
+  {
+    "id": "wanted-doctor-rennick",
+    "title": "Wanted: Doctor Rennick",
+    "format": "drama",
+    "genre": "fugitive thriller",
+    "logline": "A surgeon wrongly convicted of his wife's murder crosses the country hunting the man who did it.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 66,
+      "violence": 46,
+      "wholesomeness": 34,
+      "edginess": 32,
+      "humor": 10,
+      "heart": 58,
+      "complexity": 44
+    },
+    "baseCostPerEpisode": 3600000,
+    "episodesPerSeason": 26,
+    "castSize": 4,
+    "requiredRoles": [
+      "lead-actor",
+      "writer",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "fugitive",
+      "serialized",
+      "noir"
+    ]
+  },
+  {
+    "id": "marooned-on-marlow-cay",
+    "title": "Marooned on Marlow Cay",
+    "format": "sitcom",
+    "genre": "castaway comedy",
+    "logline": "Seven mismatched tourists invent radios from coconuts and still never manage to leave the island.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 16,
+      "violence": 6,
+      "wholesomeness": 80,
+      "edginess": 10,
+      "humor": 78,
+      "heart": 54,
+      "complexity": 6
+    },
+    "baseCostPerEpisode": 1500000,
+    "episodesPerSeason": 30,
+    "castSize": 7,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer"
+    ],
+    "tags": [
+      "broad",
+      "ensemble",
+      "silly"
+    ]
+  },
+  {
+    "id": "the-nightjar",
+    "title": "The Nightjar",
+    "format": "drama",
+    "genre": "camp superhero",
+    "logline": "A masked millionaire and his teenage ward foil gaudy villains in a city painted in primary colors.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 26,
+      "violence": 38,
+      "wholesomeness": 62,
+      "edginess": 18,
+      "humor": 72,
+      "heart": 40,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 3000000,
+    "episodesPerSeason": 34,
+    "castSize": 7,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "director"
+    ],
+    "tags": [
+      "camp",
+      "superhero",
+      "cliffhanger"
+    ]
+  },
+  {
+    "id": "sheriff-of-pine-hollow",
+    "title": "The Sheriff of Pine Hollow",
+    "format": "sitcom",
+    "genre": "small-town comedy",
+    "logline": "A gunless sheriff keeps the peace in a sleepy mountain town where nothing worse than gossip happens.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 72,
+      "prestige": 52,
+      "violence": 4,
+      "wholesomeness": 96,
+      "edginess": 6,
+      "humor": 74,
+      "heart": 88,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 1400000,
+    "episodesPerSeason": 30,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer"
+    ],
+    "tags": [
+      "rural",
+      "gentle",
+      "multicam"
+    ]
+  },
+  {
+    "id": "directive-seven",
+    "title": "Directive Seven",
+    "format": "procedural",
+    "genre": "spy caper",
+    "logline": "An elite covert unit topples a foreign strongman each week using disguises, tape recorders and nerve.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 56,
+      "violence": 50,
+      "wholesomeness": 32,
+      "edginess": 30,
+      "humor": 12,
+      "heart": 24,
+      "complexity": 48
+    },
+    "baseCostPerEpisode": 3800000,
+    "episodesPerSeason": 26,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "director"
+    ],
+    "tags": [
+      "spy",
+      "heist",
+      "cold-war"
+    ]
+  },
+  {
+    "id": "the-rumbles-of-rockridge",
+    "title": "The Rumbles of Rockridge",
+    "format": "animation",
+    "genre": "prehistoric family comedy",
+    "logline": "A loud stone-age quarryman and his best friend wreck the neighborhood with dinosaur-powered appliances.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 30,
+      "violence": 12,
+      "wholesomeness": 80,
+      "edginess": 12,
+      "humor": 76,
+      "heart": 62,
+      "complexity": 6
+    },
+    "baseCostPerEpisode": 1600000,
+    "episodesPerSeason": 26,
+    "castSize": 5,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "producer"
+    ],
+    "tags": [
+      "primetime-toon",
+      "family",
+      "slapstick"
+    ]
+  },
+  {
+    "id": "after-hours-with-marty-vance",
+    "title": "After Hours with Marty Vance",
+    "format": "talkshow",
+    "genre": "late-night talk",
+    "logline": "A tuxedoed host trades monologue jokes and cigarette smoke with movie stars until well past midnight.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 72,
+      "prestige": 48,
+      "violence": 0,
+      "wholesomeness": 56,
+      "edginess": 26,
+      "humor": 76,
+      "heart": 40,
+      "complexity": 6
+    },
+    "baseCostPerEpisode": 300000,
+    "episodesPerSeason": 190,
+    "castSize": 3,
+    "requiredRoles": [
+      "host",
+      "writer",
+      "producer"
+    ],
+    "tags": [
+      "late-night",
+      "monologue",
+      "celebrity"
+    ]
+  },
+  {
+    "id": "shadows-of-ravensmoor",
+    "title": "Shadows of Ravensmoor",
+    "format": "soap",
+    "genre": "gothic daytime serial",
+    "logline": "A cursed family estate hides a vampire, a governess and two centuries of unfinished business.",
+    "era": "1960s",
+    "attributes": {
+      "entertainment": 68,
+      "prestige": 34,
+      "violence": 34,
+      "wholesomeness": 22,
+      "edginess": 44,
+      "humor": 10,
+      "heart": 38,
+      "complexity": 56
+    },
+    "baseCostPerEpisode": 3100000,
+    "episodesPerSeason": 150,
+    "castSize": 9,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "gothic",
+      "daytime",
+      "cult"
+    ]
+  },
+  {
+    "id": "the-blustons",
+    "title": "The Blustons of Queens Boulevard",
+    "format": "sitcom",
+    "genre": "social satire",
+    "logline": "A bigoted dock foreman argues politics with his radical son-in-law across a worn living-room chair.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 82,
+      "violence": 8,
+      "wholesomeness": 34,
+      "edginess": 78,
+      "humor": 88,
+      "heart": 66,
+      "complexity": 30
+    },
+    "baseCostPerEpisode": 1800000,
+    "episodesPerSeason": 24,
+    "castSize": 5,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "satire",
+      "topical",
+      "multicam"
+    ]
+  },
+  {
+    "id": "field-hospital-twelve",
+    "title": "Field Hospital Twelve",
+    "format": "sitcom",
+    "genre": "wartime dramedy",
+    "logline": "Surgeons in a canvas tent joke through eighteen-hour shifts because the alternative is screaming.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 84,
+      "violence": 44,
+      "wholesomeness": 40,
+      "edginess": 52,
+      "humor": 80,
+      "heart": 88,
+      "complexity": 42
+    },
+    "baseCostPerEpisode": 2200000,
+    "episodesPerSeason": 24,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "dramedy",
+      "antiwar",
+      "ensemble"
+    ]
+  },
+  {
+    "id": "the-dana-marsh-show",
+    "title": "The Dana Marsh Show",
+    "format": "sitcom",
+    "genre": "workplace comedy",
+    "logline": "A single woman past thirty takes a newsroom job and quietly refuses to apologize for any of it.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 78,
+      "violence": 2,
+      "wholesomeness": 72,
+      "edginess": 30,
+      "humor": 82,
+      "heart": 82,
+      "complexity": 20
+    },
+    "baseCostPerEpisode": 1700000,
+    "episodesPerSeason": 24,
+    "castSize": 7,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "workplace",
+      "feminist",
+      "multicam"
+    ]
+  },
+  {
+    "id": "bloodline-the-ashcroft-saga",
+    "title": "Bloodline: The Ashcroft Saga",
+    "format": "anthology",
+    "genre": "historical epic miniseries",
+    "logline": "Six generations of one enslaved family carry a stolen name from a river village to emancipation.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 72,
+      "prestige": 92,
+      "violence": 70,
+      "wholesomeness": 24,
+      "edginess": 62,
+      "humor": 6,
+      "heart": 86,
+      "complexity": 74
+    },
+    "baseCostPerEpisode": 6800000,
+    "episodesPerSeason": 8,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "miniseries",
+      "historical",
+      "event-tv"
+    ]
+  },
+  {
+    "id": "midnight-live-from-studio-c",
+    "title": "Midnight Live from Studio C",
+    "format": "sketch",
+    "genre": "live sketch comedy",
+    "logline": "A repertory troupe of unknowns mocks the week's news live and occasionally gets the network sued.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 82,
+      "prestige": 72,
+      "violence": 8,
+      "wholesomeness": 26,
+      "edginess": 76,
+      "humor": 88,
+      "heart": 34,
+      "complexity": 18
+    },
+    "baseCostPerEpisode": 1100000,
+    "episodesPerSeason": 22,
+    "castSize": 10,
+    "requiredRoles": [
+      "host",
+      "writer",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "live",
+      "sketch",
+      "counterculture"
+    ]
+  },
+  {
+    "id": "the-velvet-squad",
+    "title": "The Velvet Squad",
+    "format": "procedural",
+    "genre": "glamour detective",
+    "logline": "Three private investigators go undercover in casinos and swimwear for a boss they never meet.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 22,
+      "violence": 40,
+      "wholesomeness": 34,
+      "edginess": 52,
+      "humor": 30,
+      "heart": 30,
+      "complexity": 14
+    },
+    "baseCostPerEpisode": 2900000,
+    "episodesPerSeason": 24,
+    "castSize": 5,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "producer"
+    ],
+    "tags": [
+      "detective",
+      "jiggle-tv",
+      "episodic"
+    ]
+  },
+  {
+    "id": "lieutenant-fossey",
+    "title": "Lieutenant Fossey",
+    "format": "procedural",
+    "genre": "inverted mystery",
+    "logline": "A shabby detective in a ruined coat lets rich murderers underestimate him for exactly ninety minutes.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 82,
+      "prestige": 80,
+      "violence": 26,
+      "wholesomeness": 48,
+      "edginess": 24,
+      "humor": 48,
+      "heart": 44,
+      "complexity": 54
+    },
+    "baseCostPerEpisode": 3200000,
+    "episodesPerSeason": 8,
+    "castSize": 4,
+    "requiredRoles": [
+      "lead-actor",
+      "writer",
+      "director",
+      "showrunner"
+    ],
+    "tags": [
+      "howcatchem",
+      "mystery",
+      "character-piece"
+    ]
+  },
+  {
+    "id": "cash-or-crash",
+    "title": "Cash or Crash",
+    "format": "gameshow",
+    "genre": "pricing game",
+    "logline": "Screaming contestants guess grocery prices for washing machines and a chance at the big wheel.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 68,
+      "prestige": 12,
+      "violence": 0,
+      "wholesomeness": 74,
+      "edginess": 10,
+      "humor": 48,
+      "heart": 44,
+      "complexity": 4
+    },
+    "baseCostPerEpisode": 220000,
+    "episodesPerSeason": 190,
+    "castSize": 3,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "daytime",
+      "prizes",
+      "audience"
+    ]
+  },
+  {
+    "id": "maple-street-friends",
+    "title": "Maple Street Friends",
+    "format": "kids",
+    "genre": "educational preschool",
+    "logline": "Puppets and neighbors on a city block teach letters, sharing and how to feel a big feeling.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 70,
+      "prestige": 78,
+      "violence": 0,
+      "wholesomeness": 98,
+      "edginess": 2,
+      "humor": 58,
+      "heart": 92,
+      "complexity": 6
+    },
+    "baseCostPerEpisode": 700000,
+    "episodesPerSeason": 52,
+    "castSize": 8,
+    "requiredRoles": [
+      "host",
+      "writer",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "educational",
+      "puppets",
+      "preschool"
+    ]
+  },
+  {
+    "id": "the-hollow-creek-chronicles",
+    "title": "The Hollow Creek Chronicles",
+    "format": "drama",
+    "genre": "period family drama",
+    "logline": "A Depression-era mountain family survives on timber, faith and the narration of its eldest son.",
+    "era": "1970s",
+    "attributes": {
+      "entertainment": 64,
+      "prestige": 68,
+      "violence": 10,
+      "wholesomeness": 94,
+      "edginess": 6,
+      "humor": 26,
+      "heart": 92,
+      "complexity": 24
+    },
+    "baseCostPerEpisode": 3300000,
+    "episodesPerSeason": 24,
+    "castSize": 10,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "period",
+      "family",
+      "heartland"
+    ]
+  },
+  {
+    "id": "last-call-at-dooleys",
+    "title": "Last Call at Dooley's",
+    "format": "sitcom",
+    "genre": "bar ensemble comedy",
+    "logline": "Regulars at a basement tavern trade insults and heartbreak with the ex-ballplayer who pours the drinks.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 88,
+      "prestige": 80,
+      "violence": 4,
+      "wholesomeness": 58,
+      "edginess": 38,
+      "humor": 90,
+      "heart": 84,
+      "complexity": 26
+    },
+    "baseCostPerEpisode": 2100000,
+    "episodesPerSeason": 24,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "multicam",
+      "ensemble",
+      "romance"
+    ]
+  },
+  {
+    "id": "the-hartwell-house",
+    "title": "The Hartwell House",
+    "format": "sitcom",
+    "genre": "family comedy",
+    "logline": "A dentist and a lawyer raise five kids in a brownstone where every crisis ends in a hug.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 58,
+      "violence": 2,
+      "wholesomeness": 92,
+      "edginess": 8,
+      "humor": 80,
+      "heart": 90,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 2400000,
+    "episodesPerSeason": 24,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "multicam",
+      "family",
+      "aspirational"
+    ]
+  },
+  {
+    "id": "oil-and-ashes",
+    "title": "Oil & Ashes",
+    "format": "soap",
+    "genre": "primetime soap",
+    "logline": "Two dynasties claw over a drilling empire while shoulder pads, affairs and gunshots settle the rest.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 34,
+      "violence": 36,
+      "wholesomeness": 12,
+      "edginess": 66,
+      "humor": 22,
+      "heart": 30,
+      "complexity": 48
+    },
+    "baseCostPerEpisode": 4600000,
+    "episodesPerSeason": 26,
+    "castSize": 11,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "primetime-soap",
+      "wealth",
+      "cliffhanger"
+    ]
+  },
+  {
+    "id": "neon-coast",
+    "title": "Neon Coast",
+    "format": "drama",
+    "genre": "stylish cop drama",
+    "logline": "Two vice detectives in pastel linen chase cartels through a city shot like a music video.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 82,
+      "prestige": 64,
+      "violence": 66,
+      "wholesomeness": 16,
+      "edginess": 68,
+      "humor": 18,
+      "heart": 34,
+      "complexity": 40
+    },
+    "baseCostPerEpisode": 5200000,
+    "episodesPerSeason": 22,
+    "castSize": 7,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "neo-noir",
+      "music-driven",
+      "vice"
+    ]
+  },
+  {
+    "id": "sector-nine",
+    "title": "Sector Nine",
+    "format": "drama",
+    "genre": "ensemble police drama",
+    "logline": "An overwhelmed inner-city precinct starts each shift with roll call and ends it short one hope.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 70,
+      "prestige": 85,
+      "violence": 58,
+      "wholesomeness": 22,
+      "edginess": 58,
+      "humor": 30,
+      "heart": 62,
+      "complexity": 76
+    },
+    "baseCostPerEpisode": 4400000,
+    "episodesPerSeason": 22,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "ensemble",
+      "serialized",
+      "gritty"
+    ]
+  },
+  {
+    "id": "four-chairs-in-sarasota",
+    "title": "Four Chairs in Sarasota",
+    "format": "sitcom",
+    "genre": "friendship comedy",
+    "logline": "Four retired women share a Florida bungalow, a cheesecake habit and no filter whatsoever.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 66,
+      "violence": 2,
+      "wholesomeness": 74,
+      "edginess": 46,
+      "humor": 90,
+      "heart": 86,
+      "complexity": 12
+    },
+    "baseCostPerEpisode": 1900000,
+    "episodesPerSeason": 24,
+    "castSize": 4,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "multicam",
+      "older-cast",
+      "risque"
+    ]
+  },
+  {
+    "id": "ghost-driver",
+    "title": "Ghost Driver",
+    "format": "drama",
+    "genre": "action adventure",
+    "logline": "A drifter and his talking armored sports car right wrongs for a foundation nobody can locate.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 74,
+      "prestige": 18,
+      "violence": 44,
+      "wholesomeness": 58,
+      "edginess": 20,
+      "humor": 38,
+      "heart": 38,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 3100000,
+    "episodesPerSeason": 22,
+    "castSize": 4,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "producer"
+    ],
+    "tags": [
+      "action",
+      "gimmick",
+      "episodic"
+    ]
+  },
+  {
+    "id": "titan-force-alpha",
+    "title": "Titan Force Alpha",
+    "format": "animation",
+    "genre": "toy-driven action cartoon",
+    "logline": "Transforming robot guardians defend a sunny planet from a warlord who explains his plan each week.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 72,
+      "prestige": 10,
+      "violence": 40,
+      "wholesomeness": 58,
+      "edginess": 8,
+      "humor": 34,
+      "heart": 40,
+      "complexity": 16
+    },
+    "baseCostPerEpisode": 1500000,
+    "episodesPerSeason": 52,
+    "castSize": 6,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "producer"
+    ],
+    "tags": [
+      "toyetic",
+      "action",
+      "syndicated"
+    ]
+  },
+  {
+    "id": "the-grubbs",
+    "title": "The Grubbs",
+    "format": "sitcom",
+    "genre": "anti-family comedy",
+    "logline": "A miserable shoe salesman, his loafing wife and two awful children insult each other on a sagging couch.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 24,
+      "violence": 6,
+      "wholesomeness": 8,
+      "edginess": 84,
+      "humor": 84,
+      "heart": 22,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 1300000,
+    "episodesPerSeason": 24,
+    "castSize": 5,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer"
+    ],
+    "tags": [
+      "multicam",
+      "crude",
+      "anti-sitcom"
+    ]
+  },
+  {
+    "id": "spin-and-spell",
+    "title": "Spin & Spell",
+    "format": "gameshow",
+    "genre": "word puzzle",
+    "logline": "Contestants spin a giant wheel and buy vowels while a glamorous assistant turns glowing letters.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 66,
+      "prestige": 14,
+      "violence": 0,
+      "wholesomeness": 84,
+      "edginess": 4,
+      "humor": 30,
+      "heart": 38,
+      "complexity": 8
+    },
+    "baseCostPerEpisode": 260000,
+    "episodesPerSeason": 195,
+    "castSize": 2,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "syndicated",
+      "puzzle",
+      "evergreen"
+    ]
+  },
+  {
+    "id": "cold-file",
+    "title": "Cold File",
+    "format": "documentary",
+    "genre": "true crime reenactment",
+    "logline": "A trench-coated narrator walks through unsolved disappearances and asks viewers to phone in tips.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 68,
+      "prestige": 40,
+      "violence": 48,
+      "wholesomeness": 20,
+      "edginess": 54,
+      "humor": 2,
+      "heart": 40,
+      "complexity": 26
+    },
+    "baseCostPerEpisode": 520000,
+    "episodesPerSeason": 22,
+    "castSize": 3,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "true-crime",
+      "reenactment",
+      "tipline"
+    ]
+  },
+  {
+    "id": "almost-forty",
+    "title": "Almost Forty",
+    "format": "drama",
+    "genre": "yuppie angst drama",
+    "logline": "Two married couples talk endlessly about mortgages, therapy and the compromises adulthood demanded.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 36,
+      "prestige": 84,
+      "violence": 4,
+      "wholesomeness": 48,
+      "edginess": 40,
+      "humor": 34,
+      "heart": 76,
+      "complexity": 72
+    },
+    "baseCostPerEpisode": 3600000,
+    "episodesPerSeason": 22,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "talky",
+      "noble-failure",
+      "boomer"
+    ]
+  },
+  {
+    "id": "the-ironhide-crew",
+    "title": "The Ironhide Crew",
+    "format": "drama",
+    "genre": "mercenary action",
+    "logline": "Four fugitive commandos help strangers, weld a van into a tank and somehow shoot nobody.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 12,
+      "violence": 48,
+      "wholesomeness": 50,
+      "edginess": 24,
+      "humor": 52,
+      "heart": 36,
+      "complexity": 8
+    },
+    "baseCostPerEpisode": 3400000,
+    "episodesPerSeason": 22,
+    "castSize": 5,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "producer"
+    ],
+    "tags": [
+      "action",
+      "formula",
+      "explosions"
+    ]
+  },
+  {
+    "id": "star-ladder",
+    "title": "Star Ladder",
+    "format": "competition",
+    "genre": "talent showcase",
+    "logline": "Singers, comics and child dancers climb a lit staircase for judges holding numbered paddles.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 64,
+      "prestige": 18,
+      "violence": 0,
+      "wholesomeness": 72,
+      "edginess": 16,
+      "humor": 36,
+      "heart": 56,
+      "complexity": 8
+    },
+    "baseCostPerEpisode": 620000,
+    "episodesPerSeason": 20,
+    "castSize": 5,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "talent",
+      "syndicated",
+      "judges"
+    ]
+  },
+  {
+    "id": "weekend-warriors-garage",
+    "title": "Weekend Warriors Garage",
+    "format": "reality",
+    "genre": "home improvement",
+    "logline": "A cheerful contractor rebuilds a rotting porch while explaining every screw to the camera.",
+    "era": "1980s",
+    "attributes": {
+      "entertainment": 39,
+      "prestige": 30,
+      "violence": 0,
+      "wholesomeness": 86,
+      "edginess": 4,
+      "humor": 28,
+      "heart": 50,
+      "complexity": 12
+    },
+    "baseCostPerEpisode": 320000,
+    "episodesPerSeason": 18,
+    "castSize": 2,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "how-to",
+      "daytime",
+      "cheap"
+    ]
+  },
+  {
+    "id": "the-brew-house",
+    "title": "The Brew House",
+    "format": "sitcom",
+    "genre": "friend-group comedy",
+    "logline": "Six twentysomethings share rent, coffee and each other's ex-partners in a too-large city apartment.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 94,
+      "prestige": 62,
+      "violence": 2,
+      "wholesomeness": 68,
+      "edginess": 40,
+      "humor": 88,
+      "heart": 88,
+      "complexity": 22
+    },
+    "baseCostPerEpisode": 8000000,
+    "episodesPerSeason": 24,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "multicam",
+      "megahit",
+      "hangout"
+    ]
+  },
+  {
+    "id": "nothing-doing",
+    "title": "Nothing Doing",
+    "format": "sitcom",
+    "genre": "observational comedy",
+    "logline": "Four selfish friends in a big city turn waiting in line into a federal case, weekly.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 90,
+      "prestige": 85,
+      "violence": 4,
+      "wholesomeness": 24,
+      "edginess": 58,
+      "humor": 96,
+      "heart": 30,
+      "complexity": 38
+    },
+    "baseCostPerEpisode": 8000000,
+    "episodesPerSeason": 22,
+    "castSize": 4,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "multicam",
+      "megahit",
+      "observational"
+    ]
+  },
+  {
+    "id": "blue-watch",
+    "title": "Blue Watch",
+    "format": "drama",
+    "genre": "gritty cop drama",
+    "logline": "Detectives in a battered squad room work confessions with shaky cameras and shakier consciences.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 72,
+      "prestige": 82,
+      "violence": 66,
+      "wholesomeness": 14,
+      "edginess": 74,
+      "humor": 18,
+      "heart": 50,
+      "complexity": 68
+    },
+    "baseCostPerEpisode": 4800000,
+    "episodesPerSeason": 22,
+    "castSize": 10,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "gritty",
+      "handheld",
+      "adult"
+    ]
+  },
+  {
+    "id": "department-of-anomalies",
+    "title": "Department of Anomalies",
+    "format": "drama",
+    "genre": "paranormal conspiracy",
+    "logline": "A believer and a skeptic investigate impossible cases while their own agency buries the evidence.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 76,
+      "violence": 52,
+      "wholesomeness": 20,
+      "edginess": 56,
+      "humor": 24,
+      "heart": 58,
+      "complexity": 72
+    },
+    "baseCostPerEpisode": 5400000,
+    "episodesPerSeason": 22,
+    "castSize": 5,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "sci-fi",
+      "conspiracy",
+      "monster-of-the-week"
+    ]
+  },
+  {
+    "id": "trauma-bay",
+    "title": "Trauma Bay",
+    "format": "drama",
+    "genre": "medical drama",
+    "logline": "An overrun urban emergency room runs on adrenaline, long takes and doctors who forget to eat.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 88,
+      "prestige": 84,
+      "violence": 50,
+      "wholesomeness": 34,
+      "edginess": 48,
+      "humor": 26,
+      "heart": 80,
+      "complexity": 64
+    },
+    "baseCostPerEpisode": 7200000,
+    "episodesPerSeason": 22,
+    "castSize": 11,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "medical",
+      "ensemble",
+      "fast-paced"
+    ]
+  },
+  {
+    "id": "the-peoples-docket",
+    "title": "The People's Docket",
+    "format": "procedural",
+    "genre": "crime and courts",
+    "logline": "The first half hour catches the killer; the second half hour argues about whether it will stick.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 72,
+      "violence": 44,
+      "wholesomeness": 26,
+      "edginess": 42,
+      "humor": 10,
+      "heart": 32,
+      "complexity": 42
+    },
+    "baseCostPerEpisode": 3800000,
+    "episodesPerSeason": 24,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "procedural",
+      "ripped-from-headlines",
+      "syndication-gold"
+    ]
+  },
+  {
+    "id": "the-krumps-of-fenwick",
+    "title": "The Krumps of Fenwick",
+    "format": "animation",
+    "genre": "satirical family cartoon",
+    "logline": "A yellow-hued nuclear family satirizes an entire country from a couch in a dying factory town.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 92,
+      "prestige": 84,
+      "violence": 22,
+      "wholesomeness": 48,
+      "edginess": 62,
+      "humor": 94,
+      "heart": 70,
+      "complexity": 34
+    },
+    "baseCostPerEpisode": 2600000,
+    "episodesPerSeason": 24,
+    "castSize": 6,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "producer"
+    ],
+    "tags": [
+      "primetime-toon",
+      "satire",
+      "evergreen"
+    ]
+  },
+  {
+    "id": "sunset-ridge",
+    "title": "Sunset Ridge",
+    "format": "soap",
+    "genre": "teen soap",
+    "logline": "Wealthy high schoolers in a beach suburb survive proms, addictions and improbably adult problems.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 26,
+      "violence": 18,
+      "wholesomeness": 30,
+      "edginess": 64,
+      "humor": 30,
+      "heart": 54,
+      "complexity": 40
+    },
+    "baseCostPerEpisode": 3200000,
+    "episodesPerSeason": 26,
+    "castSize": 10,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "teen",
+      "soap",
+      "zip-code"
+    ]
+  },
+  {
+    "id": "seven-strangers-one-loft",
+    "title": "Seven Strangers, One Loft",
+    "format": "reality",
+    "genre": "docusoap",
+    "logline": "Seven strangers stop being polite in a furnished loft while producers keep the confessional booth warm.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 72,
+      "prestige": 26,
+      "violence": 10,
+      "wholesomeness": 22,
+      "edginess": 70,
+      "humor": 40,
+      "heart": 42,
+      "complexity": 18
+    },
+    "baseCostPerEpisode": 420000,
+    "episodesPerSeason": 20,
+    "castSize": 7,
+    "requiredRoles": [
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "docusoap",
+      "youth",
+      "confessional"
+    ]
+  },
+  {
+    "id": "marigold-vane",
+    "title": "Marigold Vane, Night Warden",
+    "format": "drama",
+    "genre": "supernatural teen action",
+    "logline": "A cheerleader inherits the duty of killing demons that keep tunneling up under her high school.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 74,
+      "violence": 58,
+      "wholesomeness": 38,
+      "edginess": 52,
+      "humor": 68,
+      "heart": 78,
+      "complexity": 62
+    },
+    "baseCostPerEpisode": 3400000,
+    "episodesPerSeason": 22,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "supernatural",
+      "teen",
+      "cult-hit"
+    ]
+  },
+  {
+    "id": "on-the-air-with-doctor-bexley",
+    "title": "On the Air with Doctor Bexley",
+    "format": "sitcom",
+    "genre": "farce of manners",
+    "logline": "A pompous radio psychiatrist and his equally pompous brother lose every argument to their father.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 84,
+      "violence": 2,
+      "wholesomeness": 62,
+      "edginess": 32,
+      "humor": 90,
+      "heart": 76,
+      "complexity": 30
+    },
+    "baseCostPerEpisode": 3500000,
+    "episodesPerSeason": 24,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "multicam",
+      "farce",
+      "spin-off"
+    ]
+  },
+  {
+    "id": "afternoons-with-verna-cole",
+    "title": "Afternoons with Verna Cole",
+    "format": "talkshow",
+    "genre": "daytime confessional talk",
+    "logline": "A beloved host coaxes tears from guests and hands the studio audience life-changing gifts.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 52,
+      "violence": 2,
+      "wholesomeness": 70,
+      "edginess": 30,
+      "humor": 40,
+      "heart": 88,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 400000,
+    "episodesPerSeason": 180,
+    "castSize": 2,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "daytime",
+      "inspirational",
+      "book-club"
+    ]
+  },
+  {
+    "id": "gnarly-and-bug",
+    "title": "Gnarly & Bug",
+    "format": "animation",
+    "genre": "gross-out cartoon",
+    "logline": "A neurotic hound and his idiot flea best friend push cartoon anatomy well past network comfort.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 74,
+      "prestige": 44,
+      "violence": 34,
+      "wholesomeness": 18,
+      "edginess": 78,
+      "humor": 82,
+      "heart": 26,
+      "complexity": 16
+    },
+    "baseCostPerEpisode": 1700000,
+    "episodesPerSeason": 26,
+    "castSize": 4,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "gross-out",
+      "cult",
+      "cable-toon"
+    ]
+  },
+  {
+    "id": "the-randy-kroft-show",
+    "title": "The Randy Kroft Show",
+    "format": "talkshow",
+    "genre": "tabloid talk",
+    "logline": "Feuding relatives reveal secrets on stage while security guards separate them and the crowd chants.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 70,
+      "prestige": 4,
+      "violence": 40,
+      "wholesomeness": 2,
+      "edginess": 94,
+      "humor": 48,
+      "heart": 8,
+      "complexity": 4
+    },
+    "baseCostPerEpisode": 160000,
+    "episodesPerSeason": 190,
+    "castSize": 2,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "trash",
+      "daytime",
+      "brawl"
+    ]
+  },
+  {
+    "id": "owl-creek",
+    "title": "Owl Creek",
+    "format": "drama",
+    "genre": "surreal small-town mystery",
+    "logline": "A federal agent investigating a drowned girl finds a logging town dreaming in someone else's language.",
+    "era": "1990s",
+    "attributes": {
+      "entertainment": 52,
+      "prestige": 90,
+      "violence": 44,
+      "wholesomeness": 18,
+      "edginess": 72,
+      "humor": 36,
+      "heart": 44,
+      "complexity": 94
+    },
+    "baseCostPerEpisode": 5600000,
+    "episodesPerSeason": 10,
+    "castSize": 11,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "surreal",
+      "noble-failure",
+      "cult"
+    ]
+  },
+  {
+    "id": "the-marconi-table",
+    "title": "The Marconi Table",
+    "format": "drama",
+    "genre": "mob family drama",
+    "logline": "A suburban crime boss tells his therapist everything except the part where he kills his cousin.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 96,
+      "violence": 88,
+      "wholesomeness": 6,
+      "edginess": 90,
+      "humor": 48,
+      "heart": 58,
+      "complexity": 88
+    },
+    "baseCostPerEpisode": 9500000,
+    "episodesPerSeason": 13,
+    "castSize": 11,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "prestige",
+      "antihero",
+      "cable"
+    ]
+  },
+  {
+    "id": "port-district",
+    "title": "Port District",
+    "format": "drama",
+    "genre": "institutional crime epic",
+    "logline": "Cops, dockers, dealers and city hall all fail the same broken harbor city in different ways.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 62,
+      "prestige": 98,
+      "violence": 76,
+      "wholesomeness": 8,
+      "edginess": 78,
+      "humor": 30,
+      "heart": 62,
+      "complexity": 97
+    },
+    "baseCostPerEpisode": 8200000,
+    "episodesPerSeason": 13,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "prestige",
+      "sociological",
+      "slow-burn"
+    ]
+  },
+  {
+    "id": "castaway-kingdom",
+    "title": "Castaway Kingdom",
+    "format": "competition",
+    "genre": "outdoor elimination",
+    "logline": "Eighteen strangers starve on a beach, win puzzles for rice and vote each other out by torchlight.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 30,
+      "violence": 10,
+      "wholesomeness": 34,
+      "edginess": 48,
+      "humor": 40,
+      "heart": 48,
+      "complexity": 34
+    },
+    "baseCostPerEpisode": 1700000,
+    "episodesPerSeason": 14,
+    "castSize": 12,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "elimination",
+      "social-game",
+      "tropical"
+    ]
+  },
+  {
+    "id": "voice-of-the-nation",
+    "title": "Voice of the Nation",
+    "format": "competition",
+    "genre": "singing contest",
+    "logline": "Amateur singers face a cruel British judge, a kind one, and forty million phone votes.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 92,
+      "prestige": 32,
+      "violence": 0,
+      "wholesomeness": 56,
+      "edginess": 36,
+      "humor": 48,
+      "heart": 72,
+      "complexity": 14
+    },
+    "baseCostPerEpisode": 2000000,
+    "episodesPerSeason": 18,
+    "castSize": 6,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "singing",
+      "live-vote",
+      "phenomenon"
+    ]
+  },
+  {
+    "id": "the-glass-house-game",
+    "title": "The Glass House Game",
+    "format": "reality",
+    "genre": "surveillance house",
+    "logline": "Twelve housemates are filmed constantly, scheme constantly, and evict one of their own each Friday.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 74,
+      "prestige": 14,
+      "violence": 8,
+      "wholesomeness": 18,
+      "edginess": 72,
+      "humor": 42,
+      "heart": 30,
+      "complexity": 30
+    },
+    "baseCostPerEpisode": 900000,
+    "episodesPerSeason": 20,
+    "castSize": 12,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "surveillance",
+      "live-feed",
+      "strategy"
+    ]
+  },
+  {
+    "id": "meridian",
+    "title": "Meridian",
+    "format": "drama",
+    "genre": "serialized mystery",
+    "logline": "Plane crash survivors on an impossible island find a hatch, a monster and forty unanswered questions.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 90,
+      "prestige": 80,
+      "violence": 54,
+      "wholesomeness": 22,
+      "edginess": 50,
+      "humor": 30,
+      "heart": 72,
+      "complexity": 92
+    },
+    "baseCostPerEpisode": 9000000,
+    "episodesPerSeason": 22,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "mystery-box",
+      "serialized",
+      "ensemble"
+    ]
+  },
+  {
+    "id": "trace-unit",
+    "title": "Trace Unit",
+    "format": "procedural",
+    "genre": "forensic procedural",
+    "logline": "Lab technicians in sunglasses solve murders with fiber analysis, blue lighting and one perfect quip.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 82,
+      "prestige": 44,
+      "violence": 56,
+      "wholesomeness": 24,
+      "edginess": 46,
+      "humor": 18,
+      "heart": 26,
+      "complexity": 26
+    },
+    "baseCostPerEpisode": 4400000,
+    "episodesPerSeason": 24,
+    "castSize": 7,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "forensics",
+      "case-of-the-week",
+      "franchise"
+    ]
+  },
+  {
+    "id": "diagnosis-renwick",
+    "title": "Diagnosis: Renwick",
+    "format": "procedural",
+    "genre": "medical mystery",
+    "logline": "A brilliant, cruel diagnostician insults everyone until the rare disease finally reveals itself.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 72,
+      "violence": 22,
+      "wholesomeness": 22,
+      "edginess": 58,
+      "humor": 58,
+      "heart": 50,
+      "complexity": 48
+    },
+    "baseCostPerEpisode": 4900000,
+    "episodesPerSeason": 24,
+    "castSize": 7,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "antihero",
+      "medical",
+      "case-of-the-week"
+    ]
+  },
+  {
+    "id": "saint-ivo-general",
+    "title": "Saint Ivo General",
+    "format": "soap",
+    "genre": "medical romance",
+    "logline": "Surgical residents sleep with each other between traumas and narrate their feelings in voiceover.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 88,
+      "prestige": 48,
+      "violence": 30,
+      "wholesomeness": 34,
+      "edginess": 58,
+      "humor": 48,
+      "heart": 82,
+      "complexity": 44
+    },
+    "baseCostPerEpisode": 6200000,
+    "episodesPerSeason": 24,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "romance",
+      "medical",
+      "weepy"
+    ]
+  },
+  {
+    "id": "paper-and-partners",
+    "title": "Paper & Partners",
+    "format": "sitcom",
+    "genre": "mockumentary workplace",
+    "logline": "A documentary crew films a paper company branch run by the least self-aware manager alive.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 88,
+      "prestige": 80,
+      "violence": 2,
+      "wholesomeness": 58,
+      "edginess": 52,
+      "humor": 92,
+      "heart": 84,
+      "complexity": 34
+    },
+    "baseCostPerEpisode": 2300000,
+    "episodesPerSeason": 24,
+    "castSize": 10,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "mockumentary",
+      "cringe",
+      "workplace"
+    ]
+  },
+  {
+    "id": "countdown-protocol",
+    "title": "Countdown Protocol",
+    "format": "drama",
+    "genre": "real-time thriller",
+    "logline": "One agent, one very bad day, twenty-four hours of nerve gas, moles and split-screen panic.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 88,
+      "prestige": 62,
+      "violence": 82,
+      "wholesomeness": 8,
+      "edginess": 76,
+      "humor": 6,
+      "heart": 36,
+      "complexity": 70
+    },
+    "baseCostPerEpisode": 7000000,
+    "episodesPerSeason": 24,
+    "castSize": 9,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "real-time",
+      "terrorism",
+      "twisty"
+    ]
+  },
+  {
+    "id": "bitter-fork",
+    "title": "Bitter Fork",
+    "format": "drama",
+    "genre": "revisionist western",
+    "logline": "A gold camp with no law grows into a town on profanity, typhoid and one saloon owner's ambition.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 64,
+      "prestige": 92,
+      "violence": 80,
+      "wholesomeness": 8,
+      "edginess": 86,
+      "humor": 34,
+      "heart": 46,
+      "complexity": 84
+    },
+    "baseCostPerEpisode": 8600000,
+    "episodesPerSeason": 12,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "western",
+      "literary",
+      "cable"
+    ]
+  },
+  {
+    "id": "the-last-convoy",
+    "title": "The Last Convoy",
+    "format": "drama",
+    "genre": "military sci-fi",
+    "logline": "The final human ships flee machine pursuers while deciding what kind of civilization deserves saving.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 84,
+      "violence": 70,
+      "wholesomeness": 16,
+      "edginess": 62,
+      "humor": 16,
+      "heart": 68,
+      "complexity": 86
+    },
+    "baseCostPerEpisode": 7400000,
+    "episodesPerSeason": 20,
+    "castSize": 11,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "sci-fi",
+      "allegory",
+      "serialized"
+    ]
+  },
+  {
+    "id": "the-agency-on-sixth",
+    "title": "The Agency on Sixth",
+    "format": "drama",
+    "genre": "period workplace drama",
+    "logline": "A brilliant ad man with a borrowed name sells the sixties an America he cannot live in.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 68,
+      "prestige": 94,
+      "violence": 16,
+      "wholesomeness": 12,
+      "edginess": 72,
+      "humor": 38,
+      "heart": 54,
+      "complexity": 84
+    },
+    "baseCostPerEpisode": 7800000,
+    "episodesPerSeason": 13,
+    "castSize": 11,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "period",
+      "prestige",
+      "slow-burn"
+    ]
+  },
+  {
+    "id": "the-tidy-man",
+    "title": "The Tidy Man",
+    "format": "drama",
+    "genre": "serial killer thriller",
+    "logline": "A police blood analyst murders murderers at night and keeps his slides in a very neat box.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 82,
+      "prestige": 68,
+      "violence": 90,
+      "wholesomeness": 4,
+      "edginess": 92,
+      "humor": 28,
+      "heart": 36,
+      "complexity": 70
+    },
+    "baseCostPerEpisode": 5600000,
+    "episodesPerSeason": 12,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "antihero",
+      "serial-killer",
+      "cable"
+    ]
+  },
+  {
+    "id": "cut-and-sewn",
+    "title": "Cut & Sewn",
+    "format": "competition",
+    "genre": "design contest",
+    "logline": "Fashion designers build a couture look overnight from parachutes and are judged without mercy.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 44,
+      "violence": 2,
+      "wholesomeness": 42,
+      "edginess": 40,
+      "humor": 46,
+      "heart": 50,
+      "complexity": 26
+    },
+    "baseCostPerEpisode": 800000,
+    "episodesPerSeason": 14,
+    "castSize": 10,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "design",
+      "elimination",
+      "craft"
+    ]
+  },
+  {
+    "id": "one-ring-twenty-hearts",
+    "title": "One Ring, Twenty Hearts",
+    "format": "reality",
+    "genre": "dating competition",
+    "logline": "Twenty women compete for one bachelor's rose, a helicopter date and a televised engagement.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 8,
+      "violence": 4,
+      "wholesomeness": 20,
+      "edginess": 72,
+      "humor": 40,
+      "heart": 44,
+      "complexity": 16
+    },
+    "baseCostPerEpisode": 1100000,
+    "episodesPerSeason": 12,
+    "castSize": 12,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "dating",
+      "trash",
+      "guilty-pleasure"
+    ]
+  },
+  {
+    "id": "dumb-luck",
+    "title": "Dumb Luck",
+    "format": "reality",
+    "genre": "stunt comedy",
+    "logline": "Grown men hurt themselves with shopping carts, fireworks and livestock for the amusement of everyone.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 72,
+      "prestige": 6,
+      "violence": 56,
+      "wholesomeness": 6,
+      "edginess": 92,
+      "humor": 78,
+      "heart": 24,
+      "complexity": 4
+    },
+    "baseCostPerEpisode": 340000,
+    "episodesPerSeason": 12,
+    "castSize": 8,
+    "requiredRoles": [
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "stunts",
+      "gross-out",
+      "cheap"
+    ]
+  },
+  {
+    "id": "the-bloogans",
+    "title": "The Bloogans",
+    "format": "animation",
+    "genre": "adult cartoon",
+    "logline": "A dim-witted father, a talking dog and a murderous baby interrupt every plot with a flashback gag.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 34,
+      "violence": 46,
+      "wholesomeness": 10,
+      "edginess": 88,
+      "humor": 86,
+      "heart": 30,
+      "complexity": 18
+    },
+    "baseCostPerEpisode": 2400000,
+    "episodesPerSeason": 22,
+    "castSize": 6,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "producer"
+    ],
+    "tags": [
+      "adult-toon",
+      "cutaway",
+      "crude"
+    ]
+  },
+  {
+    "id": "barnacle-bay-buddies",
+    "title": "Barnacle Bay Buddies",
+    "format": "kids",
+    "genre": "undersea comedy",
+    "logline": "An eternally cheerful sea sponge flips undersea burgers and ruins his neighbor's every quiet afternoon.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 88,
+      "prestige": 38,
+      "violence": 10,
+      "wholesomeness": 86,
+      "edginess": 18,
+      "humor": 88,
+      "heart": 70,
+      "complexity": 8
+    },
+    "baseCostPerEpisode": 1100000,
+    "episodesPerSeason": 40,
+    "castSize": 6,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "producer"
+    ],
+    "tags": [
+      "cartoon",
+      "merch-machine",
+      "all-ages"
+    ]
+  },
+  {
+    "id": "blow-it-up-prove-it",
+    "title": "Blow It Up, Prove It",
+    "format": "documentary",
+    "genre": "science entertainment",
+    "logline": "Two effects builders test folk wisdom with ballistics gel, high-speed cameras and unreasonable amounts of dynamite.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 50,
+      "violence": 24,
+      "wholesomeness": 62,
+      "edginess": 26,
+      "humor": 66,
+      "heart": 48,
+      "complexity": 30
+    },
+    "baseCostPerEpisode": 760000,
+    "episodesPerSeason": 16,
+    "castSize": 5,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "science",
+      "explosions",
+      "edutainment"
+    ]
+  },
+  {
+    "id": "the-living-world",
+    "title": "The Living World",
+    "format": "documentary",
+    "genre": "blue-chip nature",
+    "logline": "Impossible camera work follows migrations across five continents while a calm voice explains the stakes.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 85,
+      "violence": 36,
+      "wholesomeness": 78,
+      "edginess": 10,
+      "humor": 8,
+      "heart": 76,
+      "complexity": 36
+    },
+    "baseCostPerEpisode": 1500000,
+    "episodesPerSeason": 11,
+    "castSize": 1,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "nature",
+      "landmark",
+      "4k-showcase"
+    ]
+  },
+  {
+    "id": "new-roof-new-life",
+    "title": "New Roof, New Life",
+    "format": "reality",
+    "genre": "makeover show",
+    "logline": "A crew demolishes a struggling family's condemned house in a week and cries on the lawn.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 74,
+      "prestige": 26,
+      "violence": 2,
+      "wholesomeness": 92,
+      "edginess": 12,
+      "humor": 32,
+      "heart": 94,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 1300000,
+    "episodesPerSeason": 18,
+    "castSize": 7,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "makeover",
+      "tearjerker",
+      "charity"
+    ]
+  },
+  {
+    "id": "buried-at-home",
+    "title": "Buried at Home",
+    "format": "reality",
+    "genre": "hoarding intervention",
+    "logline": "Therapists and dumpster crews excavate a family home while relatives argue about a broken lamp.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 52,
+      "prestige": 18,
+      "violence": 4,
+      "wholesomeness": 16,
+      "edginess": 76,
+      "humor": 10,
+      "heart": 48,
+      "complexity": 16
+    },
+    "baseCostPerEpisode": 380000,
+    "episodesPerSeason": 16,
+    "castSize": 4,
+    "requiredRoles": [
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "exploitation",
+      "cheap",
+      "intervention"
+    ]
+  },
+  {
+    "id": "the-sealed-case",
+    "title": "The Sealed Case",
+    "format": "gameshow",
+    "genre": "chance and greed",
+    "logline": "One contestant, twenty-six sealed cases and a shadowy banker who calls with worse and worse offers.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 72,
+      "prestige": 10,
+      "violence": 0,
+      "wholesomeness": 62,
+      "edginess": 18,
+      "humor": 28,
+      "heart": 46,
+      "complexity": 8
+    },
+    "baseCostPerEpisode": 480000,
+    "episodesPerSeason": 170,
+    "castSize": 3,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "chance",
+      "primetime-import",
+      "tension"
+    ]
+  },
+  {
+    "id": "full-throttle-three",
+    "title": "Full Throttle Three",
+    "format": "reality",
+    "genre": "motoring entertainment",
+    "logline": "Three bickering presenters destroy expensive cars in a hangar and call it consumer journalism.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 36,
+      "violence": 18,
+      "wholesomeness": 34,
+      "edginess": 58,
+      "humor": 80,
+      "heart": 42,
+      "complexity": 16
+    },
+    "baseCostPerEpisode": 1400000,
+    "episodesPerSeason": 12,
+    "castSize": 4,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "cars",
+      "banter",
+      "global-format"
+    ]
+  },
+  {
+    "id": "the-odell-ray-show",
+    "title": "The Odell Ray Show",
+    "format": "sketch",
+    "genre": "satirical sketch",
+    "logline": "A stand-up dismantles race, class and celebrity in sketches too pointed for anyone's comfort.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 82,
+      "violence": 16,
+      "wholesomeness": 12,
+      "edginess": 94,
+      "humor": 94,
+      "heart": 38,
+      "complexity": 30
+    },
+    "baseCostPerEpisode": 1000000,
+    "episodesPerSeason": 12,
+    "castSize": 7,
+    "requiredRoles": [
+      "host",
+      "writer",
+      "producer"
+    ],
+    "tags": [
+      "satire",
+      "cable",
+      "quotable"
+    ]
+  },
+  {
+    "id": "ride-along",
+    "title": "Ride Along",
+    "format": "documentary",
+    "genre": "police vérité",
+    "logline": "Handheld cameras follow patrol officers through traffic stops, foot chases and a great deal of shouting.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 58,
+      "prestige": 16,
+      "violence": 62,
+      "wholesomeness": 14,
+      "edginess": 68,
+      "humor": 14,
+      "heart": 18,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 410000,
+    "episodesPerSeason": 20,
+    "castSize": 2,
+    "requiredRoles": [
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "verite",
+      "cheap",
+      "syndicated"
+    ]
+  },
+  {
+    "id": "the-ledger-hour",
+    "title": "The Ledger Hour",
+    "format": "news",
+    "genre": "opinion news hour",
+    "logline": "A combative anchor grills guests nightly and turns a cable channel into a political weapon.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 64,
+      "prestige": 38,
+      "violence": 6,
+      "wholesomeness": 14,
+      "edginess": 74,
+      "humor": 24,
+      "heart": 16,
+      "complexity": 36
+    },
+    "baseCostPerEpisode": 320000,
+    "episodesPerSeason": 200,
+    "castSize": 2,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "writer"
+    ],
+    "tags": [
+      "opinion",
+      "cable-news",
+      "partisan"
+    ]
+  },
+  {
+    "id": "pawnbrokers-of-eighth",
+    "title": "Pawnbrokers of Eighth",
+    "format": "reality",
+    "genre": "business docusoap",
+    "logline": "A family pawn shop haggles over Civil War rifles while calling in an expert who ruins everything.",
+    "era": "2000s",
+    "attributes": {
+      "entertainment": 68,
+      "prestige": 18,
+      "violence": 6,
+      "wholesomeness": 50,
+      "edginess": 26,
+      "humor": 48,
+      "heart": 40,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 330000,
+    "episodesPerSeason": 20,
+    "castSize": 5,
+    "requiredRoles": [
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "docusoap",
+      "antiques",
+      "cheap"
+    ]
+  },
+  {
+    "id": "the-solvent-man",
+    "title": "The Solvent Man",
+    "format": "drama",
+    "genre": "crime transformation drama",
+    "logline": "A dying chemistry teacher cooks narcotics for his family and discovers he likes being feared.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 90,
+      "prestige": 96,
+      "violence": 86,
+      "wholesomeness": 6,
+      "edginess": 88,
+      "humor": 34,
+      "heart": 56,
+      "complexity": 86
+    },
+    "baseCostPerEpisode": 6500000,
+    "episodesPerSeason": 13,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "antihero",
+      "prestige",
+      "binge"
+    ]
+  },
+  {
+    "id": "the-ember-throne",
+    "title": "The Ember Throne",
+    "format": "drama",
+    "genre": "fantasy epic",
+    "logline": "Seven noble houses butcher each other over an iron chair while something colder walks south.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 94,
+      "prestige": 90,
+      "violence": 96,
+      "wholesomeness": 2,
+      "edginess": 96,
+      "humor": 26,
+      "heart": 50,
+      "complexity": 92
+    },
+    "baseCostPerEpisode": 20000000,
+    "episodesPerSeason": 10,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "fantasy",
+      "event-tv",
+      "expensive"
+    ]
+  },
+  {
+    "id": "ellery-hall",
+    "title": "Ellery Hall",
+    "format": "drama",
+    "genre": "period estate drama",
+    "logline": "An Edwardian great house runs on the manners of the family upstairs and the labor downstairs.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 80,
+      "violence": 10,
+      "wholesomeness": 66,
+      "edginess": 24,
+      "humor": 40,
+      "heart": 82,
+      "complexity": 54
+    },
+    "baseCostPerEpisode": 5200000,
+    "episodesPerSeason": 9,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "period",
+      "comfort",
+      "costume"
+    ]
+  },
+  {
+    "id": "after-the-fall",
+    "title": "After the Fall",
+    "format": "drama",
+    "genre": "post-apocalyptic horror",
+    "logline": "Survivors of a plague of walking dead learn the living are the more reliable threat.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 54,
+      "violence": 94,
+      "wholesomeness": 6,
+      "edginess": 80,
+      "humor": 10,
+      "heart": 48,
+      "complexity": 56
+    },
+    "baseCostPerEpisode": 7000000,
+    "episodesPerSeason": 16,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "horror",
+      "gore",
+      "franchise"
+    ]
+  },
+  {
+    "id": "the-consulting-mind",
+    "title": "The Consulting Mind",
+    "format": "procedural",
+    "genre": "modern detective",
+    "logline": "A rude genius and his army-surgeon flatmate solve London murders in ninety stylish minutes.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 78,
+      "violence": 42,
+      "wholesomeness": 30,
+      "edginess": 44,
+      "humor": 56,
+      "heart": 58,
+      "complexity": 64
+    },
+    "baseCostPerEpisode": 4800000,
+    "episodesPerSeason": 8,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "detective",
+      "stylish",
+      "event-episodes"
+    ]
+  },
+  {
+    "id": "under-the-blue-tent",
+    "title": "Under the Blue Tent",
+    "format": "competition",
+    "genre": "baking contest",
+    "logline": "Amateur bakers make delicate pastry in a meadow tent and apologize to each other for winning.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 52,
+      "violence": 0,
+      "wholesomeness": 98,
+      "edginess": 4,
+      "humor": 62,
+      "heart": 90,
+      "complexity": 10
+    },
+    "baseCostPerEpisode": 700000,
+    "episodesPerSeason": 12,
+    "castSize": 6,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "comfort",
+      "baking",
+      "gentle"
+    ]
+  },
+  {
+    "id": "the-wrong-man-in-cell-twelve",
+    "title": "The Wrong Man in Cell Twelve",
+    "format": "documentary",
+    "genre": "true crime docuseries",
+    "logline": "A decade of interviews and evidence tapes suggest a small-town conviction was assembled, not discovered.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 80,
+      "violence": 40,
+      "wholesomeness": 12,
+      "edginess": 62,
+      "humor": 4,
+      "heart": 56,
+      "complexity": 72
+    },
+    "baseCostPerEpisode": 900000,
+    "episodesPerSeason": 10,
+    "castSize": 2,
+    "requiredRoles": [
+      "producer",
+      "director",
+      "writer"
+    ],
+    "tags": [
+      "true-crime",
+      "binge",
+      "advocacy"
+    ]
+  },
+  {
+    "id": "static-summer",
+    "title": "Static Summer",
+    "format": "drama",
+    "genre": "nostalgic sci-fi horror",
+    "logline": "Four kids on bicycles hunt a missing friend through a government lab's hole in reality.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 92,
+      "prestige": 72,
+      "violence": 52,
+      "wholesomeness": 56,
+      "edginess": 40,
+      "humor": 54,
+      "heart": 88,
+      "complexity": 58
+    },
+    "baseCostPerEpisode": 9500000,
+    "episodesPerSeason": 9,
+    "castSize": 11,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "nostalgia",
+      "binge",
+      "four-quadrant"
+    ]
+  },
+  {
+    "id": "terrible-at-this",
+    "title": "Terrible at This",
+    "format": "sitcom",
+    "genre": "confessional comedy",
+    "logline": "A grieving woman running a failing cafe explains her worst decisions directly to the camera.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 74,
+      "prestige": 90,
+      "violence": 6,
+      "wholesomeness": 18,
+      "edginess": 82,
+      "humor": 88,
+      "heart": 80,
+      "complexity": 56
+    },
+    "baseCostPerEpisode": 1800000,
+    "episodesPerSeason": 6,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "single-cam",
+      "fourth-wall",
+      "awards-bait"
+    ]
+  },
+  {
+    "id": "doctor-splendid-and-boy",
+    "title": "Doctor Splendid & Boy",
+    "format": "animation",
+    "genre": "sci-fi adult cartoon",
+    "logline": "A nihilist inventor drags his anxious grandson across dimensions and ruins each one on schedule.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 88,
+      "prestige": 66,
+      "violence": 72,
+      "wholesomeness": 8,
+      "edginess": 88,
+      "humor": 88,
+      "heart": 42,
+      "complexity": 62
+    },
+    "baseCostPerEpisode": 2200000,
+    "episodesPerSeason": 10,
+    "castSize": 5,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "producer"
+    ],
+    "tags": [
+      "adult-toon",
+      "sci-fi",
+      "cult"
+    ]
+  },
+  {
+    "id": "wilder-days",
+    "title": "Wilder Days",
+    "format": "animation",
+    "genre": "melancholy adult cartoon",
+    "logline": "A washed-up sitcom star who happens to be a horse fails at recovery in cartoon Los Angeles.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 74,
+      "prestige": 85,
+      "violence": 22,
+      "wholesomeness": 10,
+      "edginess": 78,
+      "humor": 80,
+      "heart": 86,
+      "complexity": 74
+    },
+    "baseCostPerEpisode": 2000000,
+    "episodesPerSeason": 12,
+    "castSize": 6,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "producer"
+    ],
+    "tags": [
+      "adult-toon",
+      "depression",
+      "binge"
+    ]
+  },
+  {
+    "id": "the-long-reign",
+    "title": "The Long Reign",
+    "format": "drama",
+    "genre": "royal historical drama",
+    "logline": "A young queen learns that every decade of duty costs her another person she loves.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 74,
+      "prestige": 92,
+      "violence": 14,
+      "wholesomeness": 44,
+      "edginess": 32,
+      "humor": 18,
+      "heart": 72,
+      "complexity": 66
+    },
+    "baseCostPerEpisode": 12000000,
+    "episodesPerSeason": 10,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "prestige",
+      "period",
+      "lavish"
+    ]
+  },
+  {
+    "id": "small-claims",
+    "title": "Small Claims",
+    "format": "drama",
+    "genre": "legal character study",
+    "logline": "A charming strip-mall lawyer talks his way toward the criminal he was always going to become.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 72,
+      "prestige": 93,
+      "violence": 48,
+      "wholesomeness": 14,
+      "edginess": 62,
+      "humor": 52,
+      "heart": 66,
+      "complexity": 88
+    },
+    "baseCostPerEpisode": 6000000,
+    "episodesPerSeason": 10,
+    "castSize": 9,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "prequel",
+      "slow-burn",
+      "prestige"
+    ]
+  },
+  {
+    "id": "signal-loss",
+    "title": "Signal Loss",
+    "format": "anthology",
+    "genre": "technology dystopia anthology",
+    "logline": "Each standalone film asks what one new device does to a person who cannot put it down.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 84,
+      "violence": 52,
+      "wholesomeness": 6,
+      "edginess": 86,
+      "humor": 22,
+      "heart": 40,
+      "complexity": 70
+    },
+    "baseCostPerEpisode": 5800000,
+    "episodesPerSeason": 6,
+    "castSize": 6,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "director",
+      "lead-actor"
+    ],
+    "tags": [
+      "anthology",
+      "dystopia",
+      "twist"
+    ]
+  },
+  {
+    "id": "palm-court-wives",
+    "title": "Palm Court Wives",
+    "format": "reality",
+    "genre": "wealthy docusoap",
+    "logline": "Six rich women plan charity galas that end in table-flipping, lawsuits and a reunion special.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 6,
+      "violence": 14,
+      "wholesomeness": 6,
+      "edginess": 84,
+      "humor": 58,
+      "heart": 18,
+      "complexity": 20
+    },
+    "baseCostPerEpisode": 700000,
+    "episodesPerSeason": 18,
+    "castSize": 8,
+    "requiredRoles": [
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "trash",
+      "docusoap",
+      "franchise"
+    ]
+  },
+  {
+    "id": "heatwave-villa",
+    "title": "Heatwave Villa",
+    "format": "reality",
+    "genre": "dating docusoap",
+    "logline": "Sunburnt singles couple up nightly in a Mediterranean villa while the public votes them out.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 78,
+      "prestige": 4,
+      "violence": 6,
+      "wholesomeness": 14,
+      "edginess": 82,
+      "humor": 56,
+      "heart": 34,
+      "complexity": 14
+    },
+    "baseCostPerEpisode": 900000,
+    "episodesPerSeason": 20,
+    "castSize": 12,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "dating",
+      "nightly",
+      "format-hit"
+    ]
+  },
+  {
+    "id": "the-glow-up-crew",
+    "title": "The Glow Up Crew",
+    "format": "reality",
+    "genre": "makeover show",
+    "logline": "Five stylists remodel a lonely man's wardrobe, kitchen and self-worth in one weepy week.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 42,
+      "violence": 0,
+      "wholesomeness": 88,
+      "edginess": 24,
+      "humor": 62,
+      "heart": 92,
+      "complexity": 12
+    },
+    "baseCostPerEpisode": 800000,
+    "episodesPerSeason": 16,
+    "castSize": 6,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "makeover",
+      "feel-good",
+      "streaming"
+    ]
+  },
+  {
+    "id": "loose-change",
+    "title": "Loose Change",
+    "format": "sitcom",
+    "genre": "dreamlike comedy drama",
+    "logline": "A broke manager shepherds his rapper cousin's career through a city that keeps turning surreal.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 58,
+      "prestige": 90,
+      "violence": 30,
+      "wholesomeness": 16,
+      "edginess": 80,
+      "humor": 72,
+      "heart": 66,
+      "complexity": 82
+    },
+    "baseCostPerEpisode": 2600000,
+    "episodesPerSeason": 10,
+    "castSize": 6,
+    "requiredRoles": [
+      "lead-actor",
+      "writer",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "auteur",
+      "surreal",
+      "noble-failure"
+    ]
+  },
+  {
+    "id": "the-money-table",
+    "title": "The Money Table",
+    "format": "competition",
+    "genre": "business pitch show",
+    "logline": "Nervous inventors pitch five millionaires who insult the valuation and occasionally write a check.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 76,
+      "prestige": 40,
+      "violence": 0,
+      "wholesomeness": 58,
+      "edginess": 30,
+      "humor": 50,
+      "heart": 58,
+      "complexity": 26
+    },
+    "baseCostPerEpisode": 1000000,
+    "episodesPerSeason": 20,
+    "castSize": 7,
+    "requiredRoles": [
+      "host",
+      "producer"
+    ],
+    "tags": [
+      "business",
+      "aspirational",
+      "panel"
+    ]
+  },
+  {
+    "id": "plated",
+    "title": "Plated",
+    "format": "documentary",
+    "genre": "culinary portrait",
+    "logline": "Each hour follows one obsessive chef, their landscape and the single dish that explains them.",
+    "era": "2010s",
+    "attributes": {
+      "entertainment": 64,
+      "prestige": 82,
+      "violence": 4,
+      "wholesomeness": 70,
+      "edginess": 18,
+      "humor": 18,
+      "heart": 72,
+      "complexity": 40
+    },
+    "baseCostPerEpisode": 1200000,
+    "episodesPerSeason": 6,
+    "castSize": 2,
+    "requiredRoles": [
+      "producer",
+      "director"
+    ],
+    "tags": [
+      "food",
+      "cinematic",
+      "streaming"
+    ]
+  },
+  {
+    "id": "the-waddles",
+    "title": "The Waddles",
+    "format": "kids",
+    "genre": "preschool family comedy",
+    "logline": "A duckling family turns laundry day into a heartbreakingly perfect seven-minute game of pretend.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 66,
+      "violence": 0,
+      "wholesomeness": 98,
+      "edginess": 2,
+      "humor": 78,
+      "heart": 96,
+      "complexity": 6
+    },
+    "baseCostPerEpisode": 600000,
+    "episodesPerSeason": 52,
+    "castSize": 5,
+    "requiredRoles": [
+      "writer",
+      "showrunner",
+      "producer"
+    ],
+    "tags": [
+      "preschool",
+      "parent-friendly",
+      "gentle"
+    ]
+  },
+  {
+    "id": "the-debt-games",
+    "title": "The Debt Games",
+    "format": "drama",
+    "genre": "survival thriller",
+    "logline": "Hundreds of indebted strangers play childhood games on a hidden island for a lethal jackpot.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 92,
+      "prestige": 78,
+      "violence": 94,
+      "wholesomeness": 4,
+      "edginess": 90,
+      "humor": 14,
+      "heart": 58,
+      "complexity": 58
+    },
+    "baseCostPerEpisode": 4200000,
+    "episodesPerSeason": 9,
+    "castSize": 12,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "survival",
+      "international",
+      "phenomenon"
+    ]
+  },
+  {
+    "id": "coach-bramble",
+    "title": "Coach Bramble",
+    "format": "sitcom",
+    "genre": "sports comedy",
+    "logline": "An unqualified American football coach takes over a sinking English club with relentless kindness.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 78,
+      "violence": 6,
+      "wholesomeness": 90,
+      "edginess": 22,
+      "humor": 84,
+      "heart": 96,
+      "complexity": 30
+    },
+    "baseCostPerEpisode": 3400000,
+    "episodesPerSeason": 12,
+    "castSize": 10,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "feel-good",
+      "sports",
+      "streaming"
+    ]
+  },
+  {
+    "id": "service",
+    "title": "Service",
+    "format": "drama",
+    "genre": "kitchen drama",
+    "logline": "A fine-dining chef inherits his brother's grimy sandwich shop and every debt attached to it.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 85,
+      "violence": 18,
+      "wholesomeness": 30,
+      "edginess": 66,
+      "humor": 56,
+      "heart": 86,
+      "complexity": 70
+    },
+    "baseCostPerEpisode": 4800000,
+    "episodesPerSeason": 10,
+    "castSize": 9,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "anxiety",
+      "kitchen",
+      "prestige"
+    ]
+  },
+  {
+    "id": "holding-company",
+    "title": "Holding Company",
+    "format": "drama",
+    "genre": "corporate succession drama",
+    "logline": "An aging media titan dangles his empire between four children who cannot survive without him.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 95,
+      "violence": 10,
+      "wholesomeness": 2,
+      "edginess": 80,
+      "humor": 76,
+      "heart": 26,
+      "complexity": 84
+    },
+    "baseCostPerEpisode": 11000000,
+    "episodesPerSeason": 10,
+    "castSize": 10,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "prestige",
+      "satire",
+      "awards-bait"
+    ]
+  },
+  {
+    "id": "two-winters-in-hanam",
+    "title": "Two Winters in Hanam",
+    "format": "drama",
+    "genre": "romantic melodrama",
+    "logline": "A heart surgeon and a bookshop owner keep missing each other across two snowbound years.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 82,
+      "prestige": 66,
+      "violence": 8,
+      "wholesomeness": 80,
+      "edginess": 18,
+      "humor": 48,
+      "heart": 94,
+      "complexity": 42
+    },
+    "baseCostPerEpisode": 3000000,
+    "episodesPerSeason": 16,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "romance",
+      "melodrama",
+      "subtitled-hit"
+    ]
+  },
+  {
+    "id": "the-split",
+    "title": "The Split",
+    "format": "drama",
+    "genre": "corporate sci-fi thriller",
+    "logline": "Office workers surgically divide their memories and their outside selves start asking questions.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 80,
+      "prestige": 89,
+      "violence": 30,
+      "wholesomeness": 10,
+      "edginess": 64,
+      "humor": 44,
+      "heart": 52,
+      "complexity": 90
+    },
+    "baseCostPerEpisode": 8800000,
+    "episodesPerSeason": 9,
+    "castSize": 9,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "sci-fi",
+      "mystery-box",
+      "prestige"
+    ]
+  },
+  {
+    "id": "thistle-academy",
+    "title": "Thistle Academy",
+    "format": "drama",
+    "genre": "gothic teen mystery",
+    "logline": "A deadpan outcast enrolls at a boarding school for monsters and immediately finds a body.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 86,
+      "prestige": 54,
+      "violence": 48,
+      "wholesomeness": 34,
+      "edginess": 52,
+      "humor": 66,
+      "heart": 58,
+      "complexity": 44
+    },
+    "baseCostPerEpisode": 6000000,
+    "episodesPerSeason": 8,
+    "castSize": 11,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "showrunner",
+      "director"
+    ],
+    "tags": [
+      "teen",
+      "gothic",
+      "streaming-hit"
+    ]
+  },
+  {
+    "id": "the-podcast-floor",
+    "title": "The Podcast Floor",
+    "format": "procedural",
+    "genre": "comedy mystery",
+    "logline": "Three lonely neighbors in one old building record a true-crime podcast about a murder downstairs.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 84,
+      "prestige": 70,
+      "violence": 24,
+      "wholesomeness": 62,
+      "edginess": 30,
+      "humor": 80,
+      "heart": 80,
+      "complexity": 48
+    },
+    "baseCostPerEpisode": 4600000,
+    "episodesPerSeason": 10,
+    "castSize": 8,
+    "requiredRoles": [
+      "lead-actor",
+      "supporting-actor",
+      "writer",
+      "showrunner"
+    ],
+    "tags": [
+      "cozy-mystery",
+      "comedy",
+      "streaming"
+    ]
+  },
+  {
+    "id": "the-daily-brief",
+    "title": "The Daily Brief",
+    "format": "news",
+    "genre": "streaming news digest",
+    "logline": "A twenty-minute vertical newscast explains the day for people who will never own a television.",
+    "era": "2020s",
+    "attributes": {
+      "entertainment": 34,
+      "prestige": 58,
+      "violence": 16,
+      "wholesomeness": 56,
+      "edginess": 22,
+      "humor": 20,
+      "heart": 26,
+      "complexity": 30
+    },
+    "baseCostPerEpisode": 180000,
+    "episodesPerSeason": 200,
+    "castSize": 3,
+    "requiredRoles": [
+      "host",
+      "producer",
+      "writer"
+    ],
+    "tags": [
+      "digital",
+      "daily",
+      "short-form"
+    ]
+  }
+]

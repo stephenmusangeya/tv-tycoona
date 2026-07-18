@@ -1,0 +1,3301 @@
+[
+  {
+    "id": "delphine-marchetti",
+    "name": "Delphine Marchetti",
+    "role": "actor",
+    "age": 41,
+    "starPower": 96,
+    "craft": 89,
+    "reliability": 74,
+    "ego": 88,
+    "versatility": 71,
+    "genreAffinity": {
+      "drama": 95,
+      "anthology": 88,
+      "soap": 70,
+      "procedural": 64
+    },
+    "baseSalaryPerEpisode": 1250000,
+    "bio": "Prestige-drama queen who rewrites her own dialogue on set and is usually right."
+  },
+  {
+    "id": "kwabena-osei-hart",
+    "name": "Kwabena Osei-Hart",
+    "role": "actor",
+    "age": 38,
+    "starPower": 93,
+    "craft": 84,
+    "reliability": 88,
+    "ego": 52,
+    "versatility": 83,
+    "genreAffinity": {
+      "drama": 90,
+      "procedural": 86,
+      "anthology": 74,
+      "documentary": 58
+    },
+    "baseSalaryPerEpisode": 900000,
+    "bio": "Franchise lead with a handshake reputation; every crew he leaves throws him a party."
+  },
+  {
+    "id": "rosalind-vey",
+    "name": "Rosalind Vey",
+    "role": "actor",
+    "age": 29,
+    "starPower": 91,
+    "craft": 66,
+    "reliability": 49,
+    "ego": 81,
+    "versatility": 58,
+    "genreAffinity": {
+      "drama": 72,
+      "soap": 85,
+      "anthology": 60
+    },
+    "baseSalaryPerEpisode": 780000,
+    "bio": "Tabloid magnet whose casting doubles your premiere numbers and triples your insurance."
+  },
+  {
+    "id": "tobias-kranemeyer",
+    "name": "Tobias Kranemeyer",
+    "role": "actor",
+    "age": 56,
+    "starPower": 89,
+    "craft": 92,
+    "reliability": 81,
+    "ego": 69,
+    "versatility": 77,
+    "genreAffinity": {
+      "drama": 94,
+      "procedural": 80,
+      "anthology": 86,
+      "documentary": 55
+    },
+    "baseSalaryPerEpisode": 820000,
+    "bio": "Stage-trained heavyweight who treats a network procedural like a Chekhov revival."
+  },
+  {
+    "id": "amara-nwadike",
+    "name": "Amara Nwadike",
+    "role": "actor",
+    "age": 34,
+    "starPower": 88,
+    "craft": 90,
+    "reliability": 92,
+    "ego": 41,
+    "versatility": 88,
+    "genreAffinity": {
+      "drama": 92,
+      "sitcom": 78,
+      "anthology": 85,
+      "procedural": 72
+    },
+    "baseSalaryPerEpisode": 760000,
+    "bio": "The rare lead who can carry a weepy Thursday and a Friday farce in one week."
+  },
+  {
+    "id": "gustavo-pineiro",
+    "name": "Gustavo Pineiro",
+    "role": "actor",
+    "age": 47,
+    "starPower": 90,
+    "craft": 71,
+    "reliability": 63,
+    "ego": 90,
+    "versatility": 49,
+    "genreAffinity": {
+      "procedural": 88,
+      "drama": 74,
+      "soap": 66
+    },
+    "baseSalaryPerEpisode": 720000,
+    "bio": "Detective-show icon who now demands a producer credit and a personal trailer chef."
+  },
+  {
+    "id": "minori-tachibana",
+    "name": "Minori Tachibana",
+    "role": "actor",
+    "age": 31,
+    "starPower": 89,
+    "craft": 87,
+    "reliability": 90,
+    "ego": 38,
+    "versatility": 85,
+    "genreAffinity": {
+      "drama": 88,
+      "animation": 80,
+      "anthology": 82,
+      "sitcom": 70
+    },
+    "baseSalaryPerEpisode": 680000,
+    "bio": "Voice work made her famous; live-action made her respected, and she never mentions either."
+  },
+  {
+    "id": "cormac-a-brannigan",
+    "name": "Cormac Brannigan",
+    "role": "actor",
+    "age": 62,
+    "starPower": 88,
+    "craft": 94,
+    "reliability": 86,
+    "ego": 55,
+    "versatility": 72,
+    "genreAffinity": {
+      "drama": 93,
+      "anthology": 89,
+      "procedural": 76,
+      "documentary": 60
+    },
+    "baseSalaryPerEpisode": 640000,
+    "bio": "Grizzled patriarch specialist who can make a weather report sound like a confession."
+  },
+  {
+    "id": "priya-ramaswamy",
+    "name": "Priya Ramaswamy",
+    "role": "actor",
+    "age": 27,
+    "starPower": 81,
+    "craft": 74,
+    "reliability": 79,
+    "ego": 62,
+    "versatility": 76,
+    "genreAffinity": {
+      "drama": 80,
+      "sitcom": 76,
+      "soap": 72,
+      "anthology": 64
+    },
+    "baseSalaryPerEpisode": 470000,
+    "bio": "Streaming breakout who is one good showrunner away from being genuinely great."
+  },
+  {
+    "id": "lennox-fairweather",
+    "name": "Lennox Fairweather",
+    "role": "actor",
+    "age": 44,
+    "starPower": 88,
+    "craft": 58,
+    "reliability": 71,
+    "ego": 84,
+    "versatility": 42,
+    "genreAffinity": {
+      "drama": 66,
+      "procedural": 74,
+      "reality": 58
+    },
+    "baseSalaryPerEpisode": 560000,
+    "bio": "Handsome, hugely marketable, and physically incapable of delivering a subordinate clause."
+  },
+  {
+    "id": "yolanda-birchwood",
+    "name": "Yolanda Birchwood",
+    "role": "actor",
+    "age": 52,
+    "starPower": 78,
+    "craft": 91,
+    "reliability": 94,
+    "ego": 33,
+    "versatility": 86,
+    "genreAffinity": {
+      "drama": 90,
+      "procedural": 84,
+      "sitcom": 72,
+      "anthology": 80
+    },
+    "baseSalaryPerEpisode": 390000,
+    "bio": "Thirty years of flawless work and not one anecdote about her being difficult."
+  },
+  {
+    "id": "dorian-eszterhazy",
+    "name": "Dorian Eszterhazy",
+    "role": "actor",
+    "age": 36,
+    "starPower": 77,
+    "craft": 83,
+    "reliability": 44,
+    "ego": 93,
+    "versatility": 68,
+    "genreAffinity": {
+      "drama": 86,
+      "anthology": 82,
+      "sitcom": 58
+    },
+    "baseSalaryPerEpisode": 410000,
+    "bio": "Astonishing on camera, catastrophic off it; two showrunners have quit rather than continue."
+  },
+  {
+    "id": "mabel-quintanilla",
+    "name": "Mabel Quintanilla",
+    "role": "actor",
+    "age": 68,
+    "starPower": 74,
+    "craft": 93,
+    "reliability": 89,
+    "ego": 47,
+    "versatility": 70,
+    "genreAffinity": {
+      "drama": 92,
+      "soap": 86,
+      "anthology": 84
+    },
+    "baseSalaryPerEpisode": 180000,
+    "bio": "Former primetime queen, still magnificent, now available for a startling discount."
+  },
+  {
+    "id": "terrence-oyelaran",
+    "name": "Terrence Oyelaran",
+    "role": "actor",
+    "age": 33,
+    "starPower": 73,
+    "craft": 80,
+    "reliability": 85,
+    "ego": 50,
+    "versatility": 81,
+    "genreAffinity": {
+      "sitcom": 86,
+      "drama": 74,
+      "sketch": 78,
+      "anthology": 62
+    },
+    "baseSalaryPerEpisode": 260000,
+    "bio": "Comedy lead with dramatic chops he keeps quietly auditioning for and not getting."
+  },
+  {
+    "id": "solveig-lindqvist",
+    "name": "Solveig Lindqvist",
+    "role": "actor",
+    "age": 39,
+    "starPower": 72,
+    "craft": 88,
+    "reliability": 83,
+    "ego": 58,
+    "versatility": 64,
+    "genreAffinity": {
+      "drama": 90,
+      "procedural": 82,
+      "anthology": 78
+    },
+    "baseSalaryPerEpisode": 250000,
+    "bio": "Nordic import whose stillness on screen makes other actors look like they're flailing."
+  },
+  {
+    "id": "hollis-derringer",
+    "name": "Hollis Derringer",
+    "role": "actor",
+    "age": 59,
+    "starPower": 71,
+    "craft": 62,
+    "reliability": 57,
+    "ego": 87,
+    "versatility": 38,
+    "genreAffinity": {
+      "procedural": 76,
+      "drama": 64,
+      "soap": 68
+    },
+    "baseSalaryPerEpisode": 210000,
+    "bio": "Coasting on a hit he headlined in 2009 and reminding everyone hourly."
+  },
+  {
+    "id": "chidinma-obiako",
+    "name": "Chidinma Obiako",
+    "role": "actor",
+    "age": 26,
+    "starPower": 69,
+    "craft": 85,
+    "reliability": 88,
+    "ego": 36,
+    "versatility": 83,
+    "genreAffinity": {
+      "drama": 86,
+      "anthology": 80,
+      "sitcom": 72,
+      "soap": 74
+    },
+    "baseSalaryPerEpisode": 140000,
+    "bio": "Two seasons of soap boot camp produced a technician who never blows a take."
+  },
+  {
+    "id": "rafferty-mchale",
+    "name": "Rafferty McHale",
+    "role": "actor",
+    "age": 45,
+    "starPower": 68,
+    "craft": 79,
+    "reliability": 76,
+    "ego": 61,
+    "versatility": 72,
+    "genreAffinity": {
+      "sitcom": 84,
+      "sketch": 80,
+      "drama": 66,
+      "animation": 70
+    },
+    "baseSalaryPerEpisode": 155000,
+    "bio": "Sitcom dad in four failed pilots; the fifth one might finally be the hit."
+  },
+  {
+    "id": "beatriz-calloway",
+    "name": "Beatriz Calloway",
+    "role": "actor",
+    "age": 49,
+    "starPower": 67,
+    "craft": 86,
+    "reliability": 91,
+    "ego": 40,
+    "versatility": 79,
+    "genreAffinity": {
+      "drama": 88,
+      "procedural": 86,
+      "anthology": 74,
+      "documentary": 56
+    },
+    "baseSalaryPerEpisode": 150000,
+    "bio": "The precinct captain everyone believes; casting directors call her the credibility machine."
+  },
+  {
+    "id": "anselm-verhoeff",
+    "name": "Anselm Verhoeff",
+    "role": "actor",
+    "age": 71,
+    "starPower": 66,
+    "craft": 95,
+    "reliability": 84,
+    "ego": 52,
+    "versatility": 63,
+    "genreAffinity": {
+      "drama": 94,
+      "anthology": 90,
+      "documentary": 66
+    },
+    "baseSalaryPerEpisode": 95000,
+    "bio": "A living masterclass who now works cheap because nobody under fifty remembers him."
+  },
+  {
+    "id": "jazmine-otoole",
+    "name": "Jazmine O'Toole",
+    "role": "actor",
+    "age": 23,
+    "starPower": 64,
+    "craft": 58,
+    "reliability": 62,
+    "ego": 74,
+    "versatility": 55,
+    "genreAffinity": {
+      "soap": 78,
+      "drama": 64,
+      "reality": 70
+    },
+    "baseSalaryPerEpisode": 85000,
+    "bio": "Reality-show alumna converting fame into acting work faster than she's converting talent."
+  },
+  {
+    "id": "nikolai-svetlanov",
+    "name": "Nikolai Svetlanov",
+    "role": "actor",
+    "age": 54,
+    "starPower": 63,
+    "craft": 89,
+    "reliability": 80,
+    "ego": 66,
+    "versatility": 58,
+    "genreAffinity": {
+      "drama": 90,
+      "procedural": 84,
+      "anthology": 80
+    },
+    "baseSalaryPerEpisode": 120000,
+    "bio": "Plays villains so well that strangers apologize to him in supermarkets."
+  },
+  {
+    "id": "lorraine-akiyama",
+    "name": "Lorraine Akiyama",
+    "role": "actor",
+    "age": 37,
+    "starPower": 62,
+    "craft": 81,
+    "reliability": 87,
+    "ego": 44,
+    "versatility": 80,
+    "genreAffinity": {
+      "procedural": 86,
+      "drama": 78,
+      "sitcom": 68,
+      "anthology": 66
+    },
+    "baseSalaryPerEpisode": 110000,
+    "bio": "Six procedurals, six seasons each, never once late to a call time."
+  },
+  {
+    "id": "bertrand-nsele",
+    "name": "Bertrand Nsele",
+    "role": "actor",
+    "age": 30,
+    "starPower": 61,
+    "craft": 77,
+    "reliability": 73,
+    "ego": 57,
+    "versatility": 75,
+    "genreAffinity": {
+      "drama": 80,
+      "procedural": 74,
+      "sitcom": 70
+    },
+    "baseSalaryPerEpisode": 98000,
+    "bio": "Reliable second lead who quietly wonders when someone will let him be first."
+  },
+  {
+    "id": "imogen-vasquez-rowe",
+    "name": "Imogen Vasquez-Rowe",
+    "role": "actor",
+    "age": 43,
+    "starPower": 60,
+    "craft": 90,
+    "reliability": 68,
+    "ego": 72,
+    "versatility": 67,
+    "genreAffinity": {
+      "drama": 92,
+      "anthology": 86,
+      "soap": 70
+    },
+    "baseSalaryPerEpisode": 115000,
+    "bio": "Brilliant, brittle, and known to walk off a set over a badly written comma."
+  },
+  {
+    "id": "desmond-achterberg",
+    "name": "Desmond Achterberg",
+    "role": "actor",
+    "age": 65,
+    "starPower": 59,
+    "craft": 87,
+    "reliability": 90,
+    "ego": 35,
+    "versatility": 69,
+    "genreAffinity": {
+      "drama": 86,
+      "procedural": 82,
+      "documentary": 62,
+      "anthology": 76
+    },
+    "baseSalaryPerEpisode": 78000,
+    "bio": "Career character man with 340 credits and precisely zero enemies in the industry."
+  },
+  {
+    "id": "soraya-benkirane",
+    "name": "Soraya Benkirane",
+    "role": "actor",
+    "age": 25,
+    "starPower": 58,
+    "craft": 83,
+    "reliability": 86,
+    "ego": 42,
+    "versatility": 84,
+    "genreAffinity": {
+      "drama": 84,
+      "anthology": 80,
+      "sitcom": 74,
+      "procedural": 70
+    },
+    "baseSalaryPerEpisode": 62000,
+    "bio": "Film-school discovery whose screen test made a room of executives go silent."
+  },
+  {
+    "id": "walton-priddy",
+    "name": "Walton Priddy",
+    "role": "actor",
+    "age": 48,
+    "starPower": 57,
+    "craft": 64,
+    "reliability": 48,
+    "ego": 79,
+    "versatility": 45,
+    "genreAffinity": {
+      "sitcom": 72,
+      "sketch": 68,
+      "reality": 62
+    },
+    "baseSalaryPerEpisode": 72000,
+    "bio": "Funny in the room, unbearable by week three, gone by episode nine."
+  },
+  {
+    "id": "harriet-mbeki-strand",
+    "name": "Harriet Mbeki-Strand",
+    "role": "actor",
+    "age": 57,
+    "starPower": 56,
+    "craft": 88,
+    "reliability": 93,
+    "ego": 31,
+    "versatility": 74,
+    "genreAffinity": {
+      "drama": 88,
+      "soap": 84,
+      "anthology": 78,
+      "procedural": 72
+    },
+    "baseSalaryPerEpisode": 68000,
+    "bio": "Soap veteran who can learn eleven pages overnight and make them sing."
+  },
+  {
+    "id": "ignacio-delacruz-bell",
+    "name": "Ignacio Delacruz-Bell",
+    "role": "actor",
+    "age": 32,
+    "starPower": 55,
+    "craft": 76,
+    "reliability": 78,
+    "ego": 54,
+    "versatility": 77,
+    "genreAffinity": {
+      "procedural": 82,
+      "drama": 76,
+      "sitcom": 66
+    },
+    "baseSalaryPerEpisode": 58000,
+    "bio": "Stunt-trained lead who does his own falls and negotiates his own contracts badly."
+  },
+  {
+    "id": "philippa-ondaatje-moss",
+    "name": "Philippa Ondaatje-Moss",
+    "role": "actor",
+    "age": 40,
+    "starPower": 54,
+    "craft": 85,
+    "reliability": 81,
+    "ego": 49,
+    "versatility": 73,
+    "genreAffinity": {
+      "drama": 86,
+      "anthology": 82,
+      "procedural": 74
+    },
+    "baseSalaryPerEpisode": 56000,
+    "bio": "Critics adore her, audiences forget her, and she's made peace with exactly one of those."
+  },
+  {
+    "id": "jerome-tinsdale",
+    "name": "Jerome Tinsdale",
+    "role": "actor",
+    "age": 61,
+    "starPower": 53,
+    "craft": 72,
+    "reliability": 66,
+    "ego": 68,
+    "versatility": 51,
+    "genreAffinity": {
+      "soap": 80,
+      "drama": 70,
+      "procedural": 64
+    },
+    "baseSalaryPerEpisode": 49000,
+    "bio": "Daytime legend convinced his primetime renaissance is one phone call away."
+  },
+  {
+    "id": "nia-okonkwo-pratt",
+    "name": "Nia Okonkwo-Pratt",
+    "role": "actor",
+    "age": 28,
+    "starPower": 52,
+    "craft": 79,
+    "reliability": 84,
+    "ego": 45,
+    "versatility": 82,
+    "genreAffinity": {
+      "sitcom": 82,
+      "drama": 74,
+      "sketch": 76,
+      "animation": 68
+    },
+    "baseSalaryPerEpisode": 47000,
+    "bio": "Improv-house standout with impeccable timing and a terrifying work ethic."
+  },
+  {
+    "id": "anders-holmqvist",
+    "name": "Anders Holmqvist",
+    "role": "actor",
+    "age": 46,
+    "starPower": 51,
+    "craft": 68,
+    "reliability": 72,
+    "ego": 58,
+    "versatility": 62,
+    "genreAffinity": {
+      "procedural": 76,
+      "drama": 68,
+      "documentary": 54
+    },
+    "baseSalaryPerEpisode": 44000,
+    "bio": "Every network has cast him as a coroner; three of them cast him twice."
+  },
+  {
+    "id": "leticia-sandoval-ruiz",
+    "name": "Leticia Sandoval-Ruiz",
+    "role": "actor",
+    "age": 35,
+    "starPower": 50,
+    "craft": 84,
+    "reliability": 88,
+    "ego": 39,
+    "versatility": 78,
+    "genreAffinity": {
+      "drama": 84,
+      "soap": 80,
+      "procedural": 76,
+      "anthology": 70
+    },
+    "baseSalaryPerEpisode": 45000,
+    "bio": "Telenovela-trained and utterly unflappable; directors request her for the hardest scenes."
+  },
+  {
+    "id": "corbin-featherstonhaugh",
+    "name": "Corbin Featherstonhaugh",
+    "role": "actor",
+    "age": 22,
+    "starPower": 49,
+    "craft": 54,
+    "reliability": 59,
+    "ego": 76,
+    "versatility": 48,
+    "genreAffinity": {
+      "drama": 62,
+      "soap": 72,
+      "reality": 66
+    },
+    "baseSalaryPerEpisode": 38000,
+    "bio": "Modelling-to-acting pipeline graduate whose agent talks considerably better than he acts."
+  },
+  {
+    "id": "ayanda-mokoena-frost",
+    "name": "Ayanda Mokoena-Frost",
+    "role": "actor",
+    "age": 51,
+    "starPower": 48,
+    "craft": 86,
+    "reliability": 85,
+    "ego": 43,
+    "versatility": 71,
+    "genreAffinity": {
+      "drama": 88,
+      "anthology": 80,
+      "documentary": 60,
+      "procedural": 72
+    },
+    "baseSalaryPerEpisode": 42000,
+    "bio": "Theatre royalty at home, gloriously unknown here, and priced accordingly."
+  },
+  {
+    "id": "marisol-thackeray",
+    "name": "Marisol Thackeray",
+    "role": "actor",
+    "age": 66,
+    "starPower": 47,
+    "craft": 82,
+    "reliability": 77,
+    "ego": 64,
+    "versatility": 56,
+    "genreAffinity": {
+      "soap": 84,
+      "drama": 76,
+      "anthology": 68
+    },
+    "baseSalaryPerEpisode": 36000,
+    "bio": "Forty years of daytime made her fast, sharp, and openly contemptuous of rehearsal."
+  },
+  {
+    "id": "idris-vanderhoek",
+    "name": "Idris Vanderhoek",
+    "role": "actor",
+    "age": 29,
+    "starPower": 46,
+    "craft": 80,
+    "reliability": 83,
+    "ego": 41,
+    "versatility": 79,
+    "genreAffinity": {
+      "drama": 82,
+      "procedural": 78,
+      "sitcom": 66,
+      "anthology": 72
+    },
+    "baseSalaryPerEpisode": 34000,
+    "bio": "Six years of tiny parts, one enormous monologue, and now a very busy inbox."
+  },
+  {
+    "id": "georgina-pell",
+    "name": "Georgina Pell",
+    "role": "actor",
+    "age": 42,
+    "starPower": 45,
+    "craft": 73,
+    "reliability": 69,
+    "ego": 62,
+    "versatility": 66,
+    "genreAffinity": {
+      "sitcom": 78,
+      "drama": 68,
+      "sketch": 72
+    },
+    "baseSalaryPerEpisode": 33000,
+    "bio": "Was almost famous twice and has an excellent, slightly bitter story about each."
+  },
+  {
+    "id": "kelechi-adeyemi-stone",
+    "name": "Kelechi Adeyemi-Stone",
+    "role": "actor",
+    "age": 24,
+    "starPower": 44,
+    "craft": 81,
+    "reliability": 87,
+    "ego": 34,
+    "versatility": 80,
+    "genreAffinity": {
+      "drama": 82,
+      "anthology": 76,
+      "procedural": 70,
+      "sitcom": 68
+    },
+    "baseSalaryPerEpisode": 26000,
+    "bio": "Conservatory graduate who treats a two-line guest spot like a career-defining role."
+  },
+  {
+    "id": "vittorio-lamonte",
+    "name": "Vittorio Lamonte",
+    "role": "actor",
+    "age": 58,
+    "starPower": 43,
+    "craft": 78,
+    "reliability": 52,
+    "ego": 83,
+    "versatility": 49,
+    "genreAffinity": {
+      "drama": 80,
+      "soap": 74,
+      "anthology": 68
+    },
+    "baseSalaryPerEpisode": 31000,
+    "bio": "Magnificent when sober, and nobody will tell you when that reliably is."
+  },
+  {
+    "id": "tallulah-brightman",
+    "name": "Tallulah Brightman",
+    "role": "actor",
+    "age": 33,
+    "starPower": 42,
+    "craft": 75,
+    "reliability": 82,
+    "ego": 47,
+    "versatility": 74,
+    "genreAffinity": {
+      "sitcom": 80,
+      "sketch": 76,
+      "animation": 72,
+      "drama": 62
+    },
+    "baseSalaryPerEpisode": 29000,
+    "bio": "Physical comedian who broke a rib for a sight gag and called it worth it."
+  },
+  {
+    "id": "hamish-oduya",
+    "name": "Hamish Oduya",
+    "role": "actor",
+    "age": 37,
+    "starPower": 41,
+    "craft": 70,
+    "reliability": 75,
+    "ego": 53,
+    "versatility": 68,
+    "genreAffinity": {
+      "procedural": 76,
+      "drama": 70,
+      "documentary": 52
+    },
+    "baseSalaryPerEpisode": 27000,
+    "bio": "The guy from that ad, now quietly assembling a genuinely respectable resume."
+  },
+  {
+    "id": "perpetua-nightingale",
+    "name": "Perpetua Nightingale",
+    "role": "actor",
+    "age": 74,
+    "starPower": 40,
+    "craft": 91,
+    "reliability": 81,
+    "ego": 57,
+    "versatility": 54,
+    "genreAffinity": {
+      "drama": 92,
+      "anthology": 86,
+      "documentary": 64
+    },
+    "baseSalaryPerEpisode": 24000,
+    "bio": "Two golden-age classics on her CV and a mordant opinion about every one of you."
+  },
+  {
+    "id": "sanjay-bhattacharya-lowe",
+    "name": "Sanjay Bhattacharya-Lowe",
+    "role": "actor",
+    "age": 31,
+    "starPower": 39,
+    "craft": 77,
+    "reliability": 86,
+    "ego": 38,
+    "versatility": 81,
+    "genreAffinity": {
+      "drama": 78,
+      "sitcom": 74,
+      "procedural": 76,
+      "anthology": 66
+    },
+    "baseSalaryPerEpisode": 25000,
+    "bio": "Can play doctor, suspect, brother, or best friend, and has played all four this year."
+  },
+  {
+    "id": "claudette-fournier-ross",
+    "name": "Claudette Fournier-Ross",
+    "role": "actor",
+    "age": 47,
+    "starPower": 38,
+    "craft": 83,
+    "reliability": 79,
+    "ego": 51,
+    "versatility": 70,
+    "genreAffinity": {
+      "drama": 84,
+      "anthology": 78,
+      "soap": 72
+    },
+    "baseSalaryPerEpisode": 23000,
+    "bio": "Spent a decade raising kids; came back better and considerably cheaper than she should be."
+  },
+  {
+    "id": "olamide-carrington",
+    "name": "Olamide Carrington",
+    "role": "actor",
+    "age": 26,
+    "starPower": 37,
+    "craft": 72,
+    "reliability": 80,
+    "ego": 44,
+    "versatility": 76,
+    "genreAffinity": {
+      "sitcom": 76,
+      "drama": 70,
+      "sketch": 72
+    },
+    "baseSalaryPerEpisode": 21000,
+    "bio": "Web-series famous, network-untested, and cheaper this month than she'll ever be again."
+  },
+  {
+    "id": "gunther-alsleben",
+    "name": "Gunther Alsleben",
+    "role": "actor",
+    "age": 63,
+    "starPower": 36,
+    "craft": 79,
+    "reliability": 88,
+    "ego": 33,
+    "versatility": 58,
+    "genreAffinity": {
+      "drama": 80,
+      "procedural": 78,
+      "documentary": 60
+    },
+    "baseSalaryPerEpisode": 20000,
+    "bio": "Plays authority figures with a weariness no younger actor can convincingly fake."
+  },
+  {
+    "id": "esperanza-villalobos",
+    "name": "Esperanza Villalobos",
+    "role": "actor",
+    "age": 34,
+    "starPower": 35,
+    "craft": 85,
+    "reliability": 84,
+    "ego": 40,
+    "versatility": 72,
+    "genreAffinity": {
+      "drama": 86,
+      "soap": 78,
+      "anthology": 76
+    },
+    "baseSalaryPerEpisode": 22000,
+    "bio": "An undiscovered gem: three festival awards, no agent worth the name, no budget line."
+  },
+  {
+    "id": "rupert-caskey",
+    "name": "Rupert Caskey",
+    "role": "actor",
+    "age": 44,
+    "starPower": 34,
+    "craft": 66,
+    "reliability": 58,
+    "ego": 71,
+    "versatility": 52,
+    "genreAffinity": {
+      "procedural": 70,
+      "drama": 62,
+      "soap": 64
+    },
+    "baseSalaryPerEpisode": 19000,
+    "bio": "Fired from two series for the same argument about his character's motivation."
+  },
+  {
+    "id": "zainab-halloran",
+    "name": "Zainab Halloran",
+    "role": "actor",
+    "age": 21,
+    "starPower": 33,
+    "craft": 74,
+    "reliability": 83,
+    "ego": 36,
+    "versatility": 78,
+    "genreAffinity": {
+      "drama": 74,
+      "soap": 76,
+      "sitcom": 68
+    },
+    "baseSalaryPerEpisode": 14000,
+    "bio": "Nineteen when she shot her first pilot; already the most prepared person on set."
+  },
+  {
+    "id": "barnaby-quist",
+    "name": "Barnaby Quist",
+    "role": "actor",
+    "age": 39,
+    "starPower": 32,
+    "craft": 71,
+    "reliability": 74,
+    "ego": 48,
+    "versatility": 69,
+    "genreAffinity": {
+      "sitcom": 74,
+      "sketch": 78,
+      "animation": 70
+    },
+    "baseSalaryPerEpisode": 17000,
+    "bio": "Sketch-show utility player who does forty voices and has never headlined anything."
+  },
+  {
+    "id": "noor-shirazi-kemp",
+    "name": "Noor Shirazi-Kemp",
+    "role": "actor",
+    "age": 30,
+    "starPower": 31,
+    "craft": 82,
+    "reliability": 89,
+    "ego": 30,
+    "versatility": 83,
+    "genreAffinity": {
+      "drama": 82,
+      "procedural": 78,
+      "anthology": 74,
+      "sitcom": 66
+    },
+    "baseSalaryPerEpisode": 16000,
+    "bio": "Every director who hires her tries to hire her again; nobody has told the marketing department."
+  },
+  {
+    "id": "franklin-osgood-hale",
+    "name": "Franklin Osgood-Hale",
+    "role": "actor",
+    "age": 69,
+    "starPower": 30,
+    "craft": 84,
+    "reliability": 76,
+    "ego": 60,
+    "versatility": 50,
+    "genreAffinity": {
+      "drama": 84,
+      "anthology": 80,
+      "documentary": 58
+    },
+    "baseSalaryPerEpisode": 15000,
+    "bio": "Retired twice, unretired twice, and still better than most of your cast."
+  },
+  {
+    "id": "suki-nakamura-boyd",
+    "name": "Suki Nakamura-Boyd",
+    "role": "actor",
+    "age": 27,
+    "starPower": 29,
+    "craft": 78,
+    "reliability": 85,
+    "ego": 37,
+    "versatility": 80,
+    "genreAffinity": {
+      "animation": 84,
+      "sitcom": 74,
+      "drama": 68,
+      "kids": 76
+    },
+    "baseSalaryPerEpisode": 13000,
+    "bio": "Voice-acting prodigy trying to convince someone she has a face as well as a range."
+  },
+  {
+    "id": "emeka-stanhope",
+    "name": "Emeka Stanhope",
+    "role": "actor",
+    "age": 36,
+    "starPower": 28,
+    "craft": 69,
+    "reliability": 72,
+    "ego": 45,
+    "versatility": 66,
+    "genreAffinity": {
+      "procedural": 72,
+      "drama": 66,
+      "soap": 62
+    },
+    "baseSalaryPerEpisode": 12000,
+    "bio": "Dependable day-player who has died on screen in nine different franchises."
+  },
+  {
+    "id": "annika-torvald",
+    "name": "Annika Torvald",
+    "role": "actor",
+    "age": 23,
+    "starPower": 27,
+    "craft": 80,
+    "reliability": 86,
+    "ego": 32,
+    "versatility": 77,
+    "genreAffinity": {
+      "drama": 80,
+      "anthology": 74,
+      "soap": 70
+    },
+    "baseSalaryPerEpisode": 11000,
+    "bio": "Craft eighty, salary eleven thousand, and an agent who hasn't noticed the discrepancy."
+  },
+  {
+    "id": "jean-baptiste-okoro",
+    "name": "Jean-Baptiste Okoro",
+    "role": "actor",
+    "age": 53,
+    "starPower": 26,
+    "craft": 81,
+    "reliability": 78,
+    "ego": 42,
+    "versatility": 61,
+    "genreAffinity": {
+      "drama": 82,
+      "documentary": 64,
+      "anthology": 74
+    },
+    "baseSalaryPerEpisode": 13500,
+    "bio": "Twenty years of international arthouse; nobody here can pronounce his best film."
+  },
+  {
+    "id": "petra-vandenbosch",
+    "name": "Petra Vandenbosch",
+    "role": "actor",
+    "age": 45,
+    "starPower": 25,
+    "craft": 73,
+    "reliability": 67,
+    "ego": 66,
+    "versatility": 57,
+    "genreAffinity": {
+      "soap": 76,
+      "drama": 68,
+      "anthology": 62
+    },
+    "baseSalaryPerEpisode": 10500,
+    "bio": "Once turned down a network lead on principle and has regretted it since Tuesday, 2011."
+  },
+  {
+    "id": "caspian-morrow-idowu",
+    "name": "Caspian Morrow-Idowu",
+    "role": "actor",
+    "age": 25,
+    "starPower": 24,
+    "craft": 83,
+    "reliability": 88,
+    "ego": 29,
+    "versatility": 81,
+    "genreAffinity": {
+      "drama": 84,
+      "anthology": 78,
+      "procedural": 72,
+      "sitcom": 64
+    },
+    "baseSalaryPerEpisode": 9500,
+    "bio": "The bargain of the decade if anyone bothers to watch his student film."
+  },
+  {
+    "id": "marguerite-selby-adeyinka",
+    "name": "Marguerite Selby-Adeyinka",
+    "role": "actor",
+    "age": 32,
+    "starPower": 23,
+    "craft": 76,
+    "reliability": 81,
+    "ego": 39,
+    "versatility": 73,
+    "genreAffinity": {
+      "drama": 76,
+      "soap": 74,
+      "procedural": 68
+    },
+    "baseSalaryPerEpisode": 9000,
+    "bio": "Left law for acting at twenty-nine and hasn't wasted a single day since."
+  },
+  {
+    "id": "orson-pettibone",
+    "name": "Orson Pettibone",
+    "role": "actor",
+    "age": 57,
+    "starPower": 22,
+    "craft": 68,
+    "reliability": 54,
+    "ego": 75,
+    "versatility": 44,
+    "genreAffinity": {
+      "drama": 68,
+      "soap": 66,
+      "anthology": 60
+    },
+    "baseSalaryPerEpisode": 8500,
+    "bio": "Blacklisted himself with one interview in 2014 and still won't take it back."
+  },
+  {
+    "id": "leilani-fotu-marsh",
+    "name": "Leilani Fotu-Marsh",
+    "role": "actor",
+    "age": 28,
+    "starPower": 21,
+    "craft": 79,
+    "reliability": 87,
+    "ego": 33,
+    "versatility": 79,
+    "genreAffinity": {
+      "drama": 80,
+      "sitcom": 72,
+      "anthology": 70,
+      "kids": 66
+    },
+    "baseSalaryPerEpisode": 8800,
+    "bio": "Islander theatre circuit's brightest export, currently working a day job between auditions."
+  },
+  {
+    "id": "dmitri-halversson",
+    "name": "Dmitri Halversson",
+    "role": "actor",
+    "age": 41,
+    "starPower": 20,
+    "craft": 74,
+    "reliability": 70,
+    "ego": 56,
+    "versatility": 63,
+    "genreAffinity": {
+      "procedural": 78,
+      "drama": 70,
+      "anthology": 62
+    },
+    "baseSalaryPerEpisode": 8200,
+    "bio": "Menacing in exactly one register, but nobody does that register better."
+  },
+  {
+    "id": "constance-abioye",
+    "name": "Constance Abioye",
+    "role": "actor",
+    "age": 64,
+    "starPower": 19,
+    "craft": 86,
+    "reliability": 83,
+    "ego": 38,
+    "versatility": 59,
+    "genreAffinity": {
+      "drama": 88,
+      "anthology": 80,
+      "documentary": 62
+    },
+    "baseSalaryPerEpisode": 9800,
+    "bio": "Never had a break, never gave a bad performance, never asked for more money."
+  },
+  {
+    "id": "tobiah-rennick",
+    "name": "Tobiah Rennick",
+    "role": "actor",
+    "age": 19,
+    "starPower": 18,
+    "craft": 66,
+    "reliability": 75,
+    "ego": 41,
+    "versatility": 70,
+    "genreAffinity": {
+      "drama": 68,
+      "kids": 76,
+      "soap": 64
+    },
+    "baseSalaryPerEpisode": 8000,
+    "bio": "Child-actor graduate navigating the awkward gap between cute and castable."
+  },
+  {
+    "id": "valentina-krasniqi",
+    "name": "Valentina Krasniqi",
+    "role": "actor",
+    "age": 35,
+    "starPower": 17,
+    "craft": 81,
+    "reliability": 85,
+    "ego": 35,
+    "versatility": 75,
+    "genreAffinity": {
+      "drama": 82,
+      "anthology": 78,
+      "procedural": 70
+    },
+    "baseSalaryPerEpisode": 8600,
+    "bio": "Speaks five languages, works in three, and is unknown in all of them."
+  },
+  {
+    "id": "hugo-mbanefo-clay",
+    "name": "Hugo Mbanefo-Clay",
+    "role": "actor",
+    "age": 49,
+    "starPower": 16,
+    "craft": 70,
+    "reliability": 62,
+    "ego": 67,
+    "versatility": 51,
+    "genreAffinity": {
+      "sitcom": 72,
+      "sketch": 68,
+      "soap": 60
+    },
+    "baseSalaryPerEpisode": 8000,
+    "bio": "Convinced his comedy is ahead of its time; it has been for twenty-two years."
+  },
+  {
+    "id": "seraphine-dubois-oyelowo",
+    "name": "Seraphine Dubois-Oyelowo",
+    "role": "actor",
+    "age": 26,
+    "starPower": 15,
+    "craft": 84,
+    "reliability": 90,
+    "ego": 27,
+    "versatility": 82,
+    "genreAffinity": {
+      "drama": 86,
+      "anthology": 80,
+      "soap": 72,
+      "procedural": 68
+    },
+    "baseSalaryPerEpisode": 9200,
+    "bio": "Craft of a veteran, profile of a stranger, price of a background extra."
+  },
+  {
+    "id": "ronan-fitzallan",
+    "name": "Ronan Fitzallan",
+    "role": "actor",
+    "age": 72,
+    "starPower": 14,
+    "craft": 88,
+    "reliability": 79,
+    "ego": 49,
+    "versatility": 52,
+    "genreAffinity": {
+      "drama": 90,
+      "anthology": 84,
+      "documentary": 60
+    },
+    "baseSalaryPerEpisode": 8400,
+    "bio": "Fifty years of small screens and small rooms; still the best listener in any scene."
+  },
+  {
+    "id": "jolanda-espiritu",
+    "name": "Jolanda Espiritu",
+    "role": "actor",
+    "age": 30,
+    "starPower": 13,
+    "craft": 72,
+    "reliability": 80,
+    "ego": 43,
+    "versatility": 71,
+    "genreAffinity": {
+      "soap": 78,
+      "drama": 70,
+      "procedural": 64
+    },
+    "baseSalaryPerEpisode": 8000,
+    "bio": "Four years of daytime under another name that she'd rather you didn't research."
+  },
+  {
+    "id": "augustin-kyeremeh",
+    "name": "Augustin Kyeremeh",
+    "role": "actor",
+    "age": 24,
+    "starPower": 12,
+    "craft": 80,
+    "reliability": 84,
+    "ego": 31,
+    "versatility": 78,
+    "genreAffinity": {
+      "drama": 80,
+      "sitcom": 70,
+      "anthology": 74
+    },
+    "baseSalaryPerEpisode": 9000,
+    "bio": "Twenty-four, eighty craft, nine thousand a week; someone is about to get very lucky."
+  },
+  {
+    "id": "wilhelmina-oduro-pike",
+    "name": "Wilhelmina Oduro-Pike",
+    "role": "actor",
+    "age": 38,
+    "starPower": 11,
+    "craft": 77,
+    "reliability": 86,
+    "ego": 34,
+    "versatility": 76,
+    "genreAffinity": {
+      "procedural": 80,
+      "drama": 74,
+      "documentary": 56
+    },
+    "baseSalaryPerEpisode": 8000,
+    "bio": "Ten years of background work and a folder of coverage nobody has ever watched."
+  },
+  {
+    "id": "pascal-nwosu-reed",
+    "name": "Pascal Nwosu-Reed",
+    "role": "actor",
+    "age": 21,
+    "starPower": 10,
+    "craft": 63,
+    "reliability": 77,
+    "ego": 38,
+    "versatility": 72,
+    "genreAffinity": {
+      "drama": 64,
+      "sitcom": 68,
+      "kids": 70
+    },
+    "baseSalaryPerEpisode": 8000,
+    "bio": "Raw, eager, and one good acting coach away from being genuinely worth something."
+  },
+  {
+    "id": "harlan-vespucci",
+    "name": "Harlan Vespucci",
+    "role": "writer",
+    "age": 44,
+    "starPower": 62,
+    "craft": 95,
+    "reliability": 71,
+    "ego": 84,
+    "versatility": 68,
+    "genreAffinity": {
+      "drama": 96,
+      "anthology": 92,
+      "procedural": 78
+    },
+    "baseSalaryPerEpisode": 118000,
+    "bio": "Writes the episode everyone remembers, then disappears for eleven weeks without warning."
+  },
+  {
+    "id": "junie-oyelaran-park",
+    "name": "Junie Oyelaran-Park",
+    "role": "writer",
+    "age": 36,
+    "starPower": 48,
+    "craft": 91,
+    "reliability": 92,
+    "ego": 39,
+    "versatility": 86,
+    "genreAffinity": {
+      "sitcom": 94,
+      "sketch": 88,
+      "animation": 80,
+      "drama": 70
+    },
+    "baseSalaryPerEpisode": 95000,
+    "bio": "Punches up other people's scripts so well that three showrunners hide her from each other."
+  },
+  {
+    "id": "desmond-agyeman-fell",
+    "name": "Desmond Agyeman-Fell",
+    "role": "writer",
+    "age": 52,
+    "starPower": 60,
+    "craft": 89,
+    "reliability": 85,
+    "ego": 58,
+    "versatility": 72,
+    "genreAffinity": {
+      "procedural": 93,
+      "drama": 84,
+      "anthology": 76
+    },
+    "baseSalaryPerEpisode": 102000,
+    "bio": "Has broken 200 murders and can plot a season finale on a napkin in ten minutes."
+  },
+  {
+    "id": "ines-carrasco-bly",
+    "name": "Ines Carrasco-Bly",
+    "role": "writer",
+    "age": 31,
+    "starPower": 41,
+    "craft": 88,
+    "reliability": 88,
+    "ego": 44,
+    "versatility": 81,
+    "genreAffinity": {
+      "drama": 90,
+      "soap": 84,
+      "anthology": 78,
+      "sitcom": 66
+    },
+    "baseSalaryPerEpisode": 74000,
+    "bio": "Emotional-beat specialist whose table drafts routinely make grown executives cry."
+  },
+  {
+    "id": "maxwell-tsuruoka",
+    "name": "Maxwell Tsuruoka",
+    "role": "writer",
+    "age": 47,
+    "starPower": 38,
+    "craft": 84,
+    "reliability": 76,
+    "ego": 66,
+    "versatility": 63,
+    "genreAffinity": {
+      "animation": 92,
+      "sitcom": 80,
+      "kids": 78
+    },
+    "baseSalaryPerEpisode": 68000,
+    "bio": "Animation veteran who insists every joke be storyboarded before he'll admit it's funny."
+  },
+  {
+    "id": "aoife-mbatha",
+    "name": "Aoife Mbatha",
+    "role": "writer",
+    "age": 29,
+    "starPower": 33,
+    "craft": 86,
+    "reliability": 90,
+    "ego": 36,
+    "versatility": 83,
+    "genreAffinity": {
+      "drama": 86,
+      "anthology": 82,
+      "procedural": 74,
+      "documentary": 64
+    },
+    "baseSalaryPerEpisode": 52000,
+    "bio": "Two staff jobs, zero credits above the line, and an unproduced pilot people whisper about."
+  },
+  {
+    "id": "gideon-larosa",
+    "name": "Gideon LaRosa",
+    "role": "writer",
+    "age": 58,
+    "starPower": 51,
+    "craft": 81,
+    "reliability": 63,
+    "ego": 79,
+    "versatility": 54,
+    "genreAffinity": {
+      "drama": 84,
+      "soap": 78,
+      "anthology": 70
+    },
+    "baseSalaryPerEpisode": 76000,
+    "bio": "Old-guard scribe who fights every note and wins roughly a third of the time."
+  },
+  {
+    "id": "thandiwe-okorafor-lin",
+    "name": "Thandiwe Okorafor-Lin",
+    "role": "writer",
+    "age": 34,
+    "starPower": 45,
+    "craft": 92,
+    "reliability": 87,
+    "ego": 47,
+    "versatility": 88,
+    "genreAffinity": {
+      "drama": 92,
+      "sitcom": 78,
+      "anthology": 86,
+      "animation": 70
+    },
+    "baseSalaryPerEpisode": 88000,
+    "bio": "Can write any tone in any room and has never once missed a delivery date."
+  },
+  {
+    "id": "bertram-oakhurst",
+    "name": "Bertram Oakhurst",
+    "role": "writer",
+    "age": 63,
+    "starPower": 29,
+    "craft": 87,
+    "reliability": 82,
+    "ego": 52,
+    "versatility": 58,
+    "genreAffinity": {
+      "procedural": 88,
+      "drama": 80,
+      "documentary": 66
+    },
+    "baseSalaryPerEpisode": 44000,
+    "bio": "Wrote 140 episodes of network crime and will tell you which eleven were good."
+  },
+  {
+    "id": "suheila-mansour-day",
+    "name": "Suheila Mansour-Day",
+    "role": "writer",
+    "age": 27,
+    "starPower": 26,
+    "craft": 85,
+    "reliability": 91,
+    "ego": 32,
+    "versatility": 84,
+    "genreAffinity": {
+      "drama": 84,
+      "anthology": 80,
+      "sitcom": 72,
+      "soap": 68
+    },
+    "baseSalaryPerEpisode": 28000,
+    "bio": "Fellowship graduate whose spec script has been passed around like contraband."
+  },
+  {
+    "id": "rory-blackfoot-nnamdi",
+    "name": "Rory Blackfoot-Nnamdi",
+    "role": "writer",
+    "age": 40,
+    "starPower": 36,
+    "craft": 83,
+    "reliability": 74,
+    "ego": 61,
+    "versatility": 70,
+    "genreAffinity": {
+      "drama": 86,
+      "anthology": 80,
+      "procedural": 72
+    },
+    "baseSalaryPerEpisode": 58000,
+    "bio": "Structural obsessive who redesigns the whole season if episode three feels wrong."
+  },
+  {
+    "id": "clementine-ferrars",
+    "name": "Clementine Ferrars",
+    "role": "writer",
+    "age": 49,
+    "starPower": 42,
+    "craft": 79,
+    "reliability": 86,
+    "ego": 45,
+    "versatility": 76,
+    "genreAffinity": {
+      "sitcom": 86,
+      "sketch": 80,
+      "talkshow": 68,
+      "animation": 64
+    },
+    "baseSalaryPerEpisode": 62000,
+    "bio": "Twenty-year comedy room survivor with a legendary index of unused punchlines."
+  },
+  {
+    "id": "obinna-strathmore",
+    "name": "Obinna Strathmore",
+    "role": "writer",
+    "age": 33,
+    "starPower": 31,
+    "craft": 90,
+    "reliability": 78,
+    "ego": 57,
+    "versatility": 74,
+    "genreAffinity": {
+      "drama": 92,
+      "anthology": 88,
+      "procedural": 70
+    },
+    "baseSalaryPerEpisode": 56000,
+    "bio": "His dialogue is untouchable; his outlines are a rumour he refuses to confirm."
+  },
+  {
+    "id": "marisela-quintero-vaughn",
+    "name": "Marisela Quintero-Vaughn",
+    "role": "writer",
+    "age": 55,
+    "starPower": 37,
+    "craft": 86,
+    "reliability": 89,
+    "ego": 41,
+    "versatility": 79,
+    "genreAffinity": {
+      "soap": 92,
+      "drama": 84,
+      "anthology": 72
+    },
+    "baseSalaryPerEpisode": 48000,
+    "bio": "Turns out sixty daytime scripts a year without ever repeating a cliffhanger."
+  },
+  {
+    "id": "nils-oyelowo-brandt",
+    "name": "Nils Oyelowo-Brandt",
+    "role": "writer",
+    "age": 25,
+    "starPower": 19,
+    "craft": 81,
+    "reliability": 85,
+    "ego": 34,
+    "versatility": 80,
+    "genreAffinity": {
+      "sitcom": 82,
+      "sketch": 78,
+      "animation": 76
+    },
+    "baseSalaryPerEpisode": 16000,
+    "bio": "Wrote a viral short at twenty-two and has been mysteriously unhired ever since."
+  },
+  {
+    "id": "perpetua-lindgren",
+    "name": "Perpetua Lindgren",
+    "role": "writer",
+    "age": 38,
+    "starPower": 34,
+    "craft": 88,
+    "reliability": 83,
+    "ego": 49,
+    "versatility": 77,
+    "genreAffinity": {
+      "drama": 88,
+      "documentary": 80,
+      "anthology": 78
+    },
+    "baseSalaryPerEpisode": 54000,
+    "bio": "Investigative journalist turned dramatist; her research notes are longer than her scripts."
+  },
+  {
+    "id": "casimir-adeleke",
+    "name": "Casimir Adeleke",
+    "role": "writer",
+    "age": 45,
+    "starPower": 28,
+    "craft": 76,
+    "reliability": 68,
+    "ego": 72,
+    "versatility": 59,
+    "genreAffinity": {
+      "procedural": 80,
+      "drama": 72,
+      "soap": 66
+    },
+    "baseSalaryPerEpisode": 38000,
+    "bio": "Solid pages, impossible meetings; two rooms have asked him to attend by phone."
+  },
+  {
+    "id": "hyacinth-mbugua-porter",
+    "name": "Hyacinth Mbugua-Porter",
+    "role": "writer",
+    "age": 30,
+    "starPower": 23,
+    "craft": 87,
+    "reliability": 92,
+    "ego": 30,
+    "versatility": 85,
+    "genreAffinity": {
+      "drama": 86,
+      "sitcom": 76,
+      "anthology": 82,
+      "kids": 68
+    },
+    "baseSalaryPerEpisode": 26000,
+    "bio": "Fastest rewrite in the building and still officially credited as a writers' assistant."
+  },
+  {
+    "id": "lorcan-devereux-ito",
+    "name": "Lorcan Devereux-Ito",
+    "role": "writer",
+    "age": 41,
+    "starPower": 39,
+    "craft": 82,
+    "reliability": 79,
+    "ego": 55,
+    "versatility": 73,
+    "genreAffinity": {
+      "anthology": 88,
+      "drama": 82,
+      "animation": 70
+    },
+    "baseSalaryPerEpisode": 52000,
+    "bio": "Anthology specialist who has never written a second episode about the same person."
+  },
+  {
+    "id": "beatrix-hollingsworth-ade",
+    "name": "Beatrix Hollingsworth-Ade",
+    "role": "writer",
+    "age": 61,
+    "starPower": 44,
+    "craft": 90,
+    "reliability": 81,
+    "ego": 63,
+    "versatility": 66,
+    "genreAffinity": {
+      "drama": 92,
+      "anthology": 86,
+      "procedural": 74
+    },
+    "baseSalaryPerEpisode": 72000,
+    "bio": "Won everything in the nineties and now writes better than she did then, cheaper."
+  },
+  {
+    "id": "tomas-relampago",
+    "name": "Tomas Relampago",
+    "role": "writer",
+    "age": 35,
+    "starPower": 30,
+    "craft": 78,
+    "reliability": 73,
+    "ego": 58,
+    "versatility": 75,
+    "genreAffinity": {
+      "competition": 84,
+      "reality": 86,
+      "gameshow": 76
+    },
+    "baseSalaryPerEpisode": 34000,
+    "bio": "Unscripted's dirty secret: he scripts it, and he's very good at pretending otherwise."
+  },
+  {
+    "id": "nkechi-vandermolen",
+    "name": "Nkechi Vandermolen",
+    "role": "writer",
+    "age": 28,
+    "starPower": 25,
+    "craft": 84,
+    "reliability": 88,
+    "ego": 37,
+    "versatility": 82,
+    "genreAffinity": {
+      "sitcom": 86,
+      "drama": 74,
+      "sketch": 80,
+      "animation": 70
+    },
+    "baseSalaryPerEpisode": 24000,
+    "bio": "Stand-up background, surgical instincts, and a rate that hasn't caught up to either."
+  },
+  {
+    "id": "alistair-pemberton-nkosi",
+    "name": "Alistair Pemberton-Nkosi",
+    "role": "writer",
+    "age": 50,
+    "starPower": 40,
+    "craft": 85,
+    "reliability": 66,
+    "ego": 81,
+    "versatility": 62,
+    "genreAffinity": {
+      "drama": 88,
+      "procedural": 78,
+      "anthology": 74
+    },
+    "baseSalaryPerEpisode": 66000,
+    "bio": "Genuinely gifted and genuinely exhausting; his last room voted anonymously to replace him."
+  },
+  {
+    "id": "willa-ferrante-osei",
+    "name": "Willa Ferrante-Osei",
+    "role": "writer",
+    "age": 32,
+    "starPower": 27,
+    "craft": 89,
+    "reliability": 90,
+    "ego": 33,
+    "versatility": 83,
+    "genreAffinity": {
+      "drama": 90,
+      "anthology": 84,
+      "soap": 74,
+      "procedural": 70
+    },
+    "baseSalaryPerEpisode": 36000,
+    "bio": "Four seasons of uncredited heavy lifting; the credited names all won awards."
+  },
+  {
+    "id": "emmett-brackenridge",
+    "name": "Emmett Brackenridge",
+    "role": "writer",
+    "age": 67,
+    "starPower": 22,
+    "craft": 80,
+    "reliability": 75,
+    "ego": 48,
+    "versatility": 52,
+    "genreAffinity": {
+      "documentary": 86,
+      "drama": 74,
+      "news": 70
+    },
+    "baseSalaryPerEpisode": 22000,
+    "bio": "Documentary narration craftsman who can make a fishing quota sound like a thriller."
+  },
+  {
+    "id": "soraya-lindstrom-bello",
+    "name": "Soraya Lindstrom-Bello",
+    "role": "writer",
+    "age": 26,
+    "starPower": 18,
+    "craft": 83,
+    "reliability": 86,
+    "ego": 31,
+    "versatility": 81,
+    "genreAffinity": {
+      "drama": 82,
+      "anthology": 78,
+      "sitcom": 70
+    },
+    "baseSalaryPerEpisode": 15000,
+    "bio": "Writes with a precision that makes veterans nervous and staffing agents oblivious."
+  },
+  {
+    "id": "douglas-ainsworth-eze",
+    "name": "Douglas Ainsworth-Eze",
+    "role": "writer",
+    "age": 43,
+    "starPower": 32,
+    "craft": 77,
+    "reliability": 84,
+    "ego": 42,
+    "versatility": 78,
+    "genreAffinity": {
+      "procedural": 84,
+      "drama": 76,
+      "anthology": 68
+    },
+    "baseSalaryPerEpisode": 42000,
+    "bio": "Never written a great episode, never written a bad one, always delivers on Friday."
+  },
+  {
+    "id": "ximena-oduya-frank",
+    "name": "Ximena Oduya-Frank",
+    "role": "writer",
+    "age": 37,
+    "starPower": 35,
+    "craft": 86,
+    "reliability": 80,
+    "ego": 54,
+    "versatility": 74,
+    "genreAffinity": {
+      "drama": 88,
+      "soap": 80,
+      "anthology": 76
+    },
+    "baseSalaryPerEpisode": 50000,
+    "bio": "Specialist in the slow betrayal; her season-five twists get written about for years."
+  },
+  {
+    "id": "fenwick-abubakar",
+    "name": "Fenwick Abubakar",
+    "role": "writer",
+    "age": 54,
+    "starPower": 26,
+    "craft": 74,
+    "reliability": 70,
+    "ego": 64,
+    "versatility": 57,
+    "genreAffinity": {
+      "sitcom": 78,
+      "sketch": 72,
+      "gameshow": 64
+    },
+    "baseSalaryPerEpisode": 30000,
+    "bio": "Believes multi-cam never died and will out-argue anyone who suggests otherwise."
+  },
+  {
+    "id": "ottoline-mbeki-vance",
+    "name": "Ottoline Mbeki-Vance",
+    "role": "writer",
+    "age": 24,
+    "starPower": 14,
+    "craft": 80,
+    "reliability": 87,
+    "ego": 28,
+    "versatility": 79,
+    "genreAffinity": {
+      "drama": 80,
+      "anthology": 76,
+      "kids": 72
+    },
+    "baseSalaryPerEpisode": 11000,
+    "bio": "Twenty-four, unrepresented, and quietly the best unhired writer in the city."
+  },
+  {
+    "id": "balthazar-cruikshank",
+    "name": "Balthazar Cruikshank",
+    "role": "writer",
+    "age": 48,
+    "starPower": 21,
+    "craft": 69,
+    "reliability": 57,
+    "ego": 76,
+    "versatility": 48,
+    "genreAffinity": {
+      "drama": 72,
+      "anthology": 66,
+      "procedural": 60
+    },
+    "baseSalaryPerEpisode": 19000,
+    "bio": "Difficult, defensive, and occasionally produces a page you'd frame on the wall."
+  },
+  {
+    "id": "celestine-nakagawa-orr",
+    "name": "Celestine Nakagawa-Orr",
+    "role": "writer",
+    "age": 39,
+    "starPower": 29,
+    "craft": 85,
+    "reliability": 89,
+    "ego": 38,
+    "versatility": 80,
+    "genreAffinity": {
+      "animation": 90,
+      "kids": 86,
+      "sitcom": 74,
+      "anthology": 66
+    },
+    "baseSalaryPerEpisode": 40000,
+    "bio": "Writes children's television that adults quote back to her at parties."
+  },
+  {
+    "id": "harold-osunde-wray",
+    "name": "Harold Osunde-Wray",
+    "role": "writer",
+    "age": 59,
+    "starPower": 24,
+    "craft": 78,
+    "reliability": 72,
+    "ego": 59,
+    "versatility": 55,
+    "genreAffinity": {
+      "news": 84,
+      "documentary": 80,
+      "talkshow": 70
+    },
+    "baseSalaryPerEpisode": 26000,
+    "bio": "Newsroom lifer who writes cold opens that make anchors sound smarter than they are."
+  },
+  {
+    "id": "ivory-belmonte-sahni",
+    "name": "Ivory Belmonte-Sahni",
+    "role": "writer",
+    "age": 33,
+    "starPower": 33,
+    "craft": 88,
+    "reliability": 85,
+    "ego": 46,
+    "versatility": 86,
+    "genreAffinity": {
+      "drama": 86,
+      "sitcom": 80,
+      "anthology": 84,
+      "animation": 72
+    },
+    "baseSalaryPerEpisode": 49000,
+    "bio": "Genre-agnostic utility ace; three showrunners have tried to poach her this quarter."
+  },
+  {
+    "id": "quentin-mabaso-rill",
+    "name": "Quentin Mabaso-Rill",
+    "role": "writer",
+    "age": 46,
+    "starPower": 47,
+    "craft": 93,
+    "reliability": 60,
+    "ego": 88,
+    "versatility": 65,
+    "genreAffinity": {
+      "drama": 94,
+      "anthology": 90,
+      "procedural": 72
+    },
+    "baseSalaryPerEpisode": 110000,
+    "bio": "A genuine artist who has burned down two rooms and would happily burn a third."
+  },
+  {
+    "id": "vivienne-arkwright-dube",
+    "name": "Vivienne Arkwright-Dube",
+    "role": "showrunner",
+    "age": 48,
+    "starPower": 90,
+    "craft": 96,
+    "reliability": 88,
+    "ego": 62,
+    "versatility": 79,
+    "genreAffinity": {
+      "drama": 97,
+      "anthology": 90,
+      "procedural": 80,
+      "documentary": 62
+    },
+    "baseSalaryPerEpisode": 500000,
+    "bio": "Three consecutive prestige hits and a reputation for finishing under budget."
+  },
+  {
+    "id": "marcus-oyinlola-hale",
+    "name": "Marcus Oyinlola-Hale",
+    "role": "showrunner",
+    "age": 42,
+    "starPower": 89,
+    "craft": 94,
+    "reliability": 31,
+    "ego": 95,
+    "versatility": 68,
+    "genreAffinity": {
+      "drama": 95,
+      "anthology": 92,
+      "soap": 70
+    },
+    "baseSalaryPerEpisode": 470000,
+    "bio": "A bomb waiting to go off: staggering talent, zero impulse control, two abandoned seasons."
+  },
+  {
+    "id": "junko-abernathy",
+    "name": "Junko Abernathy",
+    "role": "showrunner",
+    "age": 39,
+    "starPower": 68,
+    "craft": 91,
+    "reliability": 93,
+    "ego": 44,
+    "versatility": 85,
+    "genreAffinity": {
+      "sitcom": 94,
+      "sketch": 86,
+      "animation": 80,
+      "drama": 72
+    },
+    "baseSalaryPerEpisode": 330000,
+    "bio": "Runs the calmest comedy room in television and has never missed an airdate."
+  },
+  {
+    "id": "ezekiel-tamboura",
+    "name": "Ezekiel Tamboura",
+    "role": "showrunner",
+    "age": 55,
+    "starPower": 88,
+    "craft": 89,
+    "reliability": 79,
+    "ego": 71,
+    "versatility": 63,
+    "genreAffinity": {
+      "procedural": 95,
+      "drama": 84,
+      "anthology": 72
+    },
+    "baseSalaryPerEpisode": 400000,
+    "bio": "Built two nine-season franchises and thinks serialized storytelling is a passing fad."
+  },
+  {
+    "id": "lisbeth-okonjo-frayne",
+    "name": "Lisbeth Okonjo-Frayne",
+    "role": "showrunner",
+    "age": 36,
+    "starPower": 59,
+    "craft": 92,
+    "reliability": 86,
+    "ego": 52,
+    "versatility": 81,
+    "genreAffinity": {
+      "drama": 92,
+      "anthology": 88,
+      "soap": 74,
+      "procedural": 70
+    },
+    "baseSalaryPerEpisode": 250000,
+    "bio": "Youngest showrunner on the lot and the only one whose crew requests her by name."
+  },
+  {
+    "id": "reginald-oduya-mbeki",
+    "name": "Reginald Oduya-Mbeki",
+    "role": "showrunner",
+    "age": 61,
+    "starPower": 64,
+    "craft": 87,
+    "reliability": 83,
+    "ego": 58,
+    "versatility": 60,
+    "genreAffinity": {
+      "drama": 88,
+      "soap": 86,
+      "anthology": 74
+    },
+    "baseSalaryPerEpisode": 220000,
+    "bio": "Elder statesman of the serialized weepy, still capable of a genuinely lethal season finale."
+  },
+  {
+    "id": "paloma-viridian-cross",
+    "name": "Paloma Viridian-Cross",
+    "role": "showrunner",
+    "age": 44,
+    "starPower": 61,
+    "craft": 90,
+    "reliability": 67,
+    "ego": 84,
+    "versatility": 72,
+    "genreAffinity": {
+      "drama": 90,
+      "anthology": 86,
+      "documentary": 68
+    },
+    "baseSalaryPerEpisode": 260000,
+    "bio": "Demands final cut, usually earns it, and has made two studio heads cry in a hallway."
+  },
+  {
+    "id": "stellan-mworia",
+    "name": "Stellan Mworia",
+    "role": "showrunner",
+    "age": 33,
+    "starPower": 41,
+    "craft": 88,
+    "reliability": 90,
+    "ego": 39,
+    "versatility": 83,
+    "genreAffinity": {
+      "drama": 86,
+      "sitcom": 76,
+      "anthology": 82,
+      "procedural": 72
+    },
+    "baseSalaryPerEpisode": 150000,
+    "bio": "First-time runner, second-in-command on three hits, and cheaper than his resume implies."
+  },
+  {
+    "id": "georgiana-petrescu-hall",
+    "name": "Georgiana Petrescu-Hall",
+    "role": "showrunner",
+    "age": 51,
+    "starPower": 63,
+    "craft": 85,
+    "reliability": 76,
+    "ego": 69,
+    "versatility": 66,
+    "genreAffinity": {
+      "reality": 94,
+      "competition": 92,
+      "gameshow": 78
+    },
+    "baseSalaryPerEpisode": 210000,
+    "bio": "Unscripted architect who can format a hit franchise out of literally any premise."
+  },
+  {
+    "id": "abdiel-ferreira-nkemdirim",
+    "name": "Abdiel Ferreira-Nkemdirim",
+    "role": "showrunner",
+    "age": 46,
+    "starPower": 61,
+    "craft": 93,
+    "reliability": 81,
+    "ego": 56,
+    "versatility": 77,
+    "genreAffinity": {
+      "drama": 94,
+      "procedural": 86,
+      "anthology": 82
+    },
+    "baseSalaryPerEpisode": 270000,
+    "bio": "Turns tired formats into critical darlings and refuses to explain how."
+  },
+  {
+    "id": "honorata-blessing-shaw",
+    "name": "Honorata Blessing-Shaw",
+    "role": "showrunner",
+    "age": 38,
+    "starPower": 45,
+    "craft": 89,
+    "reliability": 87,
+    "ego": 43,
+    "versatility": 80,
+    "genreAffinity": {
+      "drama": 88,
+      "anthology": 84,
+      "soap": 76,
+      "procedural": 72
+    },
+    "baseSalaryPerEpisode": 160000,
+    "bio": "Ran a cancelled masterpiece; the industry blames the network, the network blames her."
+  },
+  {
+    "id": "thaddeus-onyekwere",
+    "name": "Thaddeus Onyekwere",
+    "role": "showrunner",
+    "age": 58,
+    "starPower": 52,
+    "craft": 82,
+    "reliability": 72,
+    "ego": 77,
+    "versatility": 58,
+    "genreAffinity": {
+      "procedural": 88,
+      "drama": 78,
+      "anthology": 68
+    },
+    "baseSalaryPerEpisode": 180000,
+    "bio": "Ran four series, fired from two, and still gets meetings on reputation alone."
+  },
+  {
+    "id": "cordelia-hasenberg",
+    "name": "Cordelia Hasenberg",
+    "role": "showrunner",
+    "age": 41,
+    "starPower": 38,
+    "craft": 91,
+    "reliability": 85,
+    "ego": 47,
+    "versatility": 78,
+    "genreAffinity": {
+      "anthology": 92,
+      "drama": 88,
+      "documentary": 70
+    },
+    "baseSalaryPerEpisode": 140000,
+    "bio": "Anthology purist who would rather run a small perfect show than a big loud one."
+  },
+  {
+    "id": "malachy-sithole-brandt",
+    "name": "Malachy Sithole-Brandt",
+    "role": "showrunner",
+    "age": 49,
+    "starPower": 49,
+    "craft": 84,
+    "reliability": 78,
+    "ego": 65,
+    "versatility": 74,
+    "genreAffinity": {
+      "drama": 84,
+      "procedural": 86,
+      "soap": 72
+    },
+    "baseSalaryPerEpisode": 170000,
+    "bio": "Reliable machine for network hours; will never make art, will never miss a delivery."
+  },
+  {
+    "id": "yumiko-oyelaran-bray",
+    "name": "Yumiko Oyelaran-Bray",
+    "role": "showrunner",
+    "age": 35,
+    "starPower": 36,
+    "craft": 90,
+    "reliability": 91,
+    "ego": 35,
+    "versatility": 84,
+    "genreAffinity": {
+      "animation": 94,
+      "kids": 88,
+      "sitcom": 78,
+      "anthology": 68
+    },
+    "baseSalaryPerEpisode": 120000,
+    "bio": "Animation runner whose shows outlive their networks and quietly print merchandising money."
+  },
+  {
+    "id": "barnabas-eluwande",
+    "name": "Barnabas Eluwande",
+    "role": "showrunner",
+    "age": 66,
+    "starPower": 47,
+    "craft": 86,
+    "reliability": 80,
+    "ego": 61,
+    "versatility": 55,
+    "genreAffinity": {
+      "drama": 86,
+      "soap": 82,
+      "anthology": 70
+    },
+    "baseSalaryPerEpisode": 110000,
+    "bio": "Ran the biggest show of 1998 and now works for a fraction of what he's worth."
+  },
+  {
+    "id": "nadia-corvalan-pike",
+    "name": "Nadia Corvalan-Pike",
+    "role": "showrunner",
+    "age": 43,
+    "starPower": 42,
+    "craft": 87,
+    "reliability": 74,
+    "ego": 72,
+    "versatility": 69,
+    "genreAffinity": {
+      "drama": 88,
+      "soap": 84,
+      "anthology": 74
+    },
+    "baseSalaryPerEpisode": 150000,
+    "bio": "Brilliant at the pilot, restless by episode six, gone before the finale twice now."
+  },
+  {
+    "id": "osric-tembo-langley",
+    "name": "Osric Tembo-Langley",
+    "role": "showrunner",
+    "age": 37,
+    "starPower": 33,
+    "craft": 88,
+    "reliability": 89,
+    "ego": 40,
+    "versatility": 82,
+    "genreAffinity": {
+      "procedural": 88,
+      "drama": 82,
+      "anthology": 76
+    },
+    "baseSalaryPerEpisode": 105000,
+    "bio": "Number two on a monster franchise; everyone knows he actually ran the last three seasons."
+  },
+  {
+    "id": "iolanthe-mercado-fisk",
+    "name": "Iolanthe Mercado-Fisk",
+    "role": "showrunner",
+    "age": 53,
+    "starPower": 50,
+    "craft": 83,
+    "reliability": 82,
+    "ego": 54,
+    "versatility": 71,
+    "genreAffinity": {
+      "reality": 90,
+      "competition": 88,
+      "documentary": 74,
+      "gameshow": 70
+    },
+    "baseSalaryPerEpisode": 165000,
+    "bio": "Invented three formats now licensed in forty countries and still answers her own phone."
+  },
+  {
+    "id": "rutger-nwachukwu-samms",
+    "name": "Rutger Nwachukwu-Samms",
+    "role": "showrunner",
+    "age": 31,
+    "starPower": 28,
+    "craft": 85,
+    "reliability": 86,
+    "ego": 42,
+    "versatility": 79,
+    "genreAffinity": {
+      "drama": 84,
+      "anthology": 80,
+      "sitcom": 70
+    },
+    "baseSalaryPerEpisode": 80000,
+    "bio": "Ran a web series into a cult phenomenon; has never managed a budget over six figures."
+  },
+  {
+    "id": "philomena-adeyinka-groves",
+    "name": "Philomena Adeyinka-Groves",
+    "role": "showrunner",
+    "age": 45,
+    "starPower": 40,
+    "craft": 92,
+    "reliability": 63,
+    "ego": 86,
+    "versatility": 67,
+    "genreAffinity": {
+      "drama": 92,
+      "anthology": 88,
+      "soap": 72
+    },
+    "baseSalaryPerEpisode": 190000,
+    "bio": "Visionary, uninsurable, and worth every catastrophic argument if the season lands."
+  },
+  {
+    "id": "lucian-vasilescu-mbeki",
+    "name": "Lucian Vasilescu-Mbeki",
+    "role": "showrunner",
+    "age": 56,
+    "starPower": 44,
+    "craft": 80,
+    "reliability": 84,
+    "ego": 50,
+    "versatility": 62,
+    "genreAffinity": {
+      "drama": 80,
+      "procedural": 84,
+      "documentary": 66
+    },
+    "baseSalaryPerEpisode": 95000,
+    "bio": "Steady hand for troubled productions; the studio's designated adult in the room."
+  },
+  {
+    "id": "berenice-okafor-tallis",
+    "name": "Berenice Okafor-Tallis",
+    "role": "showrunner",
+    "age": 34,
+    "starPower": 31,
+    "craft": 89,
+    "reliability": 88,
+    "ego": 37,
+    "versatility": 83,
+    "genreAffinity": {
+      "sitcom": 90,
+      "sketch": 84,
+      "drama": 72,
+      "animation": 70
+    },
+    "baseSalaryPerEpisode": 90000,
+    "bio": "Cheapest genuinely excellent comedy runner available, and her agent has no idea."
+  },
+  {
+    "id": "aurelio-santangelo-owusu",
+    "name": "Aurelio Santangelo-Owusu",
+    "role": "showrunner",
+    "age": 62,
+    "starPower": 37,
+    "craft": 84,
+    "reliability": 77,
+    "ego": 59,
+    "versatility": 57,
+    "genreAffinity": {
+      "anthology": 86,
+      "drama": 82,
+      "documentary": 68
+    },
+    "baseSalaryPerEpisode": 70000,
+    "bio": "Made four cult classics nobody watched and is entirely at peace about it."
+  },
+  {
+    "id": "delilah-onwuachi-vance",
+    "name": "Delilah Onwuachi-Vance",
+    "role": "showrunner",
+    "age": 29,
+    "starPower": 24,
+    "craft": 86,
+    "reliability": 90,
+    "ego": 33,
+    "versatility": 81,
+    "genreAffinity": {
+      "drama": 86,
+      "anthology": 82,
+      "soap": 70
+    },
+    "baseSalaryPerEpisode": 45000,
+    "bio": "Never run anything, writes like she's run everything, costs less than a staff writer."
+  },
+  {
+    "id": "gideon-marchbanks-esho",
+    "name": "Gideon Marchbanks-Esho",
+    "role": "producer",
+    "age": 54,
+    "starPower": 66,
+    "craft": 91,
+    "reliability": 92,
+    "ego": 48,
+    "versatility": 86,
+    "genreAffinity": {
+      "drama": 92,
+      "procedural": 88,
+      "anthology": 82,
+      "documentary": 70
+    },
+    "baseSalaryPerEpisode": 195000,
+    "bio": "The producer studios call when a show is on fire and the star has stopped speaking."
+  },
+  {
+    "id": "rosamund-kettleby",
+    "name": "Rosamund Kettleby",
+    "role": "producer",
+    "age": 47,
+    "starPower": 52,
+    "craft": 88,
+    "reliability": 89,
+    "ego": 44,
+    "versatility": 82,
+    "genreAffinity": {
+      "drama": 88,
+      "soap": 82,
+      "anthology": 78
+    },
+    "baseSalaryPerEpisode": 150000,
+    "bio": "Has never once let a production overrun and is feared by every line producer alive."
+  },
+  {
+    "id": "amadou-brightwater",
+    "name": "Amadou Brightwater",
+    "role": "producer",
+    "age": 40,
+    "starPower": 62,
+    "craft": 82,
+    "reliability": 75,
+    "ego": 73,
+    "versatility": 77,
+    "genreAffinity": {
+      "reality": 92,
+      "competition": 90,
+      "gameshow": 78,
+      "documentary": 66
+    },
+    "baseSalaryPerEpisode": 140000,
+    "bio": "Unscripted deal-closer whose talent budgets always somehow include a private jet."
+  },
+  {
+    "id": "seong-hae-lindqvist",
+    "name": "Seong-Hae Lindqvist",
+    "role": "producer",
+    "age": 36,
+    "starPower": 41,
+    "craft": 90,
+    "reliability": 93,
+    "ego": 36,
+    "versatility": 84,
+    "genreAffinity": {
+      "drama": 90,
+      "anthology": 84,
+      "procedural": 80,
+      "animation": 68
+    },
+    "baseSalaryPerEpisode": 110000,
+    "bio": "Runs a set so efficiently that directors accuse her of bending the space-time continuum."
+  },
+  {
+    "id": "cyprian-oduro-veitch",
+    "name": "Cyprian Oduro-Veitch",
+    "role": "producer",
+    "age": 59,
+    "starPower": 49,
+    "craft": 85,
+    "reliability": 68,
+    "ego": 80,
+    "versatility": 63,
+    "genreAffinity": {
+      "drama": 86,
+      "procedural": 80,
+      "soap": 74
+    },
+    "baseSalaryPerEpisode": 125000,
+    "bio": "Old-school power producer who still thinks a screaming match counts as a note session."
+  },
+  {
+    "id": "tabitha-nzeogwu-frame",
+    "name": "Tabitha Nzeogwu-Frame",
+    "role": "producer",
+    "age": 33,
+    "starPower": 35,
+    "craft": 86,
+    "reliability": 90,
+    "ego": 38,
+    "versatility": 81,
+    "genreAffinity": {
+      "drama": 84,
+      "documentary": 86,
+      "anthology": 76
+    },
+    "baseSalaryPerEpisode": 78000,
+    "bio": "Documentary background; secures impossible locations and impossible interviews for nothing."
+  },
+  {
+    "id": "ferdinand-oyelaran-crisp",
+    "name": "Ferdinand Oyelaran-Crisp",
+    "role": "producer",
+    "age": 44,
+    "starPower": 45,
+    "craft": 79,
+    "reliability": 83,
+    "ego": 57,
+    "versatility": 74,
+    "genreAffinity": {
+      "sitcom": 84,
+      "sketch": 78,
+      "talkshow": 72
+    },
+    "baseSalaryPerEpisode": 92000,
+    "bio": "Comedy producer who protects his writers from the network and bills them for it later."
+  },
+  {
+    "id": "marguerite-oyelowo-stang",
+    "name": "Marguerite Oyelowo-Stang",
+    "role": "producer",
+    "age": 62,
+    "starPower": 60,
+    "craft": 89,
+    "reliability": 85,
+    "ego": 52,
+    "versatility": 70,
+    "genreAffinity": {
+      "drama": 90,
+      "anthology": 84,
+      "soap": 78
+    },
+    "baseSalaryPerEpisode": 100000,
+    "bio": "Forty years of credits, a rolodex like a national archive, and semi-retired rates."
+  },
+  {
+    "id": "kaveh-brannock",
+    "name": "Kaveh Brannock",
+    "role": "producer",
+    "age": 38,
+    "starPower": 39,
+    "craft": 83,
+    "reliability": 78,
+    "ego": 61,
+    "versatility": 79,
+    "genreAffinity": {
+      "procedural": 86,
+      "drama": 80,
+      "anthology": 72
+    },
+    "baseSalaryPerEpisode": 85000,
+    "bio": "Physical-production specialist who can shoot a car chase for the price of a dinner scene."
+  },
+  {
+    "id": "antonella-quaye-birch",
+    "name": "Antonella Quaye-Birch",
+    "role": "producer",
+    "age": 29,
+    "starPower": 26,
+    "craft": 84,
+    "reliability": 91,
+    "ego": 32,
+    "versatility": 80,
+    "genreAffinity": {
+      "drama": 82,
+      "sitcom": 74,
+      "anthology": 78
+    },
+    "baseSalaryPerEpisode": 42000,
+    "bio": "Coordinator promoted three years early and outperforming everyone who objected."
+  },
+  {
+    "id": "lambert-nkosi-hyde",
+    "name": "Lambert Nkosi-Hyde",
+    "role": "producer",
+    "age": 51,
+    "starPower": 43,
+    "craft": 72,
+    "reliability": 59,
+    "ego": 78,
+    "versatility": 58,
+    "genreAffinity": {
+      "reality": 80,
+      "competition": 76,
+      "soap": 68
+    },
+    "baseSalaryPerEpisode": 68000,
+    "bio": "Two shows shut down on his watch and a remarkable talent for never being at fault."
+  },
+  {
+    "id": "joelle-vanterpool-osagie",
+    "name": "Joelle Vanterpool-Osagie",
+    "role": "producer",
+    "age": 42,
+    "starPower": 37,
+    "craft": 87,
+    "reliability": 88,
+    "ego": 41,
+    "versatility": 83,
+    "genreAffinity": {
+      "drama": 86,
+      "procedural": 82,
+      "anthology": 78,
+      "documentary": 68
+    },
+    "baseSalaryPerEpisode": 74000,
+    "bio": "Every showrunner she's worked with has tried to bring her along to the next job."
+  },
+  {
+    "id": "ravi-tindalls-mbogo",
+    "name": "Ravi Tindalls-Mbogo",
+    "role": "producer",
+    "age": 26,
+    "starPower": 19,
+    "craft": 80,
+    "reliability": 89,
+    "ego": 29,
+    "versatility": 78,
+    "genreAffinity": {
+      "sitcom": 78,
+      "drama": 76,
+      "animation": 70
+    },
+    "baseSalaryPerEpisode": 24000,
+    "bio": "Twenty-six and already the person everyone actually asks when something breaks."
+  },
+  {
+    "id": "eudora-fenwick-adisa",
+    "name": "Eudora Fenwick-Adisa",
+    "role": "producer",
+    "age": 66,
+    "starPower": 32,
+    "craft": 85,
+    "reliability": 81,
+    "ego": 55,
+    "versatility": 64,
+    "genreAffinity": {
+      "soap": 88,
+      "drama": 80,
+      "anthology": 70
+    },
+    "baseSalaryPerEpisode": 38000,
+    "bio": "Kept a daytime institution on air for nineteen years on a budget that shouldn't have worked."
+  },
+  {
+    "id": "anwar-pellington",
+    "name": "Anwar Pellington",
+    "role": "producer",
+    "age": 35,
+    "starPower": 30,
+    "craft": 78,
+    "reliability": 72,
+    "ego": 66,
+    "versatility": 75,
+    "genreAffinity": {
+      "competition": 84,
+      "reality": 82,
+      "gameshow": 74
+    },
+    "baseSalaryPerEpisode": 52000,
+    "bio": "Format-flipper who has rebooted four dead franchises and killed one for good."
+  },
+  {
+    "id": "sylvestre-mokwena-hobbs",
+    "name": "Sylvestre Mokwena-Hobbs",
+    "role": "producer",
+    "age": 48,
+    "starPower": 47,
+    "craft": 81,
+    "reliability": 80,
+    "ego": 60,
+    "versatility": 72,
+    "genreAffinity": {
+      "drama": 82,
+      "procedural": 84,
+      "soap": 72
+    },
+    "baseSalaryPerEpisode": 88000,
+    "bio": "Knows every guild rule by heart and uses roughly half of them in good faith."
+  },
+  {
+    "id": "birdie-ocallaghan-nnaji",
+    "name": "Birdie O'Callaghan-Nnaji",
+    "role": "producer",
+    "age": 31,
+    "starPower": 28,
+    "craft": 82,
+    "reliability": 86,
+    "ego": 35,
+    "versatility": 79,
+    "genreAffinity": {
+      "documentary": 86,
+      "drama": 76,
+      "news": 70
+    },
+    "baseSalaryPerEpisode": 36000,
+    "bio": "Made an award-winning docuseries on a credit card and hasn't been properly paid since."
+  },
+  {
+    "id": "horatio-belyavsky",
+    "name": "Horatio Belyavsky",
+    "role": "producer",
+    "age": 57,
+    "starPower": 60,
+    "craft": 86,
+    "reliability": 74,
+    "ego": 71,
+    "versatility": 66,
+    "genreAffinity": {
+      "drama": 88,
+      "anthology": 80,
+      "procedural": 76
+    },
+    "baseSalaryPerEpisode": 115000,
+    "bio": "Prestige producer with immaculate taste and an expense report nobody dares audit."
+  },
+  {
+    "id": "lucinda-ashworth-baptiste",
+    "name": "Lucinda Ashworth-Baptiste",
+    "role": "producer",
+    "age": 39,
+    "starPower": 34,
+    "craft": 88,
+    "reliability": 92,
+    "ego": 33,
+    "versatility": 85,
+    "genreAffinity": {
+      "drama": 86,
+      "sitcom": 76,
+      "anthology": 80,
+      "procedural": 78
+    },
+    "baseSalaryPerEpisode": 70000,
+    "bio": "The quiet reason four different hit shows came in on time and on budget."
+  },
+  {
+    "id": "osmund-tetteh-vail",
+    "name": "Osmund Tetteh-Vail",
+    "role": "producer",
+    "age": 24,
+    "starPower": 16,
+    "craft": 76,
+    "reliability": 88,
+    "ego": 27,
+    "versatility": 77,
+    "genreAffinity": {
+      "sitcom": 74,
+      "reality": 78,
+      "competition": 72
+    },
+    "baseSalaryPerEpisode": 21000,
+    "bio": "Fresh out of a mailroom, already fixing problems two pay grades above him."
+  },
+  {
+    "id": "esteban-krivosheev",
+    "name": "Esteban Krivosheev",
+    "role": "director",
+    "age": 51,
+    "starPower": 89,
+    "craft": 95,
+    "reliability": 84,
+    "ego": 74,
+    "versatility": 76,
+    "genreAffinity": {
+      "drama": 96,
+      "anthology": 92,
+      "procedural": 80
+    },
+    "baseSalaryPerEpisode": 250000,
+    "bio": "Pilot specialist whose openings sell shows before a single line is spoken."
+  },
+  {
+    "id": "nomvula-hargreaves",
+    "name": "Nomvula Hargreaves",
+    "role": "director",
+    "age": 43,
+    "starPower": 62,
+    "craft": 92,
+    "reliability": 90,
+    "ego": 45,
+    "versatility": 84,
+    "genreAffinity": {
+      "drama": 92,
+      "procedural": 86,
+      "anthology": 84,
+      "documentary": 68
+    },
+    "baseSalaryPerEpisode": 175000,
+    "bio": "Shoots fast, shoots beautifully, and has never once run into golden time."
+  },
+  {
+    "id": "pierrick-vandenberg-alao",
+    "name": "Pierrick Vandenberg-Alao",
+    "role": "director",
+    "age": 38,
+    "starPower": 49,
+    "craft": 89,
+    "reliability": 66,
+    "ego": 85,
+    "versatility": 63,
+    "genreAffinity": {
+      "drama": 90,
+      "anthology": 88,
+      "soap": 66
+    },
+    "baseSalaryPerEpisode": 150000,
+    "bio": "Every frame is gorgeous and every schedule he touches slips by four days."
+  },
+  {
+    "id": "harriet-osei-lindenbaum",
+    "name": "Harriet Osei-Lindenbaum",
+    "role": "director",
+    "age": 47,
+    "starPower": 44,
+    "craft": 87,
+    "reliability": 88,
+    "ego": 42,
+    "versatility": 81,
+    "genreAffinity": {
+      "procedural": 90,
+      "drama": 82,
+      "soap": 74,
+      "anthology": 70
+    },
+    "baseSalaryPerEpisode": 115000,
+    "bio": "Ninety network hours directed, zero drama caused, permanently underbooked for it."
+  },
+  {
+    "id": "tarquin-mbugua-sloane",
+    "name": "Tarquin Mbugua-Sloane",
+    "role": "director",
+    "age": 33,
+    "starPower": 36,
+    "craft": 85,
+    "reliability": 83,
+    "ego": 52,
+    "versatility": 78,
+    "genreAffinity": {
+      "drama": 84,
+      "anthology": 82,
+      "sitcom": 68
+    },
+    "baseSalaryPerEpisode": 88000,
+    "bio": "Music-video pedigree, cinematic instincts, and still learning what a coverage day means."
+  },
+  {
+    "id": "annegret-solano-pike",
+    "name": "Annegret Solano-Pike",
+    "role": "director",
+    "age": 60,
+    "starPower": 41,
+    "craft": 93,
+    "reliability": 86,
+    "ego": 55,
+    "versatility": 70,
+    "genreAffinity": {
+      "drama": 94,
+      "anthology": 88,
+      "documentary": 72
+    },
+    "baseSalaryPerEpisode": 95000,
+    "bio": "Directed the era-defining finale of 2004 and has been affordable ever since."
+  },
+  {
+    "id": "kwabena-thistlewood",
+    "name": "Kwabena Thistlewood",
+    "role": "director",
+    "age": 41,
+    "starPower": 38,
+    "craft": 84,
+    "reliability": 91,
+    "ego": 38,
+    "versatility": 86,
+    "genreAffinity": {
+      "sitcom": 90,
+      "sketch": 84,
+      "talkshow": 72,
+      "drama": 66
+    },
+    "baseSalaryPerEpisode": 78000,
+    "bio": "Multi-cam maestro who can land a live audience taping without a single reshoot."
+  },
+  {
+    "id": "suraya-okpara-mendel",
+    "name": "Suraya Okpara-Mendel",
+    "role": "director",
+    "age": 29,
+    "starPower": 27,
+    "craft": 86,
+    "reliability": 87,
+    "ego": 36,
+    "versatility": 80,
+    "genreAffinity": {
+      "drama": 86,
+      "anthology": 80,
+      "procedural": 74
+    },
+    "baseSalaryPerEpisode": 52000,
+    "bio": "Two short films, one festival prize, and a fee that will not stay this low."
+  },
+  {
+    "id": "gilbert-nakamura-fontaine",
+    "name": "Gilbert Nakamura-Fontaine",
+    "role": "director",
+    "age": 55,
+    "starPower": 33,
+    "craft": 80,
+    "reliability": 78,
+    "ego": 58,
+    "versatility": 68,
+    "genreAffinity": {
+      "procedural": 84,
+      "drama": 76,
+      "soap": 70
+    },
+    "baseSalaryPerEpisode": 58000,
+    "bio": "Journeyman with 200 episodes who describes his style as whatever the schedule allows."
+  },
+  {
+    "id": "beatrice-oyelaran-vashti",
+    "name": "Beatrice Oyelaran-Vashti",
+    "role": "director",
+    "age": 36,
+    "starPower": 31,
+    "craft": 88,
+    "reliability": 85,
+    "ego": 44,
+    "versatility": 82,
+    "genreAffinity": {
+      "drama": 88,
+      "documentary": 82,
+      "anthology": 78
+    },
+    "baseSalaryPerEpisode": 62000,
+    "bio": "Handheld naturalist whose actors say she gets performances out of nowhere."
+  },
+  {
+    "id": "aurelian-boateng-kerr",
+    "name": "Aurelian Boateng-Kerr",
+    "role": "director",
+    "age": 64,
+    "starPower": 36,
+    "craft": 90,
+    "reliability": 72,
+    "ego": 69,
+    "versatility": 61,
+    "genreAffinity": {
+      "drama": 90,
+      "anthology": 86,
+      "procedural": 72
+    },
+    "baseSalaryPerEpisode": 66000,
+    "bio": "Great once, difficult always, and now cheap enough that networks risk it anyway."
+  },
+  {
+    "id": "minh-thanh-okoli",
+    "name": "Minh-Thanh Okoli",
+    "role": "director",
+    "age": 27,
+    "starPower": 22,
+    "craft": 83,
+    "reliability": 89,
+    "ego": 31,
+    "versatility": 79,
+    "genreAffinity": {
+      "animation": 90,
+      "kids": 82,
+      "sitcom": 70
+    },
+    "baseSalaryPerEpisode": 35000,
+    "bio": "Animation director with an eye for staging that live-action people keep trying to steal."
+  },
+  {
+    "id": "roderick-ansah-plume",
+    "name": "Roderick Ansah-Plume",
+    "role": "director",
+    "age": 45,
+    "starPower": 29,
+    "craft": 78,
+    "reliability": 63,
+    "ego": 72,
+    "versatility": 57,
+    "genreAffinity": {
+      "drama": 80,
+      "procedural": 74,
+      "anthology": 68
+    },
+    "baseSalaryPerEpisode": 45000,
+    "bio": "Talented enough to keep getting hired, abrasive enough to never get hired twice."
+  },
+  {
+    "id": "elowen-tshabalala-reeve",
+    "name": "Elowen Tshabalala-Reeve",
+    "role": "director",
+    "age": 31,
+    "starPower": 25,
+    "craft": 85,
+    "reliability": 90,
+    "ego": 33,
+    "versatility": 83,
+    "genreAffinity": {
+      "drama": 84,
+      "procedural": 80,
+      "anthology": 76,
+      "sitcom": 66
+    },
+    "baseSalaryPerEpisode": 40000,
+    "bio": "Shadowed six directors, out-directed four of them, and still bills like a trainee."
+  },
+  {
+    "id": "bartholomew-nzuki-frayn",
+    "name": "Bartholomew Nzuki-Frayn",
+    "role": "director",
+    "age": 70,
+    "starPower": 30,
+    "craft": 91,
+    "reliability": 80,
+    "ego": 50,
+    "versatility": 58,
+    "genreAffinity": {
+      "drama": 92,
+      "anthology": 86,
+      "documentary": 70
+    },
+    "baseSalaryPerEpisode": 48000,
+    "bio": "Golden-age craftsman who still blocks a scene better than anyone half his age."
+  },
+  {
+    "id": "chastity-rambeau-oduya",
+    "name": "Chastity Rambeau-Oduya",
+    "role": "host",
+    "age": 44,
+    "starPower": 94,
+    "craft": 58,
+    "reliability": 81,
+    "ego": 83,
+    "versatility": 62,
+    "genreAffinity": {
+      "talkshow": 96,
+      "gameshow": 72,
+      "competition": 78
+    },
+    "baseSalaryPerEpisode": 780000,
+    "bio": "Daytime empress whose endorsement can make a book, a brand, or a scandal."
+  },
+  {
+    "id": "garrick-belanov",
+    "name": "Garrick Belanov",
+    "role": "host",
+    "age": 39,
+    "starPower": 85,
+    "craft": 25,
+    "reliability": 74,
+    "ego": 88,
+    "versatility": 41,
+    "genreAffinity": {
+      "reality": 92,
+      "competition": 90,
+      "gameshow": 74
+    },
+    "baseSalaryPerEpisode": 420000,
+    "bio": "Enormously popular, cannot read an autocue, and somehow that's part of the appeal."
+  },
+  {
+    "id": "odalys-fenwright",
+    "name": "Odalys Fenwright",
+    "role": "host",
+    "age": 52,
+    "starPower": 90,
+    "craft": 86,
+    "reliability": 90,
+    "ego": 54,
+    "versatility": 79,
+    "genreAffinity": {
+      "talkshow": 92,
+      "news": 84,
+      "documentary": 74,
+      "competition": 66
+    },
+    "baseSalaryPerEpisode": 520000,
+    "bio": "The interviewer politicians dread and everyone else begs their publicist to book."
+  },
+  {
+    "id": "reuben-castellanos-mbeki",
+    "name": "Reuben Castellanos-Mbeki",
+    "role": "host",
+    "age": 47,
+    "starPower": 69,
+    "craft": 72,
+    "reliability": 85,
+    "ego": 58,
+    "versatility": 74,
+    "genreAffinity": {
+      "gameshow": 90,
+      "competition": 84,
+      "talkshow": 70
+    },
+    "baseSalaryPerEpisode": 260000,
+    "bio": "Makes a tired quiz format feel like a night out; twelve years and still fresh."
+  },
+  {
+    "id": "lavinia-oduro-sparks",
+    "name": "Lavinia Oduro-Sparks",
+    "role": "host",
+    "age": 33,
+    "starPower": 61,
+    "craft": 49,
+    "reliability": 63,
+    "ego": 79,
+    "versatility": 55,
+    "genreAffinity": {
+      "reality": 88,
+      "competition": 80,
+      "talkshow": 66
+    },
+    "baseSalaryPerEpisode": 180000,
+    "bio": "Social-media giant, live-television liability, and worth the ratings risk on a good week."
+  },
+  {
+    "id": "emeka-lindhoffer",
+    "name": "Emeka Lindhoffer",
+    "role": "host",
+    "age": 58,
+    "starPower": 56,
+    "craft": 88,
+    "reliability": 92,
+    "ego": 40,
+    "versatility": 71,
+    "genreAffinity": {
+      "news": 92,
+      "documentary": 84,
+      "talkshow": 76
+    },
+    "baseSalaryPerEpisode": 150000,
+    "bio": "Thirty years of unimpeachable credibility going for a fraction of a reality star's fee."
+  },
+  {
+    "id": "perpetual-mwangi-drake",
+    "name": "Perpetual Mwangi-Drake",
+    "role": "host",
+    "age": 28,
+    "starPower": 44,
+    "craft": 66,
+    "reliability": 80,
+    "ego": 52,
+    "versatility": 77,
+    "genreAffinity": {
+      "competition": 84,
+      "gameshow": 78,
+      "talkshow": 70,
+      "kids": 66
+    },
+    "baseSalaryPerEpisode": 95000,
+    "bio": "Radio-honed timing and warmth; one prime slot away from being genuinely expensive."
+  },
+  {
+    "id": "stanislav-oyibo-crane",
+    "name": "Stanislav Oyibo-Crane",
+    "role": "host",
+    "age": 63,
+    "starPower": 51,
+    "craft": 74,
+    "reliability": 69,
+    "ego": 76,
+    "versatility": 58,
+    "genreAffinity": {
+      "gameshow": 86,
+      "talkshow": 72,
+      "competition": 66
+    },
+    "baseSalaryPerEpisode": 88000,
+    "bio": "Hosted a national institution for eighteen years and still resents being replaced."
+  },
+  {
+    "id": "tuppence-adekoya-vale",
+    "name": "Tuppence Adekoya-Vale",
+    "role": "host",
+    "age": 26,
+    "starPower": 31,
+    "craft": 79,
+    "reliability": 87,
+    "ego": 38,
+    "versatility": 81,
+    "genreAffinity": {
+      "kids": 88,
+      "competition": 76,
+      "gameshow": 74,
+      "talkshow": 66
+    },
+    "baseSalaryPerEpisode": 38000,
+    "bio": "Kids-TV natural who can hold a live studio of nine-year-olds with a single eyebrow."
+  },
+  {
+    "id": "ferdinand-oyelude-marsh",
+    "name": "Ferdinand Oyelude-Marsh",
+    "role": "host",
+    "age": 35,
+    "starPower": 24,
+    "craft": 83,
+    "reliability": 89,
+    "ego": 34,
+    "versatility": 78,
+    "genreAffinity": {
+      "documentary": 86,
+      "news": 80,
+      "talkshow": 72
+    },
+    "baseSalaryPerEpisode": 22000,
+    "bio": "Best presenter nobody has heard of, currently narrating corporate videos for rent money."
+  }
+]
