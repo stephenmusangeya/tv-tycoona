@@ -23,7 +23,7 @@ import {
 } from '../src/engine/actions';
 import { formatMoney } from '../src/engine/tick';
 import { SHOW_ARCHETYPES } from '../src/data';
-import { latestViewers, playerShows, totalCash, totalDebt, weeklyNet } from '../src/store/selectors';
+import { latestViewers, libraryWorth, playerArchive, playerShows, totalCash, totalDebt, weeklyNet } from '../src/store/selectors';
 import { ECONOMY } from '../src/engine/economy';
 import { BANK } from '../src/engine/bank';
 import { WEEKS_PER_YEAR } from '../src/engine/schedule';
@@ -156,9 +156,57 @@ log('\n[4] Running the studio for 12 years');
 const cashAtStart = totalCash(state);
 log(`  weekly net at start: ${formatMoney(weeklyNet(state))}`);
 
-for (let i = 0; i < 52 * 12; i++) advanceWeek(state);
+/*
+ * A studio that keeps working, rather than one that commissions once and idles.
+ *
+ * This section used to press "next week" 624 times with a single show and nothing
+ * else. Its outcome then hinged on whether that one show happened to survive the
+ * ratings — so it ended at $0 with the show cancelled on one balance pass and
+ * comfortably ahead on the next, without the economy having meaningfully changed.
+ * A check whose result is a coin flip is worse than no check: it cannot be read.
+ *
+ * Replacing a finished show with another cheap one is also just what a studio does,
+ * so this now measures the thing the design actually claims — that a modest operation
+ * making unglamorous television stays solvent and accumulates a library over a decade.
+ */
+let commissioned = 1;
+for (let i = 0; i < 52 * 12; i++) {
+  advanceWeek(state);
+
+  // Take whatever the networks offer on our own shows; a studio does not leave a
+  // signed deal on the table.
+  for (const offer of [...state.offers]) {
+    const production = state.productions[offer.productionId];
+    if (production && production.ownerId === state.player.studioId) {
+      acceptOffer(state, offer.id);
+    }
+  }
+
+  // Keep two things in the pipeline while there is money to do it.
+  //
+  // Waiting until the slate was empty was too late to be a fair test: by the time a
+  // single deficit-financed show has run its course the cash is gone, nothing is
+  // affordable, and the studio dies of a first choice it made twelve years earlier.
+  // A real operator commissions the next thing while the current one is still paying.
+  if (playerShows(state).length < 2) {
+    const owned = new Set(
+      Object.values(state.productions).map((p) => p.archetypeId),
+    );
+    const affordable = Object.values(state.concepts)
+      .filter((c) => !owned.has(c.id))
+      .map((c) => ({ c, season: c.baseCostPerEpisode * c.episodesPerSeason }))
+      .filter((x) => x.season <= totalCash(state) * 0.5)
+      .sort((a, b) => a.season - b.season)[0];
+
+    if (affordable) {
+      const made = developOriginal(state, affordable.c.id);
+      if (made.ok) commissioned += 1;
+    }
+  }
+}
 
 const shows = playerShows(state);
+log(`  commissioned ${commissioned} shows over the 12 years`);
 log(`  ${week()}  cash ${formatMoney(totalCash(state))} (was ${formatMoney(cashAtStart)})`);
 log(`  active projects: ${shows.length}`);
 log(`  "${show.title}": ${show.status}, ${show.totalEpisodes} episodes, ${show.history.length} seasons`);
@@ -174,6 +222,20 @@ if (show.history.length > 0) {
 }
 
 expect('the show ran at least one full season', show.history.length >= 1);
+
+// The claim the whole design rests on: cheap television, made steadily, is a living.
+// Not a fortune — the windfall check in money-check guards the other direction — but a
+// studio still standing after twelve years with something to show for it.
+expect(
+  'a studio that keeps working is still standing after 12 years',
+  !state.bank.closedDownWeek,
+  state.bank.closedDownWeek ? `closed in week ${state.bank.closedDownWeek}` : 'never foreclosed',
+);
+expect(
+  'and it built a library worth having',
+  libraryWorth(state) > 0,
+  `library ${formatMoney(libraryWorth(state))} · ${playerArchive(state).length} finished shows`,
+);
 expect(
   'syndication only pays past the threshold',
   !show.syndicated || show.totalEpisodes >= ECONOMY.syndicationThreshold,
