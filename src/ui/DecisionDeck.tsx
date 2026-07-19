@@ -1,12 +1,12 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useAction, useGame } from '../store/gameStore';
 import { acceptOffer, declineOffer, greenlightPitch, passOnPitch } from '../engine/actions';
 import { formatSlotKey } from '../engine/schedule';
 import { Button } from './components';
 import { Poster } from './Poster';
-import { FadeIn } from './motion';
+import { Arrive, Pop, staggerDelay, usePressScale } from './motion';
 import { colors, formatMoneyShort, space } from './theme';
 
 /**
@@ -56,7 +56,11 @@ export function DecisionDeck({
       <View style={styles.header}>
         <View style={styles.pulse} />
         <Text style={styles.headerText}>NEEDS YOUR DECISION</Text>
-        <Text style={styles.count}>{offers.length + pitches.length}</Text>
+        {/* The badge kicks when the size of the pile changes — including downwards, so
+            clearing a decision is acknowledged as much as receiving one. */}
+        <Pop trigger={offers.length + pitches.length}>
+          <Text style={styles.count}>{offers.length + pitches.length}</Text>
+        </Pop>
       </View>
 
       {/* --- Channel offers: the thing that was invisible --- */}
@@ -66,15 +70,16 @@ export function DecisionDeck({
         if (!production || !channel) return null;
 
         return (
-          <FadeIn key={offer.id} delay={index * 50}>
+          /* Keyed by offer id, so a card only flies in the week it actually turns up —
+             the ones already on the desk are the same React element and stay put. */
+          <Arrive key={offer.id} delay={staggerDelay(index, 40, 3)}>
             <View style={styles.card}>
-              <Pressable
+              <OpenPoster
                 testID={`tray-open-offer-${offer.id}`}
                 onPress={() => onOpenShow(production.id)}
-                style={({ pressed }) => pressed && { opacity: 0.7 }}
               >
                 <Poster seed={production.id} format={production.format} size="sm" />
-              </Pressable>
+              </OpenPoster>
 
               <View style={styles.body}>
                 <Text style={styles.kicker}>OFFER · {channel.name.toUpperCase()}</Text>
@@ -110,7 +115,7 @@ export function DecisionDeck({
                 />
               </View>
             </View>
-          </FadeIn>
+          </Arrive>
         );
       })}
 
@@ -118,15 +123,14 @@ export function DecisionDeck({
       {pitches.map((pitch, index) => {
         const pitcher = game.talent[pitch.pitcherId];
         return (
-          <FadeIn key={pitch.id} delay={(offers.length + index) * 50}>
+          <Arrive key={pitch.id} delay={staggerDelay(offers.length + index, 40, 3)}>
             <View style={styles.card}>
-              <Pressable
+              <OpenPoster
                 testID={`tray-open-pitch-${pitch.id}`}
                 onPress={() => onOpenArchetype?.(pitch.archetypeId)}
-                style={({ pressed }) => pressed && { opacity: 0.7 }}
               >
                 <Poster seed={pitch.archetypeId} format={pitch.format} size="sm" />
-              </Pressable>
+              </OpenPoster>
 
               <View style={styles.body}>
                 <Text style={[styles.kicker, { color: colors.info }]}>
@@ -165,7 +169,7 @@ export function DecisionDeck({
                 />
               </View>
             </View>
-          </FadeIn>
+          </Arrive>
         );
       })}
 
@@ -192,6 +196,36 @@ export function DecisionDeck({
         </View>
       ))}
     </View>
+  );
+}
+
+/**
+ * The poster on a tray card, pressed.
+ *
+ * Its own component because the press animation needs a hook and the cards are built
+ * in a `map`. The poster is the card's main affordance, so it gets weight rather than
+ * the flat opacity dip a link would have.
+ */
+function OpenPoster({
+  testID,
+  onPress,
+  children,
+}: {
+  testID: string;
+  onPress: () => void;
+  children: React.ReactNode;
+}) {
+  const press = usePressScale(0.94);
+
+  return (
+    <Pressable
+      testID={testID}
+      onPress={onPress}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+    >
+      <Animated.View style={{ transform: [{ scale: press.scale }] }}>{children}</Animated.View>
+    </Pressable>
   );
 }
 

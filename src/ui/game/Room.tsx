@@ -1,7 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { StaggerGroup, staggerDelay, useEnter, useStaggerSlot } from '../motion';
 import { colors, space } from '../theme';
 
 /**
@@ -15,6 +23,11 @@ import { colors, space } from '../theme';
  *
  * Everything the player needs for a given activity is visible at once, which is what
  * makes a screen feel like somewhere you are rather than something you read.
+ *
+ * A room also opens the entrance stagger for the panels inside it, so walking into one
+ * assembles the console around you instead of cutting to a finished picture. The
+ * ordering lives in the group, not in the screens, so no screen has to hand-number its
+ * own panels to get it.
  */
 export function Room({
   children,
@@ -23,7 +36,11 @@ export function Room({
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
 }) {
-  return <View style={[styles.room, style]}>{children}</View>;
+  return (
+    <View style={[styles.room, style]}>
+      <StaggerGroup>{children}</StaggerGroup>
+    </View>
+  );
 }
 
 /** A horizontal band inside a room. */
@@ -45,6 +62,10 @@ export function Deck({
  * Cards on a page look like a web layout no matter what colour they are. Panels are
  * built to read as equipment bolted into a console — that difference is most of what
  * separates "dashboard" from "game".
+ *
+ * Panels settle into place on mount, a beat apart. This fires when the room opens and
+ * never on a re-render, which matters: a panel that re-stages itself every time a
+ * number inside it changes would flicker on every single week you play.
  */
 export function Panel({
   children,
@@ -61,8 +82,12 @@ export function Panel({
   style?: StyleProp<ViewStyle>;
   scroll?: boolean;
 }) {
+  // Animating the panel's own root rather than wrapping it: a wrapper View would sit
+  // between the deck and the panel and swallow the flex that lays the room out.
+  const enter = useEnter({ delay: staggerDelay(useStaggerSlot()) });
+
   return (
-    <View style={[styles.panel, flex !== undefined && { flex }, style]}>
+    <Animated.View style={[styles.panel, flex !== undefined && { flex }, style, enter]}>
       <LinearGradient
         colors={['#F6F1E6', '#E9E1D0']}
         start={{ x: 0.5, y: 0 }}
@@ -80,7 +105,7 @@ export function Panel({
       ) : null}
 
       <View style={[styles.panelBody, scroll && { overflow: 'hidden' }]}>{children}</View>
-    </View>
+    </Animated.View>
   );
 }
 

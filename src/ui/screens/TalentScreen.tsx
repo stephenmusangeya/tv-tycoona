@@ -14,7 +14,7 @@ import { freeAgents, playerShows, roster, rosterCostPerEpisode } from '../../sto
 import { castTalent } from '../../engine/actions';
 import { TALENT_ROLES } from '../../engine/types';
 import type { Production, TalentRole, TalentState } from '../../engine/types';
-import { Avatar } from '../Poster';
+import { Portrait } from '../Portrait';
 import { Icon, WalkOfFameStar, type IconName } from '../icons';
 import { Room, Deck, Panel, Readout } from '../game/Room';
 import { colors, formatMoneyShort, radius, scoreColor, space } from '../theme';
@@ -105,7 +105,10 @@ export function TalentScreen() {
       <View
         style={[
           styles.pavementDeck,
-          empty ? styles.bandDeck : { height: wide ? 196 : 172 },
+          // Tall enough for a slab *and* its nameplate. At 196 the panel cut through
+          // the stats row, so every star on the pavement was showing a half-engraved
+          // plate — the one part of the screen that is meant to look permanent.
+          empty ? styles.bandDeck : { height: wide ? 232 : 206 },
         ]}
       >
         <Panel
@@ -263,7 +266,15 @@ function StarSlab({
       <View style={{ width: size, height: size }}>
         <WalkOfFameStar size={size} />
         <View style={[StyleSheet.absoluteFill, styles.slabCentre]}>
-          <Avatar name={person.name} size={size * 0.38} style={styles.medallion} />
+          <Portrait
+            seed={person.id}
+            size={size * 0.38}
+            age={person.age}
+            role={person.role}
+            starPower={person.starPower}
+            retired={person.retired}
+            style={styles.medallion}
+          />
         </View>
       </View>
 
@@ -313,7 +324,15 @@ function RolodexCard({
           sitting in an index rather than a tile in a grid. */}
       <View style={styles.punch} />
 
-      <Avatar name={person.name} size={44} style={{ marginTop: 2 }} />
+      <Portrait
+        seed={person.id}
+        size={44}
+        age={person.age}
+        role={person.role}
+        starPower={person.starPower}
+        retired={person.retired}
+        style={{ marginTop: 2 }}
+      />
       <Text style={styles.cardName} numberOfLines={2}>
         {person.name}
       </Text>
@@ -369,7 +388,14 @@ function Dossier({
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.dossierHead}>
-        <Avatar name={person.name} size={40} />
+        <Portrait
+          seed={person.id}
+          size={40}
+          age={person.age}
+          role={person.role}
+          starPower={person.starPower}
+          retired={person.retired}
+        />
         <View style={{ flex: 1 }}>
           <Text style={styles.dossierName} numberOfLines={1}>
             {person.name}
@@ -583,7 +609,15 @@ const styles = StyleSheet.create({
   pavement: { flexDirection: 'row', gap: space.sm, alignItems: 'flex-start' },
   slab: { alignItems: 'center' },
   slabCentre: { alignItems: 'center', justifyContent: 'center' },
-  medallion: { borderWidth: 2, borderColor: 'rgba(255,248,225,0.85)' },
+  // Round, and it has to be said explicitly: the border is drawn by this View, not by
+  // the portrait inside it, so without a radius it framed a circular face in a square
+  // and put a hard-edged box across the middle of a five-pointed star.
+  medallion: {
+    borderRadius: 999,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: 'rgba(255,248,225,0.85)',
+  },
 
   plate: {
     marginTop: 5,

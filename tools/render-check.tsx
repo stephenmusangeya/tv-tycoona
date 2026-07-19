@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { TVScreen } from '../src/ui/TVScreen';
 import { SeasonTimeline } from '../src/ui/SeasonTimeline';
 import { Poster } from '../src/ui/Poster';
+import { Portrait } from '../src/ui/Portrait';
 import { Sidebar } from '../src/ui/Sidebar';
 import { newGame } from '../src/engine/setup';
 import { advanceWeek } from '../src/engine/tick';
@@ -97,11 +98,29 @@ const posters = renderToStaticMarkup(
 );
 check('Posters draw real icon paths', posters, ['<svg', '<path']);
 
+// Portraits: the cast must be drawn, not spelled. Rendering the whole live roster at
+// both extremes is the cheap way to catch a face that only holds together at one size.
+const people = Object.values(state.talent).slice(0, 60);
+const portraits = renderToStaticMarkup(
+  <>
+    {people.map((p) => (
+      <React.Fragment key={p.id}>
+        <Portrait seed={p.id} size={30} age={p.age} role={p.role} starPower={p.starPower} retired={p.retired} />
+        <Portrait seed={p.id} size={96} age={p.age} role={p.role} starPower={p.starPower} retired={p.retired} />
+      </React.Fragment>
+    ))}
+  </>
+);
+check('Portraits draw faces as paths', portraits, ['<svg', '<path', '<circle']);
+// A portrait that leaked a letter would mean the initials avatar had crept back in.
+check('Portraits carry no text', /<text/i.test(portraits) ? '' : portraits, ['<svg']);
+
 const EMOJI = /\p{Extended_Pictographic}/u;
 for (const [label, markup] of [
   ['posters', posters],
   ['sidebar', sidebar],
   ['the TV', live],
+  ['portraits', portraits],
 ] as const) {
   check(`no emoji in ${label}`, EMOJI.test(markup) ? '' : markup, []);
 }

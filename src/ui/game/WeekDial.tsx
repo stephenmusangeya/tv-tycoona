@@ -3,6 +3,7 @@ import { Animated, Easing, Platform, Pressable, StyleSheet, Text, View } from 'r
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { DUR, Flip, useOnChange, usePressScale, useReducedMotion } from '../motion';
 import { colors } from '../theme';
 
 /**
@@ -12,6 +13,10 @@ import { colors } from '../theme';
  * with a label — the single most website-shaped thing on the screen. This is a
  * physical channel dial: it rotates a detent each week, clicks a haptic, and the
  * indicator sweeps. The action is the same; the feel is not.
+ *
+ * The sweep is deliberately quick and slightly over-rotated. A dial that eases
+ * politely into position reads as a progress bar; one that snaps past the detent and
+ * settles back reads as a sprung mechanism you just clicked.
  */
 export function WeekDial({
   week,
@@ -24,17 +29,40 @@ export function WeekDial({
   onSkip: () => void;
   busy: boolean;
 }) {
+  const reduced = useReducedMotion();
   const rotation = useRef(new Animated.Value(week)).current;
-  const press = useRef(new Animated.Value(0)).current;
+  const dial = usePressScale(0.94);
+  const skip = usePressScale(0.92);
 
   useEffect(() => {
-    Animated.timing(rotation, {
+    if (reduced) {
+      rotation.setValue(week);
+      return;
+    }
+    const animation = Animated.timing(rotation, {
       toValue: week,
-      duration: 420,
-      easing: Easing.out(Easing.back(2)),
+      duration: DUR.react,
+      easing: Easing.out(Easing.back(1.6)),
+      useNativeDriver: true,
+    });
+    animation.start();
+    return () => animation.stop();
+  }, [week, rotation, reduced]);
+
+  // The pointer flares as the detent passes — the dial's own confirmation that the
+  // turn registered, tied to the week rather than to the tap so it cannot fire on a
+  // press the game refused.
+  const flare = useRef(new Animated.Value(0)).current;
+  useOnChange(week, () => {
+    if (reduced) return;
+    flare.setValue(1);
+    Animated.timing(flare, {
+      toValue: 0,
+      duration: DUR.react,
+      easing: Easing.out(Easing.quad),
       useNativeDriver: true,
     }).start();
-  }, [week, rotation]);
+  });
 
   const spin = rotation.interpolate({
     inputRange: [0, 52],
@@ -45,24 +73,20 @@ export function WeekDial({
   const tap = (fn: () => void, style: Haptics.ImpactFeedbackStyle) => () => {
     // Haptics exist on device only; calling them on web throws.
     if (Platform.OS !== 'web') void Haptics.impactAsync(style);
-    Animated.sequence([
-      Animated.timing(press, { toValue: 1, duration: 70, useNativeDriver: true }),
-      Animated.spring(press, { toValue: 0, friction: 5, useNativeDriver: true }),
-    ]).start();
     fn();
   };
-
-  const scale = press.interpolate({ inputRange: [0, 1], outputRange: [1, 0.94] });
 
   return (
     <View style={styles.wrap}>
       <Pressable
         testID="advance-week"
         onPress={tap(onAdvance, Haptics.ImpactFeedbackStyle.Medium)}
+        onPressIn={dial.onPressIn}
+        onPressOut={dial.onPressOut}
         disabled={busy}
         style={{ opacity: busy ? 0.6 : 1 }}
       >
-        <Animated.View style={[styles.dial, { transform: [{ scale }] }]}>
+        <Animated.View style={[styles.dial, { transform: [{ scale: dial.scale }] }]}>
           <LinearGradient
             colors={['#2E3846', '#151B23']}
             start={{ x: 0.3, y: 0 }}
@@ -84,10 +108,11 @@ export function WeekDial({
           {/* The indicator that sweeps as weeks pass. */}
           <Animated.View style={[styles.pointerHub, { transform: [{ rotate: spin }] }]}>
             <View style={styles.pointer} />
+            <Animated.View style={[styles.pointerFlare, { opacity: flare }]} />
           </Animated.View>
 
           <View style={styles.hub}>
-            <Text style={styles.hubWeek}>{String(week).padStart(2, '0')}</Text>
+            <Flip value={String(week).padStart(2, '0')} style={styles.hubWeek} />
             <Text style={styles.hubLabel}>WEEK</Text>
           </View>
         </Animated.View>
@@ -98,10 +123,13 @@ export function WeekDial({
       <Pressable
         testID="skip-four"
         onPress={tap(onSkip, Haptics.ImpactFeedbackStyle.Light)}
+        onPressIn={skip.onPressIn}
+        onPressOut={skip.onPressOut}
         disabled={busy}
-        style={({ pressed }) => [styles.skip, pressed && { opacity: 0.7 }]}
       >
-        <Text style={styles.skipText}>▸▸ SKIP A MONTH</Text>
+        <Animated.View style={[styles.skip, { transform: [{ scale: skip.scale }] }]}>
+          <Text style={styles.skipText}>▸▸ SKIP A MONTH</Text>
+        </Animated.View>
       </Pressable>
     </View>
   );
@@ -146,6 +174,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accent,
     marginTop: 6,
     boxShadow: '0px 0px 8px rgba(255,107,53,0.9)',
+  },
+  /** Sits over the pointer and burns off, so the flare costs no layout. */
+  pointerFlare: {
+    position: 'absolute',
+    top: 2,
+    width: 9,
+    height: 30,
+    borderRadius: 5,
+    backgroundColor: 'rgba(255,171,120,0.75)',
   },
 
   hub: {

@@ -18,7 +18,7 @@ import {
 } from '../../store/selectors';
 import { TVScreen } from '../TVScreen';
 import { Poster } from '../Poster';
-import { CountUp, WeekSweep } from '../motion';
+import { CountUp, Flash, WeekSweep } from '../motion';
 import type { ResultLine } from '../TVScreen';
 import { DecisionDeck } from '../DecisionDeck';
 import { Room, Deck, Panel, Readout } from '../game/Room';
@@ -121,11 +121,16 @@ export function DeskRoom({
 
         {wide ? (
           <Panel title="THE LEDGER" flex={2}>
-            <CountUp
-              value={cash}
-              format={formatMoneyShort}
-              style={[styles.cash, { color: cash > 0 ? colors.text : colors.negative }]}
-            />
+            {/* The balance counts to its new figure and the panel takes a brief wash in
+                the direction it moved. Without it a week that cost you money and a week
+                that made you money look identical until you read the digits. */}
+            <Flash value={cash} style={styles.cashWrap}>
+              <CountUp
+                value={cash}
+                format={formatMoneyShort}
+                style={[styles.cash, { color: cash > 0 ? colors.text : colors.negative }]}
+              />
+            </Flash>
 
             <View style={styles.ledgerLines}>
               {money.map((line) => (
@@ -143,10 +148,14 @@ export function DeskRoom({
 
             <View style={styles.netRow}>
               <Text style={styles.netLabel}>{net >= 0 ? 'PROFIT / WK' : 'LOSS / WK'}</Text>
-              <Text style={[styles.netValue, { color: deltaColor(net) }]}>
-                {net >= 0 ? '+' : '−'}
-                {formatMoneyShort(Math.abs(net))}
-              </Text>
+              {/* The weekly line is the number a player is actually steering, so it is
+                  worth flagging when a decision moves it. */}
+              <Flash value={net}>
+                <Text style={[styles.netValue, { color: deltaColor(net) }]}>
+                  {net >= 0 ? '+' : '−'}
+                  {formatMoneyShort(Math.abs(net))}
+                </Text>
+              </Flash>
             </View>
 
             {/* The ledger used to run its figures at the top, pin its gauges to the
@@ -383,6 +392,7 @@ function EconLine({ label, value, color }: { label: string; value: string; color
 }
 
 const styles = StyleSheet.create({
+  cashWrap: { alignSelf: 'flex-start' },
   cash: {
     fontSize: 28,
     fontWeight: '900',

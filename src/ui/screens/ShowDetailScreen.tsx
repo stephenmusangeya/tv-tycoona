@@ -46,7 +46,8 @@ import {
 } from '../components';
 import { colors, deltaColor, formatMoneyShort, scoreColor, space, type } from '../theme';
 import { Icon } from '../icons';
-import { Poster, Avatar } from '../Poster';
+import { Poster } from '../Poster';
+import { Portrait } from '../Portrait';
 import { CountUp } from '../motion';
 
 /**
@@ -385,7 +386,15 @@ function ProductionDetail({
               key={person.id}
               style={[styles.castRow, index === cast.length - 1 && { borderBottomWidth: 0 }]}
             >
-              <Avatar name={person.name} size={30} style={{ marginRight: space.sm }} />
+              <Portrait
+                seed={person.id}
+                size={30}
+                age={person.age}
+                role={person.role}
+                starPower={person.starPower}
+                retired={person.retired}
+                style={{ marginRight: space.sm }}
+              />
               <View style={{ flex: 1 }}>
                 <Text style={styles.castName}>{person.name}</Text>
                 <Text style={styles.castRole}>
