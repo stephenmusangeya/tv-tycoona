@@ -12,6 +12,14 @@
  * uses, then rasterises the result in a real browser. It draws the SVG the components
  * actually emit — not a mock-up of it.
  *
+ * A trap worth knowing if you extend this to whole screens: `Panel` now enters from
+ * `opacity: 0` and animates to 1, and static SSR never runs an animation frame — so a
+ * server-rendered room screenshots completely blank and looks like a catastrophic bug
+ * that does not exist. Posters and portraits are unaffected because nothing wraps them
+ * in an entrance. If you do render a room here, force the resting state in the page CSS
+ * (`* { opacity: 1 !important; transform: none !important }`), which is where the
+ * browser would land anyway.
+ *
  *   npx tsx --tsconfig tsconfig.render.json tools/art-sheet.tsx
  */
 import React from 'react';

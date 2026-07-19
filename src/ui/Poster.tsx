@@ -452,6 +452,10 @@ const portrait: Template = (a, d) => {
   const hy = 48 + a.v[5] * 8;
   const hr = 19 + a.v[6] * 5;
   const hair = Math.floor(a.v[0] * 4);
+  // Shoulder line, clamped: the title plate covers the bottom fifth of the frame, and
+  // on the taller-headed seeds an unclamped bust landed entirely behind it — leaving a
+  // head on a stalk. 88 is the lowest a shoulder can sit and still be seen.
+  const sy = Math.min(hy + hr * 1.9, 88);
 
   return (
     <>
@@ -470,15 +474,15 @@ const portrait: Template = (a, d) => {
         <Rect
           x={r1(hx - hr * 0.34)}
           y={r1(hy + hr * 0.5)}
-          width={r1(hr * 0.68)}
-          height={r1(hr * 1.3)}
+          width={r1(hr * 0.8)}
+          height={r1(Math.max(4, sy - hy - hr * 0.4))}
           fill={p.ink}
         />
         <Path
           d={
-            `M${r1(hx - hr * 2.6)} 132V${r1(hy + hr * 2.1)}` +
-            `q${r1(hr * 0.4)}-${r1(hr * 0.75)} ${r1(hr * 2.6)}-${r1(hr * 0.75)}` +
-            `t${r1(hr * 2.6)} ${r1(hr * 0.75)}V132Z`
+            `M${r1(hx - hr * 2.5)} 132V${r1(sy + hr * 0.7)}` +
+            `q${r1(hr * 0.35)}-${r1(hr * 0.7)} ${r1(hr * 2.5)}-${r1(hr * 0.7)}` +
+            `t${r1(hr * 2.5)} ${r1(hr * 0.7)}V132Z`
           }
           fill={p.ink}
         />
@@ -488,18 +492,18 @@ const portrait: Template = (a, d) => {
           // Fedora, sitting on the crown rather than cutting across the face.
           <>
             <Rect
-              x={r1(hx - hr * 1.9)}
-              y={r1(hy - hr * 0.72)}
-              width={r1(hr * 3.8)}
-              height={r1(hr * 0.26)}
+              x={r1(hx - hr * 1.8)}
+              y={r1(hy - hr * 0.58)}
+              width={r1(hr * 3.6)}
+              height={r1(hr * 0.22)}
               rx={r1(hr * 0.12)}
               fill={p.ink}
             />
             <Path
               d={
-                `M${r1(hx - hr * 1.02)} ${r1(hy - hr * 0.72)}` +
-                `c0-${r1(hr * 0.95)} ${r1(hr * 0.44)}-${r1(hr * 1.28)} ${r1(hr * 1.02)}-${r1(hr * 1.28)}` +
-                `s${r1(hr * 1.02)} ${r1(hr * 0.33)} ${r1(hr * 1.02)} ${r1(hr * 1.28)}Z`
+                `M${r1(hx - hr)} ${r1(hy - hr * 0.58)}` +
+                `c0-${r1(hr * 0.62)} ${r1(hr * 0.35)}-${r1(hr * 0.86)} ${r1(hr)}-${r1(hr * 0.86)}` +
+                `s${r1(hr)} ${r1(hr * 0.24)} ${r1(hr)} ${r1(hr * 0.86)}Z`
               }
               fill={p.ink}
             />
@@ -508,10 +512,10 @@ const portrait: Template = (a, d) => {
           // Bob — a shell around the head that falls past the jaw.
           <Path
             d={
-              `M${r1(hx - hr * 1.18)} ${r1(hy + hr * 0.85)}` +
-              `a${r1(hr * 1.18)} ${r1(hr * 1.3)} 0 1 1 ${r1(hr * 2.36)} 0` +
-              `l${r1(-hr * 0.4)} 0` +
-              `a${r1(hr * 0.8)} ${r1(hr * 0.95)} 0 1 0 ${r1(-hr * 1.56)} 0Z`
+              `M${r1(hx - hr * 1.16)} ${r1(hy + hr * 0.6)}` +
+              `a${r1(hr * 1.16)} ${r1(hr * 1.16)} 0 1 1 ${r1(hr * 2.32)} 0` +
+              `l${r1(-hr * 0.34)} 0` +
+              `a${r1(hr * 0.82)} ${r1(hr * 0.82)} 0 1 0 ${r1(-hr * 1.64)} 0Z`
             }
             fill={p.ink}
           />
@@ -519,9 +523,9 @@ const portrait: Template = (a, d) => {
           // Quiff.
           <Path
             d={
-              `M${r1(hx - hr * 0.96)} ${r1(hy - hr * 0.42)}` +
-              `a${r1(hr * 0.96)} ${r1(hr * 0.96)} 0 0 1 ${r1(hr * 1.92)} 0` +
-              `c${r1(-hr * 0.3)}-${r1(hr * 0.5)}-${r1(hr * 1.56)}-${r1(hr * 0.5)}-${r1(hr * 1.92)} 0Z`
+              `M${r1(hx - hr * 0.98)} ${r1(hy - hr * 0.3)}` +
+              `a${r1(hr * 0.98)} ${r1(hr * 0.62)} 0 0 1 ${r1(hr * 1.96)} 0` +
+              `c${r1(-hr * 0.32)}-${r1(hr * 0.34)}-${r1(hr * 1.58)}-${r1(hr * 0.34)}-${r1(hr * 1.96)} 0Z`
             }
             fill={p.ink}
           />

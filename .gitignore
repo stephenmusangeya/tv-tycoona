@@ -47,3 +47,11 @@ tools/shots/
 
 # Working notes, not shipped
 docs/
+
+# Scratch harnesses.
+# Agents working in this repo drop throwaway check scripts at the root as dotfiles
+# (.pcheck.tsx, .recept-check.ts). Twice now a `git add -A` has swept one into a
+# commit. Real tooling lives in tools/ and is committed deliberately; anything
+# hidden at the root is scratch by definition.
+/.[!.]*.ts
+/.[!.]*.tsx
