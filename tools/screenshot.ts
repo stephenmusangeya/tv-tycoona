@@ -115,13 +115,21 @@ async function main() {
 
     await shoot(page, '02-desk-empty');
 
+    // MAKE A SHOW no longer opens a catalogue to shop from — the studio invents its
+    // own programmes now, so this drives the creation room the way a player would:
+    // name it, pick something a $10M studio can actually afford, fund it properly.
     await mustTap(page, 'make-show', 900);
     await shoot(page, '03-new-shows');
 
-    await mustTap(page, 'see-details', 700);
+    await page.getByTestId('create-title').first().fill('The Tuesday Table');
+    // A daily panel show, not the default sitcom: the whole point of the new ladder is
+    // that a small studio starts on cheap high-volume formats, and the harness should
+    // walk the route the game is actually asking a new player to take.
+    await tap(page, 'format-gameshow', 400);
+    await tap(page, 'budget-match', 400);
     await shoot(page, '04-show-details');
 
-    await mustTap(page, 'commission-show', 2000);
+    await mustTap(page, 'create-confirm', 2000);
     await shoot(page, '05-show-page');
 
     await mustTap(page, 'close-show', 600);

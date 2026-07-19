@@ -1,4 +1,5 @@
 import { conceptOf, registerConcepts } from '../data';
+import { SEASON_COST_BAND } from './worldGen';
 import { bindTalent, createProduction, refreshQuality } from './production';
 import {
   archetypeCeiling,
@@ -54,8 +55,6 @@ import {
 /** What a format is like before anyone touches it, and what an hour of it costs. */
 interface FormatShape {
   base: Attributes;
-  /** What one episode of an unremarkable example costs, in USD. */
-  costPerEpisode: number;
   /** A normal order — the reference point volume is measured against. */
   episodes: number;
   /** How short and how long an order the format tolerates. */
@@ -90,101 +89,112 @@ const attrs = (
  * in the same economy and the same taste-space as the shows the world is already
  * making. A sitcom you commission costs what a sitcom costs.
  */
+/**
+ * What a format costs per episode, from the one ladder the rest of the game uses.
+ *
+ * This used to be a `costPerEpisode` field on `FORMAT_SHAPES` — a second, private copy
+ * of the economy. It drifted, exactly as a duplicated constant always does: after the
+ * catalogue was rebalanced onto `SEASON_COST_BAND`, the world's cheapest season cost
+ * $0.9M while the cheapest show a player could *invent* cost $14.4M. A studio opening
+ * with $10M could not create a single programme of any kind, and the feature was
+ * unusable without a single test failing.
+ *
+ * Reading the shared band means an invented show is priced by the same rule as a
+ * generated one, and there is no longer anywhere for the two to disagree.
+ *
+ * `LADDER_POSITION` puts a default commission low on its format's range: the starting
+ * point should be the ordinary version of a format, with the ambitious version
+ * something the player has to deliberately spend up to.
+ */
+const LADDER_POSITION = 0.22;
+
+function formatCostPerEpisode(format: Format, episodesPerSeason: number): number {
+  const [lo, hi] = SEASON_COST_BAND[format];
+  const seasonCost = lo * (hi / lo) ** LADDER_POSITION;
+  return Math.max(500, Math.round(seasonCost / Math.max(1, episodesPerSeason)));
+}
+
 const FORMAT_SHAPES: Record<Format, FormatShape> = {
   sitcom: {
     base: attrs(81, 66, 7, 61, 38, 84, 74, 25),
-    costPerEpisode: 1_900_000,
     episodes: 24,
     episodeRange: [8, 26],
     castSize: 6,
   },
   drama: {
     base: attrs(78, 74, 51, 29, 56, 35, 59, 63),
-    costPerEpisode: 5_600_000,
     episodes: 16,
     episodeRange: [6, 26],
     castSize: 10,
   },
   procedural: {
     base: attrs(80, 62, 38, 35, 38, 36, 41, 41),
-    costPerEpisode: 3_800_000,
     episodes: 24,
     episodeRange: [10, 26],
     castSize: 6,
   },
   reality: {
     base: attrs(71, 20, 11, 38, 56, 48, 47, 15),
-    costPerEpisode: 800_000,
     episodes: 18,
     episodeRange: [6, 40],
     castSize: 7,
   },
   competition: {
     base: attrs(79, 36, 2, 60, 29, 47, 62, 20),
-    costPerEpisode: 1_000_000,
     episodes: 18,
     episodeRange: [8, 40],
     castSize: 7,
   },
   documentary: {
     base: attrs(71, 59, 36, 43, 40, 19, 52, 36),
-    costPerEpisode: 900_000,
     episodes: 16,
     episodeRange: [4, 32],
     castSize: 2,
   },
   animation: {
     base: attrs(81, 50, 35, 33, 59, 77, 51, 32),
-    costPerEpisode: 2_000_000,
     episodes: 24,
     episodeRange: [8, 52],
     castSize: 6,
   },
   talkshow: {
     base: attrs(73, 35, 14, 43, 50, 55, 45, 7),
-    costPerEpisode: 300_000,
     episodes: 190,
     episodeRange: [52, 260],
     castSize: 2,
   },
   gameshow: {
     base: attrs(66, 18, 0, 75, 10, 40, 41, 7),
-    costPerEpisode: 260_000,
     episodes: 190,
     episodeRange: [52, 260],
     castSize: 3,
   },
   sketch: {
     base: attrs(81, 67, 9, 37, 63, 87, 40, 18),
-    costPerEpisode: 1_000_000,
     episodes: 22,
     episodeRange: [8, 30],
     castSize: 9,
   },
   soap: {
     base: attrs(80, 36, 30, 25, 58, 28, 51, 47),
-    costPerEpisode: 4_600_000,
     episodes: 26,
     episodeRange: [26, 260],
     castSize: 11,
   },
   anthology: {
     base: attrs(74, 88, 51, 20, 65, 15, 59, 70),
-    costPerEpisode: 5_800_000,
     episodes: 8,
     episodeRange: [6, 16],
     castSize: 6,
   },
   kids: {
     base: attrs(78, 50, 3, 94, 7, 72, 81, 6),
-    costPerEpisode: 700_000,
     episodes: 52,
     episodeRange: [13, 130],
     castSize: 6,
   },
   news: {
     base: attrs(45, 56, 14, 41, 37, 16, 24, 32),
-    costPerEpisode: 260_000,
     episodes: 200,
     episodeRange: [52, 260],
     castSize: 3,
@@ -365,7 +375,7 @@ export function blueprintFor(format: Format, title = ''): ShowBlueprint {
     genre: genre.id,
     angle: 'straight',
     episodesPerSeason: shape.episodes,
-    budgetPerEpisode: shape.costPerEpisode,
+    budgetPerEpisode: formatCostPerEpisode(format, shape.episodes),
     castIds: [],
     writerIds: [],
   };
@@ -380,7 +390,7 @@ export function orderOptions(format: Format): number[] {
 
 /** What a format is worth per hour before anything else is decided. */
 export function formatBaseCost(format: Format): number {
-  return FORMAT_SHAPES[format].costPerEpisode;
+  return formatCostPerEpisode(format, FORMAT_SHAPES[format].episodes);
 }
 
 /** Genres ordered so the ones that belong to this format come first. */
@@ -529,7 +539,8 @@ function requiredCostPerEpisode(
   // Ambitious television is expensive television, whoever is making it.
   const ambitionFactor = 0.85 + 0.3 * ((vector.prestige + vector.complexity) / 200);
 
-  return Math.max(50_000, Math.round(shape.costPerEpisode * volumeFactor * castFactor * ambitionFactor));
+  const base = formatCostPerEpisode(blueprint.format, blueprint.episodesPerSeason);
+  return Math.max(5_000, Math.round(base * castFactor * ambitionFactor));
 }
 
 /** What visible money does to a show, once there is something to spend it on. */

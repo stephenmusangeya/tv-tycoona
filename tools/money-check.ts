@@ -6,6 +6,8 @@ import { SHOW_ARCHETYPES } from '../src/data';
 import { showEconomics, estimateNewShow, moneyBreakdown, weeklyNet, rerunIncome, libraryWorth, totalCash, totalDebt } from '../src/store/selectors';
 import { rerunWeeklyValue, RERUN_MINIMUM_EPISODES } from '../src/engine/economy';
 import { formatMoney } from '../src/engine/tick';
+import { blueprintFor } from '../src/engine/development';
+import { FORMATS } from '../src/engine/types';
 
 let fails = 0;
 const check = (l: string, ok: boolean, d = '') => { if (!ok) fails++; console.log(`${ok?'PASS':'FAIL'}  ${l}${d?' — '+d:''}`); };
@@ -168,10 +170,13 @@ check(
 // Small television should make *small* money. If the cheapest shows in the game
 // multiplied the studio's capital, the ladder would be upside down again and the
 // correct strategy would be to make nothing but daytime filler forever.
+// Tightened from 6x once the back end was re-tuned: the measured figure is ~3.5x, and
+// a guard with four turns of slack in it is not a guard. This caught a genuine
+// inversion at 8.7x — cheap slates printing money — and it should keep catching one.
 check(
   'the profit is modest, not a windfall',
-  finalCash < openingCash * 6,
-  `${formatMoney(finalCash)} from ${formatMoney(openingCash)}`,
+  finalCash < openingCash * 5,
+  `${formatMoney(finalCash)} from ${formatMoney(openingCash)} (${(finalCash / openingCash).toFixed(1)}x)`,
 );
 
 // ---------------------------------------------------------------------------
@@ -268,6 +273,48 @@ check(
   medianShare > 0.2 && medianShare < 0.8,
   `median ${(medianShare * 100).toFixed(0)}% of budget`,
 );
+
+// ---------------------------------------------------------------------------
+// The player's ladder and the world's ladder are the same ladder
+// ---------------------------------------------------------------------------
+// `development.ts` used to carry its own private `costPerEpisode` table. It drifted:
+// after the catalogue was rebalanced, the world's cheapest season cost $0.9M while the
+// cheapest show a player could *invent* cost $14.4M — so a studio opening with $10M
+// could not create a single programme, and the whole create-a-show feature was dead on
+// arrival without one test failing. Both now read SEASON_COST_BAND; this makes sure
+// they cannot silently part company again.
+{
+  const world = newGame({ seed: 11, studioName: 'Ladder Pictures' });
+  const openingCash = totalCash(world);
+
+  const invented = FORMATS.map((format) => {
+    const draft = blueprintFor(format);
+    return { format, season: draft.budgetPerEpisode * draft.episodesPerSeason };
+  }).sort((a, b) => a.season - b.season);
+
+  const generated = Object.values(world.concepts)
+    .map((c) => c.baseCostPerEpisode * c.episodesPerSeason)
+    .sort((a, b) => a - b);
+
+  const cheapestInvented = invented[0].season;
+  const cheapestGenerated = generated[0];
+
+  check(
+    'a new studio can afford to invent something',
+    cheapestInvented <= openingCash * 0.6,
+    `cheapest invented season ${formatMoney(cheapestInvented)} vs ${formatMoney(openingCash)} opening`,
+  );
+
+  // Within 4x in either direction. They are different questions — a default commission
+  // versus the spread of a whole world — so they should not be identical, but an order
+  // of magnitude apart means one of them has been rebalanced and the other forgotten.
+  const ratio = cheapestInvented / cheapestGenerated;
+  check(
+    'the two cost ladders have not drifted apart',
+    ratio > 0.25 && ratio < 4,
+    `invented ${formatMoney(cheapestInvented)} vs generated ${formatMoney(cheapestGenerated)} (${ratio.toFixed(1)}x)`,
+  );
+}
 
 console.log(fails === 0 ? '\nALL MONEY CHECKS PASSED\n' : `\n${fails} FAILED\n`);
 process.exit(fails ? 1 : 0);

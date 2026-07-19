@@ -436,7 +436,27 @@ interface EditorSession {
 }
 
 function newSession(game: GameState): EditorSession {
-  const blueprint = blueprintFor('sitcom');
+  /*
+   * Open on something the studio can actually afford.
+   *
+   * The default used to be a sitcom, which is near the top of the cost ladder: a new
+   * player with $10M opened the room to a $19.6M series and a CASH AFTER figure already
+   * in red, with the MAKE IT button dead. That teaches exactly the wrong lesson for a
+   * game whose whole opening move is "start small and build a library".
+   *
+   * So the room opens on the cheapest format this studio can fund outright, and only
+   * falls back to a sitcom if it could somehow afford anything. The player is free to
+   * climb from there — but the first thing they see is a show they can make.
+   */
+  const cash = totalCash(game);
+  const affordable = FORMATS.map((format) => {
+    const draft = blueprintFor(format);
+    return { format, cost: draft.budgetPerEpisode * draft.episodesPerSeason };
+  })
+    .filter((option) => option.cost <= cash * 0.6)
+    .sort((a, b) => b.cost - a.cost);
+
+  const blueprint = blueprintFor(affordable[0]?.format ?? 'sitcom');
   // Put the best free producer in the chair by default: the flow should open on a show
   // that could actually be made, not on a form full of empty required fields.
   blueprint.producerId = availableProducers(game)[0]?.id;

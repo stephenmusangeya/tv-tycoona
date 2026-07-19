@@ -311,12 +311,24 @@ export function episodeDeficit(production: Production): number {
  * Sub-linear, and clamped, so it tilts the numbers without ever dominating them:
  * longevity still beats brilliance, which is the lesson the back end exists to teach.
  */
+/**
+ * How sharply the back end follows what was on the screen.
+ *
+ * One exponent for syndication and repeats alike. Two different values meant a cheap
+ * show could be worth little in one market and a fortune in the other, which is exactly
+ * the seam a dominant strategy grows in.
+ */
+export const BACK_END_VALUE_EXPONENT = 0.5;
+
 export function productionValueFactor(
   budgetPerEpisode: number,
   exponent: number,
 ): number {
   const ratio = Math.max(0.02, budgetPerEpisode / ECONOMY.referenceBudgetPerEpisode);
-  return clamp(ratio ** exponent, 0.3, 2.6);
+  // The floor was 0.3, which was itself a subsidy: an $8K-an-episode strip and a
+  // $115K-an-episode show both bottomed out at the same multiplier despite a fourteen-
+  // fold difference in what was on the screen.
+  return clamp(ratio ** exponent, 0.12, 2.6);
 }
 
 export function canSyndicate(production: Production): boolean {
@@ -346,7 +358,10 @@ export function syndicationValue(production: Production): number {
       averageViewers *
       ECONOMY.syndicationPerEpisodePerMillion *
       prestigeBonus *
-      productionValueFactor(production.budgetPerEpisode, 0.35),
+      // Same 0.5 the repeat market uses: one rule for the whole back end, so a cheap
+      // show cannot be worth little in repeats and a fortune in syndication. At 0.35 a
+      // 300-episode game strip sold for seven seasons of its own production cost.
+      productionValueFactor(production.budgetPerEpisode, BACK_END_VALUE_EXPONENT),
   );
 }
 
@@ -428,10 +443,22 @@ export function rerunWeeklyValue(production: Production): number {
   const prestigeBonus = 1 + (production.attributes.prestige / 100) * 0.3;
   // A closed run is worth more than a live one — see ECONOMY.archiveRepeatPremium.
   const finished = isFinished(production) ? ECONOMY.archiveRepeatPremium : 1;
-  // A gentler exponent than syndication: the weekly repeat cheque is the early game's
-  // first taste of owning something, and flattening it for cheap shows would take that
-  // away from exactly the studio that needs it most.
-  const value = productionValueFactor(production.budgetPerEpisode, 0.18);
+  /*
+   * Repeats are priced *more* sharply on production value than syndication, not less.
+   *
+   * This was 0.18 — chosen to keep the early game's first repeat cheque feeling like
+   * something — and it was the single biggest hole in the ladder. At that exponent a
+   * cheap daily strip earned repeats at half the rate of a show costing forty-seven
+   * times as much, and because a strip banks episodes eight times faster it hit the
+   * `depth` cap almost immediately. A four-show slate costing $5.1M a season was
+   * pulling $8.1M a year in repeats alone: the studio's production arm ran at the
+   * intended loss while its library quietly printed money, and daytime filler became
+   * the dominant strategy.
+   *
+   * Repeats of cheap television should be pocket money. A prestige library is the one
+   * worth owning, and at 0.5 that is what the numbers say.
+   */
+  const value = productionValueFactor(production.budgetPerEpisode, BACK_END_VALUE_EXPONENT);
 
   return Math.round(averageViewers * depth * 26_000 * prestigeBonus * finished * value);
 }
