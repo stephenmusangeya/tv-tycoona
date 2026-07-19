@@ -664,8 +664,9 @@ export function reviveShow(state: GameState, productionId: string): Result<Reviv
       continue;
     }
 
-    // Everyone else is a negotiation. How it went the first time is what decides it.
-    const goodwill = (person.relationships[studio.id] ?? 40) / 200 + person.morale / 300;
+    // Everyone else is a negotiation. How it went the first time is what decides it —
+    // weighted so goodwill tilts the odds without ever making the roll a formality.
+    const goodwill = (person.relationships[studio.id] ?? 40) / 250 + person.morale / 400;
     if (!rng.chance(clamp(cfg.returnBaseChance + goodwill, 0.15, 0.9))) {
       departed.push(id);
       person.relationships[studio.id] = clamp((person.relationships[studio.id] ?? 40) - 4);

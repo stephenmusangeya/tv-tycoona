@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { AUDIENCE_SEGMENTS, SEGMENTS_BY_ID } from '../../data/segments';
 import { appealProfile, audienceOverlap, blendedAdPremium, segmentMatch } from '../audience';
 import { brandSafety, budgetScoreProbe, licenseFee, syndicationValue } from './helpers';
-import { RERUN_MINIMUM_EPISODES, rightsSaleValue } from '../economy';
+import { ECONOMY, RERUN_MINIMUM_EPISODES, rightsSaleValue } from '../economy';
 import { createRng } from '../rng';
 import { simulateSlot } from '../ratings';
 import { newGame } from '../setup';
@@ -572,5 +572,262 @@ describe('content database', () => {
       );
       expect(best).toBeGreaterThan(0.3);
     }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The long tail: second windows, archive sales and revivals
+// ---------------------------------------------------------------------------
+
+import {
+  canSellSecondWindow,
+  lifetimeStudioProfit,
+  rerunWeeklyValue,
+  revivalCost,
+  secondWindowValue,
+} from '../economy';
+import {
+  cancelOwnShow,
+  reviveShow,
+  secondWindowBidsFor,
+  sellSecondWindow,
+} from '../actions';
+
+/**
+ * Run a show for one full season, then pull it — the ordinary failure the long tail
+ * exists to answer. Derived from a real playthrough rather than a hand-built object so
+ * the numbers under test are the ones the game actually produces.
+ */
+function studioWithFinishedShow(seed: number) {
+  const state = newGame({ seed });
+  const taken = new Set(Object.values(state.productions).map((p) => p.archetypeId));
+  const target = SHOW_ARCHETYPES.find(
+    (a) => !taken.has(a.id) && a.format === 'sitcom' && a.baseCostPerEpisode < 2_500_000,
+  )!;
+  const made = developOriginal(state, target.id);
+  if (!made.ok) throw new Error(made.reason);
+
+  for (let i = 0; i < 400; i++) {
+    advanceWeek(state);
+    const offer = state.offers.find((o) => o.productionId === made.value.id);
+    if (offer) acceptOffer(state, offer.id);
+    if (made.value.history.length >= 1) break;
+  }
+  cancelOwnShow(state, made.value.id);
+  return { state, show: made.value };
+}
+
+describe('second-window sales', () => {
+  it('refuses a show that is still running', () => {
+    const { state, show } = studioWithFinishedShow(101);
+    show.status = 'airing';
+
+    const sale = sellSecondWindow(state, show.id);
+    expect(sale.ok).toBe(false);
+    if (sale.ok) return;
+    expect(sale.reason).toMatch(/finished its run/i);
+  });
+
+  it('refuses a run too short to package', () => {
+    const { state, show } = studioWithFinishedShow(102);
+    show.totalEpisodes = 3;
+
+    expect(canSellSecondWindow(show)).toBe(false);
+    const sale = sellSecondWindow(state, show.id);
+    expect(sale.ok).toBe(false);
+    if (sale.ok) return;
+    expect(sale.reason).toMatch(/too few/i);
+  });
+
+  it('pays an advance into the studio and leaves the show in your hands', () => {
+    const { state, show } = studioWithFinishedShow(103);
+    expect(canSellSecondWindow(show)).toBe(true);
+
+    const studio = state.companies[state.player.studioId];
+    const before = studio.cash;
+
+    const sale = sellSecondWindow(state, show.id);
+    expect(sale.ok).toBe(true);
+    if (!sale.ok) return;
+
+    expect(sale.value.advance).toBeGreaterThan(0);
+    expect(studio.cash).toBe(before + sale.value.advance);
+    // A second window is a licence, not a sale — the show is still yours.
+    expect(show.rightsOwnerId).toBe(state.player.studioId);
+    expect(show.rerunDeals).toHaveLength(1);
+  });
+
+  it('is a one-shot — the run cannot be packaged twice', () => {
+    const { state, show } = studioWithFinishedShow(104);
+    expect(sellSecondWindow(state, show.id).ok).toBe(true);
+
+    const again = sellSecondWindow(state, show.id);
+    expect(again.ok).toBe(false);
+    if (again.ok) return;
+    expect(again.reason).toMatch(/already showing the repeats/i);
+  });
+
+  it('never pays back more than the show actually lost', () => {
+    const { show } = studioWithFinishedShow(105);
+    const lost = Math.max(0, -lifetimeStudioProfit(show));
+
+    // Both premises are asserted so the test cannot pass by being vacuous: there has to
+    // be a real deficit, and a real sale, for the cap to mean anything.
+    expect(lost).toBeGreaterThan(0);
+    expect(canSellSecondWindow(show)).toBe(true);
+    expect(secondWindowValue(show)).toBeGreaterThan(0);
+
+    // The cap is the whole reason this is a lifeline rather than a reason to fail on
+    // purpose: failing can never turn a profit.
+    expect(secondWindowValue(show)).toBeLessThanOrEqual(lost);
+  });
+
+  it('keeps the big networks out of the discount market', () => {
+    const { state, show } = studioWithFinishedShow(106);
+    const bids = secondWindowBidsFor(state, show.id);
+    expect(bids.length).toBeGreaterThan(0);
+
+    for (const bid of bids) {
+      const buyer = state.companies[bid.buyerId];
+      if (buyer.type !== 'network') continue;
+      expect(buyer.reach ?? 1).toBeLessThanOrEqual(ECONOMY.secondWindow.buyerReachCeiling);
+    }
+  });
+
+  it('offers nothing once a show is big enough to syndicate properly', () => {
+    const { state, show } = studioWithFinishedShow(107);
+    show.totalEpisodes = ECONOMY.syndicationThreshold + 5;
+
+    expect(secondWindowValue(show)).toBe(0);
+    const sale = sellSecondWindow(state, show.id);
+    expect(sale.ok).toBe(false);
+    if (sale.ok) return;
+    expect(sale.reason).toMatch(/syndicate/i);
+  });
+});
+
+describe('archive sales', () => {
+  it('sells repeats out of the archive, not just off the live slate', () => {
+    const { state, show } = studioWithFinishedShow(108);
+    expect(show.status).toBe('cancelled');
+
+    const bids = rerunBidsFor(state, show.id);
+    expect(bids.length).toBeGreaterThan(0);
+
+    const deal = licenseReruns(state, show.id, bids[0].buyerId);
+    expect(deal.ok).toBe(true);
+    if (!deal.ok) return;
+    expect(deal.value.weeklyPayment).toBeGreaterThan(0);
+  });
+
+  it('values a finished run above the same show still on air', () => {
+    const { show } = studioWithFinishedShow(109);
+    const finished = rerunWeeklyValue(show);
+    // A closed package with nothing airing against it is the better buy.
+    const live = rerunWeeklyValue({ ...show, status: 'airing' });
+    expect(finished).toBeGreaterThan(live);
+  });
+});
+
+describe('revivals', () => {
+  it('refuses a revival the studio cannot pay for', () => {
+    const { state, show } = studioWithFinishedShow(110);
+    const studio = state.companies[state.player.studioId];
+    studio.cash = revivalCost(show) - 1;
+
+    const revived = reviveShow(state, show.id);
+    expect(revived.ok).toBe(false);
+    if (revived.ok) return;
+    expect(revived.reason).toMatch(/costs/i);
+  });
+
+  it('refuses to revive a show that never finished', () => {
+    const { state, show } = studioWithFinishedShow(111);
+    show.status = 'airing';
+
+    const revived = reviveShow(state, show.id);
+    expect(revived.ok).toBe(false);
+  });
+
+  it('brings a show back with its library and episode count intact', () => {
+    const { state, show } = studioWithFinishedShow(112);
+    const studio = state.companies[state.player.studioId];
+
+    const cost = revivalCost(show);
+    studio.cash = cost + 5_000_000;
+    const cashBefore = studio.cash;
+
+    const episodesBefore = show.totalEpisodes;
+    const seasonsBefore = show.history.length;
+    const fatigueBefore = show.fatigue;
+
+    const revived = reviveShow(state, show.id);
+    expect(revived.ok).toBe(true);
+    if (!revived.ok) return;
+
+    expect(studio.cash).toBe(cashBefore - cost);
+    expect(show.revived).toBe(true);
+    expect(show.status).toBe('development');
+    // The point of a revival is that it does not start from zero.
+    expect(show.totalEpisodes).toBe(episodesBefore);
+    expect(show.history).toHaveLength(seasonsBefore);
+    // Fatigue eases but never clears — a show that ran out of road comes back tired.
+    expect(show.fatigue).toBeLessThan(fatigueBefore || 1);
+    expect(show.fatigue).toBeGreaterThanOrEqual(fatigueBefore * 0.5);
+  });
+
+  it('starts a revival with audience memory rather than a cold launch', () => {
+    const { state, show } = studioWithFinishedShow(113);
+    state.companies[state.player.studioId].cash = revivalCost(show) * 2;
+
+    const revived = reviveShow(state, show.id);
+    expect(revived.ok).toBe(true);
+    if (!revived.ok) return;
+    expect(revived.value.buzz).toBeGreaterThan(0);
+  });
+
+  it('gets back on air and keeps counting toward syndication', () => {
+    const { state, show } = studioWithFinishedShow(114);
+    // Funded well past the revival itself, deliberately. This test is about whether a
+    // revived show reaches air carrying its old episode count — not about solvency.
+    // At `revivalCost * 3` the studio went broke partway through the 200 weeks it can
+    // take to attract a bid, and the show was cancelled out from under the assertion,
+    // which made a passing feature look like a broken one.
+    const studio = state.companies[state.player.studioId];
+    studio.cash = Math.max(revivalCost(show) * 3, 200_000_000);
+    studio.debt = 0;
+
+    const episodesBefore = show.totalEpisodes;
+    expect(reviveShow(state, show.id).ok).toBe(true);
+
+    for (let i = 0; i < 200; i++) {
+      advanceWeek(state);
+      const offer = state.offers.find((o) => o.productionId === show.id);
+      if (offer) acceptOffer(state, offer.id);
+      if (show.status === 'airing') break;
+    }
+
+    expect(show.status).toBe('airing');
+    expect(show.totalEpisodes).toBeGreaterThanOrEqual(episodesBefore);
+    // The comeback counts as a new season of the same show, not a new show.
+    expect(show.revived).toBe(true);
+    expect(show.season).toBeGreaterThan(1);
+  });
+
+  it('rolls cast attrition from the seeded stream, not Math.random', () => {
+    // Two identical worlds must lose exactly the same people, or saves stop replaying.
+    const a = studioWithFinishedShow(115);
+    const b = studioWithFinishedShow(115);
+    a.state.companies[a.state.player.studioId].cash = revivalCost(a.show) * 2;
+    b.state.companies[b.state.player.studioId].cash = revivalCost(b.show) * 2;
+
+    const first = reviveShow(a.state, a.show.id);
+    const second = reviveShow(b.state, b.show.id);
+    expect(first.ok && second.ok).toBe(true);
+    if (!first.ok || !second.ok) return;
+
+    expect(first.value.departed).toEqual(second.value.departed);
+    expect(first.value.returning).toEqual(second.value.returning);
+    expect(a.state.rngState).toBe(b.state.rngState);
   });
 });

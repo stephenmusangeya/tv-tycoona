@@ -17,6 +17,7 @@ import type { SlotEntrant } from './ratings';
 import {
   TAG_LABELS,
   computeStudioBrand,
+  criticRng,
   earnedTags,
   fileReview,
   hadScandal,
@@ -38,6 +39,7 @@ import {
 import { generateRookieClass, padTalentPool } from './talentGen';
 import { runRivalTurn } from './rivals';
 import { generatePitches } from './pitches';
+import { creditSeason, tickStaff } from './staff';
 import type {
   Company,
   GameEvent,
@@ -117,6 +119,10 @@ export function advanceWeek(state: GameState): WeekResult {
 
   // --- Company upkeep ------------------------------------------------------
   payRerunIncome(ctx);
+  // Before overheads on purpose: that is what turns a payroll the studio cannot cover
+  // into debt in the same week, rather than leaving cash visibly negative until the
+  // next tick picks it up.
+  tickStaff(state, rng, emit);
   applyOverheads(ctx);
 
   // Streaming settles monthly, not weekly.
@@ -357,6 +363,12 @@ function wrapSeason(ctx: TickContext, production: Production): void {
   const archetype = getArchetype(production.archetypeId);
 
   production.history.push(record);
+
+  // The only moment the simulation knows how a season actually went, so it is the
+  // only place experience can be credited. Without this, payroll and loyalty still
+  // work but nobody ever gets better at their job.
+  creditSeason(state, production, rng, emit);
+
   production.runningSeason = undefined;
   production.status = 'hiatus';
   production.fatigue = Math.min(
@@ -414,14 +426,16 @@ function fileSeasonReview(
   archetype: ShowArchetype,
   isPlayerOwned: boolean,
 ): void {
-  const { state, rng, emit } = ctx;
+  const { state, emit } = ctx;
 
   const review = reviewSeason({
     production,
     archetype,
     talent: state.talent,
     week: state.absoluteWeek,
-    rng,
+    // Not ctx.rng on purpose — the critics get their own derived stream so that what
+    // they say can never change what happens. See criticRng in reception.ts.
+    rng: criticRng(state.seed, state.absoluteWeek, production.id),
   });
   fileReview(production, review);
 
@@ -564,6 +578,21 @@ function runUpfronts(ctx: TickContext): void {
 
       const lastSeason = production.history.at(-1);
       if (!lastSeason) continue;
+
+      /**
+       * A show that has not aired anything since it was scheduled is not up for renewal.
+       *
+       * The renewal test reads `history.at(-1)`, which assumes the newest season record
+       * is the one that just ran. That holds for an incumbent, but not for a show
+       * holding a signed deal it has yet to broadcast under — a revival. Its newest
+       * record is from its *previous* life, so it was being judged on the very season
+       * that got it cancelled and could be dropped before airing a single frame, taking
+       * the slot and the deal with it. A network cannot cancel a show it has not seen.
+       *
+       * `episodesAiredThisSeason` is the honest signal: the premiere zeroes it and every
+       * episode raises it, so it is only zero between being scheduled and going to air.
+       */
+      if (production.episodesAiredThisSeason === 0) continue;
 
       const profitable = lastSeason.networkProfit > 0;
       const strongRatings = lastSeason.averageViewers > 4.5;

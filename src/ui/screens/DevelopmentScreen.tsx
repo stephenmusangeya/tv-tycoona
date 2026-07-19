@@ -90,10 +90,36 @@ export function DevelopmentScreen({
     [game, game?.absoluteWeek, game?.nextId],
   );
 
-  const catalogue = useMemo(
-    () => SHOW_ARCHETYPES.filter((a) => !inProduction.has(a.id)),
-    [inProduction],
-  );
+  /*
+   * Deal what the studio can actually make, first.
+   *
+   * The pile used to come out in data order, which meant a studio starting on $10M
+   * opened the table on a show it could not afford and met a dead GREEN-LIGHT button
+   * as its very first interaction. That reads as the game being broken rather than as
+   * the show being expensive.
+   *
+   * Affordable ideas now lead, cheapest first — which also happens to be the correct
+   * advice, since cheap high-volume formats are the route to repeats and the only
+   * viable opening. Everything unaffordable stays in the pile, cheapest first, so the
+   * player can still see what they are working toward and the pile doubles as a
+   * price list.
+   */
+  const catalogue = useMemo(() => {
+    const available = SHOW_ARCHETYPES.filter((a) => !inProduction.has(a.id));
+    const budget = totalCash(game!);
+
+    // The same measure the card and the GREEN-LIGHT button use, so the ordering and
+    // the button can never disagree about what is affordable.
+    const fits = (a: (typeof available)[number]) =>
+      budget + estimateNewShow(a).perSeries > 0;
+
+    return available.sort((a, b) => {
+      const aFits = fits(a);
+      const bFits = fits(b);
+      if (aFits !== bFits) return aFits ? -1 : 1;
+      return a.baseCostPerEpisode - b.baseCostPerEpisode;
+    });
+  }, [inProduction, game?.absoluteWeek]);
 
   const pan = useRef(new Animated.ValueXY()).current;
   /** Latest deal handlers, so the PanResponder built once never reads a stale card. */

@@ -1,7 +1,7 @@
 import { AUDIENCE_SEGMENTS } from '../data/segments';
 import { appealProfile } from './audience';
 import { budgetScore, talentScore } from './quality';
-import { clamp } from './rng';
+import { clamp, createRng } from './rng';
 import type { Rng } from './rng';
 import type {
   Angle,
@@ -94,6 +94,29 @@ export function angleFit(attributes: Attributes, angle: Angle): number {
 // ---------------------------------------------------------------------------
 // Reviews
 // ---------------------------------------------------------------------------
+
+/**
+ * A private RNG for the critics, deliberately *not* the tick's shared stream.
+ *
+ * Reception is commentary: it reads the simulation and says what it sees, and it must
+ * never change what the simulation does. Drawing from the shared cursor would do
+ * exactly that — every review would shift every later roll in the week, so adding a
+ * line of flavour text could cancel somebody's show. That is a nasty class of bug and
+ * it makes every seeded test in the repo fragile against edits to this file.
+ *
+ * Deriving the stream from (seed, week, production id) instead keeps replays perfectly
+ * deterministic — the same save always produces the same notice — while leaving the
+ * tick's cursor exactly where it was.
+ */
+export function criticRng(seed: number, week: number, productionId: string): Rng {
+  // FNV-1a over the id: cheap, and it spreads adjacent ids into unrelated streams.
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < productionId.length; i++) {
+    hash ^= productionId.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return createRng((seed ^ Math.imul(week, 0x9e3779b1) ^ hash) >>> 0);
+}
 
 /** Trade press. Invented, but they should read like cuttings from a real newsstand. */
 const OUTLETS = [
@@ -419,6 +442,9 @@ export function reviewSeason(input: ReviewInput): Review {
 
 /** What to say when a show is bad in no particular way. */
 function fallbackCriticism(score: number): string {
+  // A rave still has to say something, but "hard to love" under a 90 reads as the
+  // review contradicting its own score. At this level the only complaint is scarcity.
+  if (score >= 84) return 'Only that there is not more of it.';
   if (score >= 72) return 'Hard to fault, harder still to love.';
   if (score >= 58) return 'Competent throughout, memorable nowhere.';
   if (score >= 44) return 'Nothing wrong with it. Nothing to it, either.';
@@ -518,24 +544,39 @@ export function earnedTags(production: Production, scandalHit: boolean): ShowTag
       segmentShare(production, ['families', 'kids']) >= 0.42,
   );
 
-  // The show that is simply always on: long, dependable, and kind.
+  // The show that is simply always on: long, dependable, and kind. Volatility is the
+  // load-bearing test — comfort is about never surprising anybody.
   add(
     'comfort-show',
-    production.totalEpisodes >= 80 &&
-      ratingsVolatility(production) < 0.16 &&
-      attrs.wholesomeness + attrs.heart >= 115,
+    production.totalEpisodes >= 100 &&
+      ratingsVolatility(production) < 0.14 &&
+      attrs.wholesomeness + attrs.heart >= 125,
   );
 
-  // What the next generation grew up on — needs volume as well as demographics.
+  // What the next generation grew up on — needs volume as well as demographics. Kids
+  // and teens are only a quarter of the country, so a 26% share of a show's lifetime
+  // audience already means it was made squarely for them.
   add(
     'formative',
-    production.totalEpisodes >= 60 && segmentShare(production, ['kids', 'teens']) >= 0.4,
+    production.totalEpisodes >= 60 && segmentShare(production, ['kids', 'teens']) >= 0.26,
   );
 
   // Everybody watched it and everybody had to talk about it the next morning.
+  //
+  // The spike matters as much as the size. A show that was always big is a hit; a
+  // complicated show that suddenly leapt past everything it had done before is the one
+  // people are arguing about on Monday. Either will do.
+  //
+  // The buzz bar looks low and is not: buzz decays 12% a week (ratings.ts) and a season
+  // is twenty-odd weeks long, so by the wrap the median show sits under 5 and a genuine
+  // phenomenon sits around 10. Reading 20+ here — the number this originally used — is
+  // essentially unreachable, and made the tag dead code.
+  const previousBest = Math.max(0, ...viewers.slice(0, -1));
   add(
     'water-cooler',
-    attrs.complexity >= 58 && production.buzz >= 45 && lastSeason.averageViewers >= 5,
+    attrs.complexity >= 55 &&
+      lastSeason.averageViewers >= 4.5 &&
+      (production.buzz >= 10 || lastSeason.averageViewers >= previousBest * 1.3),
   );
 
   // Sustained critical standing — one rave is not a reputation.
@@ -547,11 +588,12 @@ export function earnedTags(production: Production, scandalHit: boolean): ShowTag
   // Indefensible and enormous. The most honest tag in the game.
   add(
     'guilty-pleasure',
-    seasons >= 2 && recentReviewAverage(production, 3) <= 42 && lifetimeAverage >= 4,
+    seasons >= 2 && recentReviewAverage(production, 3) <= 45 && lifetimeAverage >= 3.5,
   );
 
-  // Trouble on screen and trouble off it. Needs both — edge alone is just a choice.
-  add('notorious', scandalHit && attrs.violence + attrs.edginess >= 130);
+  // Trouble on screen and trouble off it. Needs both — edge alone is just a choice,
+  // and it is the combination that gets a show talked about for the wrong reasons.
+  add('notorious', scandalHit && attrs.violence + attrs.edginess >= 145);
 
   return earned;
 }
@@ -622,16 +664,40 @@ const LABEL_RULES: LabelRule[] = [
   { label: 'Tacky', margin: (b) => Math.min(46 - b.quality, 42 - b.prestige) },
 ];
 
-function labelFor(axes: Omit<StudioBrand, 'label'>): string {
+/**
+ * How far ahead a challenger must be to take the label off the incumbent.
+ *
+ * Without this a studio sitting between two readings flips between them every month
+ * and reports each flip to the player as news, which is both untrue — nothing about
+ * the slate changed — and the fastest way to make an in-tray worth ignoring. A
+ * reputation is sticky; it should take a real shift to move it.
+ */
+const LABEL_SWITCH_MARGIN = 6;
+
+function labelFor(axes: Omit<StudioBrand, 'label'>, previous?: string): string {
   let best = '';
   let bestMargin = 0;
+  let incumbentMargin = -Infinity;
+
   for (const rule of LABEL_RULES) {
     const margin = rule.margin(axes);
+    if (rule.label === previous) incumbentMargin = margin;
     if (margin > bestMargin) {
       bestMargin = margin;
       best = rule.label;
     }
   }
+
+  // The incumbent still qualifies and the challenger is only marginally ahead: nothing
+  // has really changed, so say nothing has changed.
+  if (
+    previous &&
+    incumbentMargin > 0 &&
+    bestMargin - incumbentMargin < LABEL_SWITCH_MARGIN
+  ) {
+    return previous;
+  }
+
   // Nothing stands out — which is itself an accurate and slightly damning description.
   return best || 'Broad Appeal';
 }
@@ -712,5 +778,7 @@ export function computeStudioBrand(state: GameState): StudioBrand {
     warmth: Math.round(warmth / weightTotal),
   };
 
-  return { ...axes, label: labelFor(axes) };
+  // The label the studio already carries is an input, not just an output — see
+  // LABEL_SWITCH_MARGIN for why a reputation has to be taken rather than nudged.
+  return { ...axes, label: labelFor(axes, state.brand?.label) };
 }
