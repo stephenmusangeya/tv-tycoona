@@ -140,6 +140,9 @@ function Root() {
   // Screens hand over a bare production id and always have; archetype opening is an
   // extra entry point rather than a replacement, so this signature stays a string.
   const openProduction = (id: string) => setOpenShow({ kind: 'production', id });
+  // Pitches and catalogue ideas are archetypes, not productions — a poster on an
+  // undecided pitch has to open something, and this is the something.
+  const openArchetype = (id: string) => setOpenShow({ kind: 'archetype', id });
 
   const goMakeShow = () => {
     setTab('development');
@@ -179,7 +182,11 @@ function Root() {
 
         <View style={{ flex: 1 }}>
           {tab === 'dashboard' ? (
-            <DeskRoom onOpenShow={openProduction} onMakeShow={goMakeShow} />
+            <DeskRoom
+              onOpenShow={openProduction}
+              onMakeShow={goMakeShow}
+              onOpenArchetype={openArchetype}
+            />
           ) : null}
           {tab === 'slate' ? (
             <SlateScreen onOpenShow={openProduction} onMakeShow={goMakeShow} />
@@ -191,7 +198,7 @@ function Root() {
               forceCatalogue={makeShowNonce > 0}
             />
           ) : null}
-          {tab === 'inbox' ? <InboxScreen /> : null}
+          {tab === 'inbox' ? <InboxScreen onOpenShow={openProduction} /> : null}
           {tab === 'talent' ? <TalentScreen /> : null}
           {tab === 'industry' ? <IndustryScreen /> : null}
         </View>

@@ -83,7 +83,14 @@ export function newGame(options: NewGameOptions = {}): GameState {
      * show could ever reach the back end, which made the whole progression loop
      * unreachable — the game's central mechanic was mathematically out of reach.
      */
-    startingCash = 120_000_000,
+    // $10M, not $120M. The old figure meant the first real decision — what can I
+    // actually afford to make? — never had to be asked: you could greenlight anything
+    // on the table and still not notice the money. Starting small forces the early
+    // game to be about cheap formats that reach repeats fast, which is the actual
+    // studio business, and makes the first hit feel like it changed something.
+    // There is no upfront commissioning cost, so this funds a real slate: you pay the
+    // deficit per episode as it airs, against the licence fee.
+    startingCash = 10_000_000,
     startYear = 1,
   } = options;
 

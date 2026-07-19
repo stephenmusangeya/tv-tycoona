@@ -477,16 +477,23 @@ describe('owning your shows', () => {
 
     // Isolate the payment from every other weekly flow by comparing two identical
     // worlds: this one, and the same state with the deal's payment zeroed out.
+    //
+    // Measured on cash *minus debt*, not cash. A studio deficit-financing a show is
+    // usually overdrawn, and income against an overdraft pays the debt down rather
+    // than landing in the bank — so a cash-only reading showed zero and looked like
+    // the repeat money had vanished. It had not; it was servicing the loan.
     const payment = deal.value.weeklyPayment;
     const studio = state.companies[state.player.studioId];
-    const before = studio.cash;
+    const position = () => studio.cash - studio.debt;
+
+    const before = position();
     advanceWeek(state);
-    const withDeal = studio.cash - before;
+    const withDeal = position() - before;
 
     deal.value.weeklyPayment = 0;
-    const before2 = studio.cash;
+    const before2 = position();
     advanceWeek(state);
-    const withoutDeal = studio.cash - before2;
+    const withoutDeal = position() - before2;
 
     // The week with the deal should be better off by roughly the payment.
     expect(withDeal - withoutDeal).toBeGreaterThan(payment * 0.5);

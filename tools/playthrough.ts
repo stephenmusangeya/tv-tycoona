@@ -14,7 +14,7 @@ import { advanceWeek } from '../src/engine/tick';
 import { acceptOffer, developOriginal, setBudget } from '../src/engine/actions';
 import { formatMoney } from '../src/engine/tick';
 import { SHOW_ARCHETYPES } from '../src/data';
-import { latestViewers, playerShows, totalCash, weeklyNet } from '../src/store/selectors';
+import { latestViewers, playerShows, totalCash, totalDebt, weeklyNet } from '../src/store/selectors';
 import { ECONOMY } from '../src/engine/economy';
 import type { GameState } from '../src/engine/types';
 
@@ -240,6 +240,56 @@ expect(
   idle.events.filter((e) => e.kind === 'pitch').length >= 8,
   `${idle.events.filter((e) => e.kind === 'pitch').length} pitches in 120 weeks`,
 );
+
+// ---------------------------------------------------------------------------
+// [7] The on-ramp: $10M is enough to build something
+// ---------------------------------------------------------------------------
+// Starting cash dropped from $120M to $10M, which makes the opening question real:
+// what can I actually afford? A prestige drama is now genuinely out of reach, and it
+// should be. But the cheap-daily-format route has to *work*, or the game is simply
+// unwinnable from its own starting position. This drives that route deliberately —
+// commission the cheapest thing available, take the first offer, and check the studio
+// reaches syndication without going bust.
+log('\n[7] The on-ramp — starting small has to work');
+
+const lean = newGame({ seed: seed + 202, studioName: 'Lean Pictures' });
+const leanTaken = new Set(
+  Object.values(lean.productions).map((p) => p.archetypeId),
+);
+// The cheapest format with a high episode order — the fast route to repeats.
+const cheap = SHOW_ARCHETYPES.filter((a) => !leanTaken.has(a.id) && a.episodesPerSeason >= 100)
+  .sort((a, b) => a.baseCostPerEpisode - b.baseCostPerEpisode)[0];
+
+expect('a cheap high-volume format exists to start with', Boolean(cheap));
+
+if (cheap) {
+  log(`  chose "${cheap.title}" — ${formatMoney(cheap.baseCostPerEpisode)}/ep, ${cheap.episodesPerSeason} eps`);
+  const leanShow = developOriginal(lean, cheap.id);
+  expect('can afford to commission it', leanShow.ok);
+
+  if (leanShow.ok) {
+    let lowWater = totalCash(lean);
+    for (let i = 0; i < 200; i++) {
+      advanceWeek(lean);
+      const offer = lean.offers.find((o) => o.productionId === leanShow.value.id);
+      if (offer) acceptOffer(lean, offer.id);
+      lowWater = Math.min(lowWater, totalCash(lean));
+      if (leanShow.value.syndicated) break;
+    }
+
+    log(`  lowest cash: ${formatMoney(lowWater)} · episodes: ${leanShow.value.totalEpisodes}`);
+    expect(
+      'a lean studio reaches syndication',
+      leanShow.value.syndicated,
+      `${leanShow.value.totalEpisodes} episodes`,
+    );
+    expect(
+      'and gets there without the debt spiralling',
+      totalDebt(lean) < 20_000_000,
+      `debt ${formatMoney(totalDebt(lean))}`,
+    );
+  }
+}
 
 log(`\n${failures === 0 ? 'ALL CHECKS PASSED' : `${failures} CHECK(S) FAILED`}\n`);
 process.exit(failures === 0 ? 0 : 1);

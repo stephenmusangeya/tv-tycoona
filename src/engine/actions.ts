@@ -2,9 +2,17 @@ import { getArchetype } from '../data';
 import {
   ECONOMY,
   RERUN_MINIMUM_EPISODES,
+  canRevive,
   canSellReruns,
+  canSellSecondWindow,
+  isFinished,
   rerunWeeklyValue,
+  revivalBuzz,
+  revivalCost,
   rightsSaleValue,
+  secondWindowAdvance,
+  secondWindowValue,
+  secondWindowWeekly,
 } from './economy';
 import {
   attachedIds,
@@ -13,6 +21,7 @@ import {
   refreshQuality,
   releaseTalent,
 } from './production';
+import { rollChemistry } from './quality';
 import { clamp, createRng } from './rng';
 import { emptySchedule } from './schedule';
 import type { Company, GameState, Production, RerunDeal, TalentState } from './types';
@@ -459,6 +468,265 @@ export function sellRights(
   production.rerunDeals = [];
 
   return ok(price);
+}
+
+// ---------------------------------------------------------------------------
+// The second window — the exit for a show that did not make it
+// ---------------------------------------------------------------------------
+
+/** A smaller channel's offer for the whole run of a finished show. */
+export interface SecondWindowBid {
+  buyerId: string;
+  buyerName: string;
+  /** Total value of the deal — advance plus every weekly payment. */
+  total: number;
+  /** Cash on signature. */
+  advance: number;
+  weeklyPayment: number;
+  weeks: number;
+}
+
+/**
+ * Who will take a failed show off your hands.
+ *
+ * Only the buyers with hours to fill and nothing to protect. A big network turning this
+ * down is the point: the second window is a discount market, and being pushed down it is
+ * what makes a cancellation sting even though it is survivable.
+ */
+export function secondWindowBidsFor(state: GameState, productionId: string): SecondWindowBid[] {
+  const production = state.productions[productionId];
+  if (!production || !canSellSecondWindow(production)) return [];
+  if (production.rightsOwnerId !== state.player.studioId) return [];
+
+  const total = secondWindowValue(production);
+  if (total <= 0) return [];
+
+  const advance = secondWindowAdvance(production);
+  const weekly = secondWindowWeekly(production);
+
+  return Object.values(state.companies)
+    .filter((company) => {
+      if (company.isPlayer) return false;
+      if (company.type === 'studio') return false; // studios don't broadcast
+      // Streamers take anything cheap; networks only if they are small enough to need it.
+      if (company.type === 'network') {
+        return (company.reach ?? 1) <= ECONOMY.secondWindow.buyerReachCeiling;
+      }
+      return true;
+    })
+    .map((company) => {
+      // A streamer values the back catalogue by depth; a minor channel by how cheap the
+      // hours are, so the same run is worth slightly different money to each of them.
+      const appetite =
+        company.type === 'streamer'
+          ? 1 + (production.attributes.complexity / 100) * 0.25
+          : 0.8 + (company.reach ?? 0.6) * 0.4;
+
+      return {
+        buyerId: company.id,
+        buyerName: company.name,
+        total: Math.round(total * appetite),
+        advance: Math.round(advance * appetite),
+        weeklyPayment: Math.max(1, Math.round(weekly * appetite)),
+        weeks: ECONOMY.secondWindow.licenceWeeks,
+      };
+    })
+    .sort((a, b) => b.total - a.total);
+}
+
+/**
+ * Sell a finished show into its second window.
+ *
+ * You keep the rights — this is a fixed-term licence of a run that already exists, paid
+ * mostly as an advance because the cash is the entire point of taking the deal. Recorded
+ * as an ordinary repeats deal, which is exactly what the buyer is getting, so the weekly
+ * payout and its expiry need no special handling anywhere else.
+ */
+export function sellSecondWindow(
+  state: GameState,
+  productionId: string,
+  buyerId?: string,
+): Result<{ deal: RerunDeal; advance: number }> {
+  const production = state.productions[productionId];
+  const studio = studioOf(state);
+  if (!production || !studio) return fail('We cannot find that show.');
+
+  if (production.rightsOwnerId !== studio.id) {
+    return fail('You do not own this show any more, so you have nothing to sell.');
+  }
+  if (!isFinished(production)) {
+    return fail('You can only sell a second window once the show has finished its run.');
+  }
+  if (production.syndicated) {
+    return fail('This show is already in syndication — there is no second window left.');
+  }
+  if (production.totalEpisodes >= ECONOMY.syndicationThreshold) {
+    return fail('This show is big enough to syndicate. Sell it properly instead.');
+  }
+  if (production.totalEpisodes < ECONOMY.secondWindow.minimumEpisodes) {
+    const short = ECONOMY.secondWindow.minimumEpisodes - production.totalEpisodes;
+    return fail(`Only ${production.totalEpisodes} episodes exist — ${short} too few to package.`);
+  }
+  if (production.rerunDeals.length > 0) {
+    return fail('Someone is already showing the repeats, so the run is not yours to package.');
+  }
+
+  const bids = secondWindowBidsFor(state, productionId);
+  if (bids.length === 0) return fail('Nobody in the discount market wants it.');
+
+  const bid = buyerId ? bids.find((b) => b.buyerId === buyerId) : bids[0];
+  if (!bid) return fail('That buyer is not interested.');
+
+  const buyer = state.companies[bid.buyerId];
+  if (!buyer) return fail('That buyer no longer exists.');
+
+  const deal: RerunDeal = {
+    id: mintId(state, 'window'),
+    buyerId: bid.buyerId,
+    buyerName: bid.buyerName,
+    weeklyPayment: bid.weeklyPayment,
+    weeksRemaining: bid.weeks,
+  };
+
+  studio.cash += bid.advance;
+  buyer.cash -= bid.advance;
+  production.rerunDeals.push(deal);
+
+  return ok({ deal, advance: bid.advance });
+}
+
+// ---------------------------------------------------------------------------
+// Revivals — bringing a show back
+// ---------------------------------------------------------------------------
+
+export interface RevivalOutcome {
+  production: Production;
+  cost: number;
+  /** Talent who came back, and what it cost to get them. */
+  returning: string[];
+  /** Talent who had moved on, retired, or simply said no. */
+  departed: string[];
+  /** Quality after the recast, so the player can see what the attrition did. */
+  quality: number;
+  buzz: number;
+  fatigue: number;
+}
+
+/**
+ * Bring a cancelled or ended show back for a new season.
+ *
+ * The show keeps everything that made it worth reviving — its library, its episode count
+ * toward syndication, and the fact that people remember it. What it does not keep is its
+ * company. Everyone attached scattered when it was cancelled, and getting them back is a
+ * roll rather than a purchase: some retired, some are working, some have simply moved on.
+ * That is the risk being paid for, and it is why a revival can come back visibly worse
+ * than the show you remember.
+ */
+export function reviveShow(state: GameState, productionId: string): Result<RevivalOutcome> {
+  const production = state.productions[productionId];
+  const studio = studioOf(state);
+  if (!production || !studio) return fail('We cannot find that show.');
+
+  if (production.rightsOwnerId !== studio.id) {
+    return fail('You do not own this show any more, so you cannot bring it back.');
+  }
+  if (!isFinished(production)) {
+    return fail('That show has not finished — there is nothing to revive.');
+  }
+  if (!canRevive(production)) {
+    return fail(
+      `Only ${production.totalEpisodes} episodes ever aired. There is not enough show to bring back.`,
+    );
+  }
+
+  const cost = revivalCost(production);
+  if (studio.cash < cost) {
+    return fail(`Putting it back together costs ${formatCost(cost)}, and you do not have it.`);
+  }
+
+  const cfg = ECONOMY.revival;
+  const rng = createRng(state.rngState);
+  const archetype = getArchetype(production.archetypeId);
+
+  const returning: string[] = [];
+  const departed: string[] = [];
+
+  for (const id of attachedIds(production)) {
+    const person = state.talent[id];
+    if (!person) {
+      departed.push(id);
+      continue;
+    }
+
+    // Retired or already working: gone regardless of what you would have paid.
+    if (person.retired || person.productionId) {
+      departed.push(id);
+      continue;
+    }
+
+    // Everyone else is a negotiation. How it went the first time is what decides it.
+    const goodwill = (person.relationships[studio.id] ?? 40) / 200 + person.morale / 300;
+    if (!rng.chance(clamp(cfg.returnBaseChance + goodwill, 0.15, 0.9))) {
+      departed.push(id);
+      person.relationships[studio.id] = clamp((person.relationships[studio.id] ?? 40) - 4);
+      continue;
+    }
+
+    returning.push(person.id);
+  }
+
+  // Strip the people who did not come back before rebinding, so the roster is honest.
+  const gone = new Set(departed);
+  production.cast = production.cast.filter((id) => !gone.has(id));
+  production.writerIds = production.writerIds.filter((id) => !gone.has(id));
+  if (production.showrunnerId && gone.has(production.showrunnerId)) {
+    production.showrunnerId = undefined;
+  }
+  if (production.directorId && gone.has(production.directorId)) production.directorId = undefined;
+  if (production.hostId && gone.has(production.hostId)) production.hostId = undefined;
+
+  studio.cash -= cost;
+
+  bindTalent(production, state.talent, studio.id);
+  // Coming back is leverage: they know you want the show more than they need the job.
+  for (const id of returning) {
+    const person = state.talent[id];
+    if (!person) continue;
+    person.contractSalaryPerEpisode = Math.round(
+      person.baseSalaryPerEpisode * (1 + cfg.returningRaise + person.heat / 400),
+    );
+  }
+
+  production.revived = true;
+  production.status = 'development';
+  production.developmentWeeksRemaining = cfg.developmentWeeks;
+  production.deal = undefined;
+  production.episodesAiredThisSeason = 0;
+  production.runningSeason = undefined;
+  // Time off helps, but a show that ran out of road does not come back fresh.
+  production.fatigue = production.fatigue * cfg.fatigueCarry;
+  production.buzz = revivalBuzz(production);
+
+  production.chemistry = rollChemistry(production, state.talent, (m, s) => rng.normal(m, s));
+  refreshQuality(production, archetype, state.talent);
+
+  state.rngState = rng.state();
+
+  return ok({
+    production,
+    cost,
+    returning,
+    departed,
+    quality: production.quality,
+    buzz: production.buzz,
+    fatigue: production.fatigue,
+  });
+}
+
+function formatCost(amount: number): string {
+  return amount >= 1_000_000
+    ? `$${(amount / 1_000_000).toFixed(1)}M`
+    : `$${Math.round(amount / 1_000)}K`;
 }
 
 // ---------------------------------------------------------------------------

@@ -20,8 +20,15 @@ import type {
 // ---------------------------------------------------------------------------
 
 export const ECONOMY = {
-  /** Ad revenue per viewer per episode, at a neutral demographic and full brand safety. */
-  revenuePerViewer: 0.55,
+  /**
+   * Ad revenue per viewer per episode, at a neutral demographic and full brand safety.
+   *
+   * Raised from 0.55 as the reciprocal of the MARKET_CAPTURE cut in ratings.ts. That
+   * change roughly halved every viewer figure on screen; without this, it would also
+   * have halved every network's income and quietly made the whole industry insolvent.
+   * The two numbers move together — change one, change the other.
+   */
+  revenuePerViewer: 1.0,
   /** Ratings count double for advertisers during sweeps; revenue premium is milder. */
   sweepsRevenueMultiplier: 1.15,
 
@@ -80,6 +87,71 @@ export const ECONOMY = {
      */
     contentSpendPerSubscriberPerYear: 110,
   },
+
+  /**
+   * The second window: what a smaller channel pays for a show that did not make it.
+   *
+   * Syndication is a windfall for surviving to 65 episodes. Everything short of that
+   * used to be worth literally nothing, which made a cancellation a total write-off and
+   * left the player with no move at all. In the real business a 12-episode failure still
+   * gets sold — cheaply, to someone with hours to fill and no first-run to protect.
+   */
+  secondWindow: {
+    /** Below this there is no run to package; a two-episode burn-off is not inventory. */
+    minimumEpisodes: 6,
+    /** Roughly 58% of the syndication rate — a discount buy, never a rival to the back end. */
+    perEpisodePerMillion: 150_000,
+    /**
+     * A minor channel strips one package, not a library. Paying for every episode of a
+     * 60-episode run would let the second window creep up on syndication money, which
+     * would make limping to the threshold pointless.
+     */
+    episodeCap: 26,
+    /** Even a show nobody watched is worth something as filler. */
+    floorPerEpisode: 30_000,
+    /** Share of the deal paid as an advance; the rest trickles over the licence term. */
+    advanceShare: 0.7,
+    licenceWeeks: 78,
+    /** Networks bigger than this have first-run to protect and will not touch a flop. */
+    buyerReachCeiling: 0.75,
+  },
+
+  /**
+   * Bringing a show back.
+   *
+   * Priced off a season of the show's own budget rather than a flat fee, so reviving a
+   * cheap format is a real option early and reviving a prestige hit is a project you
+   * have to save up for. The premiums are what stop it being a money loop: the shows
+   * most worth reviving are precisely the ones that cost the most to reassemble.
+   */
+  revival: {
+    minimumEpisodes: 6,
+    /** Fraction of one season's production cost, paid up front to put it back together. */
+    reassemblyRate: 0.35,
+    /** A proven audience makes every agent in town more expensive. */
+    provenPremium: 0.6,
+    /** A syndicated library title is the hardest and dearest thing to prise back. */
+    syndicatedPremium: 1.25,
+    /** A second comeback is a harder sell than the first. */
+    repeatRevivalPremium: 1.4,
+    /** Fatigue carried over. A revival is a fresh start, but not a clean one. */
+    fatigueCarry: 0.55,
+    /** Shorter than a new show's 12 — the format already exists. */
+    developmentWeeks: 8,
+    /** Base odds any given cast member comes back at all. */
+    returnBaseChance: 0.45,
+    /** What returning talent adds to their asking price for the trouble. */
+    returningRaise: 0.15,
+  },
+
+  /**
+   * What a finished show is worth in repeats over one still on air.
+   *
+   * A completed run is the better product for a repeat buyer: it is a fixed package with
+   * a known length and no first-run airing opposite it competing for the same audience.
+   * This is why the archive should be inventory rather than a graveyard.
+   */
+  archiveRepeatPremium: 1.15,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -272,14 +344,128 @@ export function averageViewersOf(production: Production): number {
   return episodes > 0 ? viewers / episodes : 0;
 }
 
+/**
+ * Whether a show's run is over — cancelled or ended.
+ *
+ * The archive and the live slate want opposite things from the same production, so the
+ * distinction is worth naming once rather than re-deriving the pair of status checks at
+ * every call site.
+ */
+export function isFinished(production: Production): boolean {
+  return production.status === 'cancelled' || production.status === 'ended';
+}
+
 export function rerunWeeklyValue(production: Production): number {
   if (!canSellReruns(production)) return 0;
 
   const averageViewers = averageViewersOf(production);
   const depth = Math.min(production.totalEpisodes / 100, 2.2);
   const prestigeBonus = 1 + (production.attributes.prestige / 100) * 0.3;
+  // A closed run is worth more than a live one — see ECONOMY.archiveRepeatPremium.
+  const finished = isFinished(production) ? ECONOMY.archiveRepeatPremium : 1;
 
-  return Math.round(averageViewers * depth * 26_000 * prestigeBonus);
+  return Math.round(averageViewers * depth * 26_000 * prestigeBonus * finished);
+}
+
+/** Lifetime studio profit across every completed season. Negative means the show lost money. */
+export function lifetimeStudioProfit(production: Production): number {
+  return production.history.reduce((sum, season) => sum + season.studioProfit, 0);
+}
+
+// ---------------------------------------------------------------------------
+// The second window — selling a show that did not make it
+// ---------------------------------------------------------------------------
+
+/**
+ * Whether a failed show can still be packaged and sold on.
+ *
+ * Deliberately narrow. The second window is the exit for a run that is *over* — a show
+ * still on air has a first-run channel that would never allow it, and a show already in
+ * repeats has no exclusive package left to sell. Requiring an empty slate of repeat
+ * deals also makes the sale one-shot without needing a saved field to remember it.
+ */
+export function canSellSecondWindow(production: Production): boolean {
+  return (
+    isFinished(production) &&
+    !production.syndicated &&
+    production.totalEpisodes >= ECONOMY.secondWindow.minimumEpisodes &&
+    production.totalEpisodes < ECONOMY.syndicationThreshold &&
+    production.rerunDeals.length === 0
+  );
+}
+
+/**
+ * What the whole run fetches in a second-window sale.
+ *
+ * Capped at the money the studio actually lost on the show. That single rule is what
+ * keeps this a lifeline rather than a business model: a cheap format that flops cannot
+ * earn more from failing than it burned, so there is no loop in making rubbish on
+ * purpose — while an expensive failure, which loses far more than the cap could ever
+ * return, gets a genuine softening of the blow. A show that turned a profit has no
+ * deficit to recoup and falls back to scrap value.
+ */
+export function secondWindowValue(production: Production): number {
+  if (!canSellSecondWindow(production)) return 0;
+
+  const cfg = ECONOMY.secondWindow;
+  const episodes = Math.min(production.totalEpisodes, cfg.episodeCap);
+  const prestigeBonus = 1 + (production.attributes.prestige / 100) * 0.2;
+
+  const raw = episodes * averageViewersOf(production) * cfg.perEpisodePerMillion * prestigeBonus;
+  const deficit = Math.max(0, -lifetimeStudioProfit(production));
+  const ceiling = Math.max(deficit, episodes * cfg.floorPerEpisode);
+
+  return Math.round(Math.min(raw, ceiling));
+}
+
+/** The cash that lands the moment a second window is signed, versus the weekly trickle. */
+export function secondWindowAdvance(production: Production): number {
+  return Math.round(secondWindowValue(production) * ECONOMY.secondWindow.advanceShare);
+}
+
+export function secondWindowWeekly(production: Production): number {
+  const residual = secondWindowValue(production) - secondWindowAdvance(production);
+  return Math.round(residual / ECONOMY.secondWindow.licenceWeeks);
+}
+
+// ---------------------------------------------------------------------------
+// Revivals — bringing a show back
+// ---------------------------------------------------------------------------
+
+/** Whether a show is a candidate to be brought back at all. */
+export function canRevive(production: Production): boolean {
+  return isFinished(production) && production.totalEpisodes >= ECONOMY.revival.minimumEpisodes;
+}
+
+/**
+ * What it costs to put a show back together.
+ *
+ * Scaled off the show's own season cost, not a flat fee, so the decision reads the same
+ * way the original commission did. The premiums all push in the same direction: the
+ * more the show proved, the more everyone attached to it now wants, which is why
+ * reviving your biggest hit is the expensive option rather than the obvious one.
+ */
+export function revivalCost(production: Production): number {
+  const cfg = ECONOMY.revival;
+  const seasonCost = production.budgetPerEpisode * production.episodesPerSeason;
+
+  const proven = 1 + Math.min(averageViewersOf(production) / 5, 1.2) * cfg.provenPremium;
+  const library = production.syndicated ? cfg.syndicatedPremium : 1;
+  const again = production.revived ? cfg.repeatRevivalPremium : 1;
+
+  return Math.round(seasonCost * cfg.reassemblyRate * proven * library * again);
+}
+
+/**
+ * Audience memory — the buzz a revival starts with.
+ *
+ * A revival's one real advantage is that people already know what it is, so it does not
+ * launch cold the way an original does. Capped well short of a premiere's peak: being
+ * remembered is not the same as being wanted.
+ */
+export function revivalBuzz(production: Production): number {
+  const memory = averageViewersOf(production) * 5 + (production.syndicated ? 12 : 0);
+  return Math.round(clamp(8 + memory, 0, 55));
 }
 
 /**

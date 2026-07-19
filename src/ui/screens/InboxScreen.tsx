@@ -12,6 +12,7 @@ import { useGame, useGameStore } from '../../store/gameStore';
 import { playerNews } from '../../store/selectors';
 import { Room, Deck, Panel, Readout } from '../game/Room';
 import { Icon, type IconName } from '../icons';
+import { Poster } from '../Poster';
 import { colors, radius, space } from '../theme';
 import type { GameEvent, GameEventKind } from '../../engine/types';
 
@@ -81,7 +82,7 @@ function jitter(seed: string, salt: number): number {
   return ((hash >>> 0) % 1000) / 1000;
 }
 
-export function InboxScreen() {
+export function InboxScreen({ onOpenShow }: { onOpenShow?: (id: string) => void } = {}) {
   const game = useGame();
   const markRead = useGameStore((s) => s.markInboxRead);
   const lastReadEventId = useGameStore((s) => s.lastReadEventId);
@@ -192,6 +193,7 @@ export function InboxScreen() {
               event={open}
               picked={picked !== null}
               onClose={() => setOpenId(null)}
+              onOpenShow={onOpenShow}
             />
           ) : (
             <NoLetter />
@@ -284,12 +286,20 @@ function OpenLetter({
   event,
   picked,
   onClose,
+  onOpenShow,
 }: {
   event: GameEvent;
   picked: boolean;
   onClose: () => void;
+  onOpenShow?: (id: string) => void;
 }) {
   const sender = senderFor(event.kind);
+  const game = useGame();
+
+  // Most letters are *about* a show — a rating, a renewal, a cancellation. Naming it
+  // and then giving the player no way to go and look at it is the kind of dead end
+  // that makes an interface feel like a printout.
+  const about = event.productionId ? game?.productions[event.productionId] : undefined;
 
   return (
     <View style={{ flex: 1 }}>
@@ -317,6 +327,23 @@ function OpenLetter({
       <ScrollView showsVerticalScrollIndicator={false} style={styles.sheet}>
         <Text style={styles.sheetSubject}>{event.headline}</Text>
         {event.body ? <Text style={styles.sheetBody}>{event.body}</Text> : null}
+
+        {about && onOpenShow ? (
+          <Pressable
+            testID={`inbox-open-show-${about.id}`}
+            onPress={() => onOpenShow(about.id)}
+            style={({ pressed }) => [styles.aboutRow, pressed && { opacity: 0.75 }]}
+          >
+            <Poster seed={about.id} format={about.format} size="sm" />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.aboutLabel}>ABOUT THIS SHOW</Text>
+              <Text style={styles.aboutTitle} numberOfLines={1}>
+                {about.title}
+              </Text>
+            </View>
+            <Text style={styles.aboutGo}>OPEN</Text>
+          </Pressable>
+        ) : null}
       </ScrollView>
     </View>
   );
@@ -577,6 +604,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceHigh,
   },
   putBackText: { fontSize: 8, fontWeight: '900', letterSpacing: 1, color: colors.textDim },
+  aboutRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginTop: 14,
+    padding: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surfaceAlt,
+  },
+  aboutLabel: { fontSize: 8, fontWeight: '900', letterSpacing: 1.1, color: colors.textFaint },
+  aboutTitle: { fontSize: 13, fontWeight: '800', color: colors.text, marginTop: 1 },
+  aboutGo: { fontSize: 9, fontWeight: '900', letterSpacing: 1, color: colors.accent },
+
   deskFlag: { fontSize: 8, fontWeight: '900', letterSpacing: 1.2, color: colors.textFaint },
 
   tally: {

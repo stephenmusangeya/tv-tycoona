@@ -40,9 +40,11 @@ import type { Production } from '../../engine/types';
 export function DeskRoom({
   onOpenShow,
   onMakeShow,
+  onOpenArchetype,
 }: {
   onOpenShow: (id: string) => void;
   onMakeShow: () => void;
+  onOpenArchetype?: (archetypeId: string) => void;
 }) {
   const game = useGame();
   const advance = useGameStore((s) => s.advance);
@@ -205,7 +207,7 @@ export function DeskRoom({
 
         <Panel title="IN TRAY" flex={4} accent={colors.accent}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <DecisionDeck onOpenShow={onOpenShow} />
+            <DecisionDeck onOpenShow={onOpenShow} onOpenArchetype={onOpenArchetype} />
           </ScrollView>
         </Panel>
 
@@ -285,6 +287,17 @@ function ShowCard({
 }) {
   const viewers = latestViewers(production);
   const live = production.status === 'airing';
+
+  /*
+   * A show in development looked exactly like a show on air — same card, same poster,
+   * just an em dash where the ratings go. So the shelf gave no sense of a pipeline:
+   * you could not tell what you were waiting on, or how long. The weeks remaining is
+   * the single most useful thing to say, because it is the answer to "when does this
+   * start earning?".
+   */
+  const developing = production.status === 'development';
+  const weeksLeft = production.developmentWeeksRemaining ?? 0;
+  const shopping = production.status === 'hiatus' && !production.deal;
   const cost = episodeCost(production);
   const fee = production.deal?.licenseFeePerEpisode ?? 0;
   const perEpisode = production.deal ? -episodeDeficit(production) : -cost;
@@ -301,13 +314,45 @@ function ShowCard({
         size="md"
         style={{ width: '100%', height: 116 }}
       />
+      {/* The pipeline badge, over the poster so it reads at a glance across the shelf. */}
+      {developing ? (
+        <View style={styles.stageBadge}>
+          <View style={styles.stageDot} />
+          <Text style={styles.stageText}>
+            {weeksLeft > 0 ? `IN ${weeksLeft}W` : 'FILMING'}
+          </Text>
+        </View>
+      ) : shopping ? (
+        <View style={[styles.stageBadge, { backgroundColor: 'rgba(138,109,75,0.92)' }]}>
+          <Text style={styles.stageText}>SHOPPING</Text>
+        </View>
+      ) : null}
+
       <View style={styles.cardFoot}>
         <Text style={styles.cardTitle} numberOfLines={1}>
           {production.title}
         </Text>
-        <Text style={styles.cardViewers}>
-          {viewers !== undefined ? `${viewers.toFixed(1)}M` : '—'}
+        <Text style={[styles.cardViewers, developing && { color: colors.textFaint }]}>
+          {viewers !== undefined
+            ? `${viewers.toFixed(1)}M`
+            : developing
+              ? 'NOT ON AIR'
+              : '—'}
         </Text>
+
+        {/* A development show has no ratings and no fee yet, so a progress bar is the
+            honest readout: it says how far through the pipeline the money already
+            committed actually is. */}
+        {developing ? (
+          <View style={styles.stageTrack}>
+            <View
+              style={[
+                styles.stageFill,
+                { width: `${Math.max(6, (1 - weeksLeft / 13) * 100)}%` },
+              ]}
+            />
+          </View>
+        ) : null}
 
         {/* Cost, fee and the difference — the three figures the player asked for. */}
         <View style={styles.economics}>
@@ -419,6 +464,30 @@ const styles = StyleSheet.create({
   econRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   econLabel: { fontSize: 7, fontWeight: '800', letterSpacing: 0.8, color: colors.textFaint },
   econValue: { fontSize: 9, fontWeight: '900', fontVariant: ['tabular-nums'] },
+
+  stageBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(36,30,26,0.92)',
+    borderRadius: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 3,
+  },
+  stageDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: colors.warning },
+  stageText: { fontSize: 7, fontWeight: '900', letterSpacing: 0.8, color: '#F7F1E4' },
+
+  stageTrack: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: colors.surfaceHigh,
+    overflow: 'hidden',
+    marginTop: 3,
+  },
+  stageFill: { height: '100%', backgroundColor: colors.warning },
 
   cardFoot: { padding: 6 },
   cardTitle: { fontSize: 10, fontWeight: '800', color: colors.text },

@@ -14,6 +14,14 @@ import { refreshQuality, releaseTalent } from './production';
 import { rollChemistry } from './quality';
 import { decayBuzz, seasonFatigueIncrement, simulateSlot } from './ratings';
 import type { SlotEntrant } from './ratings';
+import {
+  TAG_LABELS,
+  computeStudioBrand,
+  earnedTags,
+  fileReview,
+  hadScandal,
+  reviewSeason,
+} from './reception';
 import { clamp, createRng } from './rng';
 import type { Rng } from './rng';
 import {
@@ -39,6 +47,7 @@ import type {
   RunningSeason,
   SeasonRecord,
   SegmentId,
+  ShowArchetype,
   WeekResult,
 } from './types';
 
@@ -121,6 +130,14 @@ export function advanceWeek(state: GameState): WeekResult {
   }
 
   updateTalent(ctx);
+
+  // The brand is derived from the whole slate, so it only moves at the speed shows do.
+  // Rebuilding it weekly would be waste; a monthly refresh (plus the one forced at
+  // every season wrap) keeps it honest without walking every production every tick.
+  if (!state.brand || state.absoluteWeek % 4 === 0) {
+    refreshBrand(ctx);
+  }
+
   generatePitches(state, rng, mintId, emit);
   runRivalTurn(state, rng, mintId, emit);
 
@@ -337,12 +354,14 @@ function wrapSeason(ctx: TickContext, production: Production): void {
     networkProfit: running.networkProfit,
   };
 
+  const archetype = getArchetype(production.archetypeId);
+
   production.history.push(record);
   production.runningSeason = undefined;
   production.status = 'hiatus';
   production.fatigue = Math.min(
     0.85,
-    production.fatigue + seasonFatigueIncrement(production, getArchetype(production.archetypeId)),
+    production.fatigue + seasonFatigueIncrement(production, archetype),
   );
 
   const owner = state.companies[production.ownerId];
@@ -354,6 +373,9 @@ function wrapSeason(ctx: TickContext, production: Production): void {
     productionId: production.id,
     companyId: production.ownerId,
   });
+
+  fileSeasonReview(ctx, production, archetype, isPlayerOwned);
+  awardSeasonTags(ctx, production, isPlayerOwned);
 
   // The back end finally pays out — see DESIGN.md §7.1.
   if (canSyndicate(production)) {
@@ -368,7 +390,102 @@ function wrapSeason(ctx: TickContext, production: Production): void {
     });
   }
 
+  // The slate just changed shape, so the public reading of it has too.
+  if (isPlayerOwned) refreshBrand(ctx);
+
   void rng;
+}
+
+// ---------------------------------------------------------------------------
+// Reception — reviews, reputations and the studio's public identity
+// ---------------------------------------------------------------------------
+
+/**
+ * The press respond to a finished season.
+ *
+ * This is the game's answer to "why is my show doing well or badly?", so the player's
+ * notice is always emitted, whatever the score — a mediocre review is still a list of
+ * things to fix. Rival shows are only reported when the notice is remarkable, because
+ * the in-tray is the player's, not the industry's.
+ */
+function fileSeasonReview(
+  ctx: TickContext,
+  production: Production,
+  archetype: ShowArchetype,
+  isPlayerOwned: boolean,
+): void {
+  const { state, rng, emit } = ctx;
+
+  const review = reviewSeason({
+    production,
+    archetype,
+    talent: state.talent,
+    week: state.absoluteWeek,
+    rng,
+  });
+  fileReview(production, review);
+
+  const rave = review.score >= 88;
+  if (!isPlayerOwned && !rave) return;
+
+  // The body carries the diagnosis: what to keep, and what to change before the next
+  // commission. Two lines, because a note the player will not read is not a note.
+  const lines = [review.verdict];
+  if (review.praise[0]) lines.push(review.praise[0]);
+  if (review.criticism[0]) lines.push(review.criticism[0]);
+
+  emit('ratings', `${review.outlet} on ${production.title}: ${review.score}/100`, {
+    body: lines.join(' '),
+    playerRelevant: isPlayerOwned,
+    productionId: production.id,
+    companyId: production.ownerId,
+  });
+}
+
+/** Reputations are announced, not discovered — a tag the player never noticed is wasted. */
+function awardSeasonTags(
+  ctx: TickContext,
+  production: Production,
+  isPlayerOwned: boolean,
+): void {
+  const { state, emit } = ctx;
+
+  const earned = earnedTags(production, hadScandal(state, production.id));
+  if (earned.length === 0) return;
+
+  production.tags.push(...earned);
+
+  for (const tag of earned) {
+    emit('award', `${production.title} is now ${TAG_LABELS[tag]}`, {
+      body: `Earned after ${production.totalEpisodes} episodes. Reputations like this raise what the library is worth.`,
+      playerRelevant: isPlayerOwned,
+      productionId: production.id,
+      companyId: production.ownerId,
+    });
+  }
+}
+
+/**
+ * Recompute how the public reads the studio.
+ *
+ * Only the change of *label* is worth telling the player about: the axes drift every
+ * month and reporting that would be noise, but "you are now a prestige house" is a
+ * genuine event, and one they arrived at by making things rather than choosing it.
+ */
+function refreshBrand(ctx: TickContext): void {
+  const { state, emit } = ctx;
+
+  const previous = state.brand;
+  const brand = computeStudioBrand(state);
+  state.brand = brand;
+
+  if (!previous || previous.label === brand.label || brand.label === 'Unproven') return;
+
+  emit('ratings', `Your studio is now known for: ${brand.label}`, {
+    body: `The trades used to call you ${previous.label}. Your slate has changed what people expect from you.`,
+    playerRelevant: true,
+    companyId: state.player.studioId,
+  });
 }
 
 // ---------------------------------------------------------------------------

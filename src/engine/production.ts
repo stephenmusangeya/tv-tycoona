@@ -223,6 +223,11 @@ export function createProduction(
     archetypeId: archetype.id,
     title: titleOverride ?? archetype.title,
     format: archetype.format,
+    // Every show starts played straight with no reputation and no press. Both are
+    // earned by airing; see engine/reception.ts.
+    angle: 'straight',
+    tags: [],
+    reviews: [],
     ownerId,
     attributes: attributesOverride ?? perturbAttributes(archetype.attributes, rng),
     quality: 50,

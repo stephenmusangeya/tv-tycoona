@@ -66,6 +66,14 @@ export function migrateSave(state: GameState): MigrationReport {
     if (typeof show.syndicated !== 'boolean') show.syndicated = false;
     if (typeof show.buzz !== 'number') show.buzz = 0;
     if (typeof show.fatigue !== 'number') show.fatigue = 0;
+
+    // Angle, tags and reviews arrived with the reception system. A show made before
+    // then was played straight and has earned no reputation yet — which is exactly
+    // what these defaults say. `tags` and `reviews` are iterated on the weekly tick,
+    // so a missing array is a crash rather than a cosmetic gap.
+    if (typeof show.angle !== 'string') show.angle = 'straight';
+    if (!Array.isArray(show.tags)) show.tags = [];
+    if (!Array.isArray(show.reviews)) show.reviews = [];
   }
 
   if (ownerlessShows > 0) notes.push(`gave ${ownerlessShows} shows their rightful owner`);
@@ -78,6 +86,26 @@ export function migrateSave(state: GameState): MigrationReport {
     if (typeof person.morale !== 'number') person.morale = 60;
     if (typeof person.heat !== 'number') person.heat = 0;
     if (typeof person.retired !== 'boolean') person.retired = false;
+
+    // Payroll arrived after launch. Nobody on an old save was ever on staff, and
+    // `weeksEmployed`/`hits` are accumulated with `+=` on the tick, so they have to be
+    // numbers rather than undefined or every payroll figure becomes NaN.
+    if (typeof person.onPayroll !== 'boolean') person.onPayroll = false;
+    if (typeof person.weeksEmployed !== 'number') person.weeksEmployed = 0;
+    if (typeof person.hits !== 'number') person.hits = 0;
+  }
+
+  // --- Studio brand and audience trends ---------------------------------
+  // Both are derived state, so the safe backfill is to drop them and let the next
+  // weekly tick recompute from the slate that is actually there. Inventing values
+  // here would assert a reputation the player never earned.
+  if (state.brand && typeof state.brand.label !== 'string') {
+    delete state.brand;
+    notes.push('cleared a malformed studio brand — it will be rederived');
+  }
+  if (state.trends && typeof state.trends !== 'object') {
+    delete state.trends;
+    notes.push('cleared malformed audience trends');
   }
 
   // --- Companies --------------------------------------------------------

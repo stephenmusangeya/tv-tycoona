@@ -1,10 +1,17 @@
 import { getArchetype } from '../data';
+import { rerunBidsFor, secondWindowBidsFor } from '../engine/actions';
 import {
   ECONOMY,
   RERUN_MINIMUM_EPISODES,
+  canRevive,
+  canSellReruns,
+  canSellSecondWindow,
   episodeCost,
   episodeDeficit,
+  isFinished,
   rerunWeeklyValue,
+  revivalBuzz,
+  revivalCost,
   rightsSaleValue,
 } from '../engine/economy';
 import { attachedIds } from '../engine/production';
@@ -145,6 +152,199 @@ export function rerunIncome(game: GameState): number {
 export function unsoldRepeats(game: GameState): Production[] {
   return playerLibrary(game).filter(
     (p) => p.rerunDeals.length === 0 && rerunWeeklyValue(p) > 0,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// The long tail — what an old show is still worth
+// ---------------------------------------------------------------------------
+
+export interface SecondWindowQuote {
+  buyerId: string;
+  buyerName: string;
+  /** Advance plus every weekly payment over the term. */
+  total: number;
+  /** Cash on signature — the number that actually matters when you are overdrawn. */
+  advance: number;
+  weeklyPayment: number;
+  weeks: number;
+}
+
+/**
+ * Every way a show you own could still make money, in one shape.
+ *
+ * Written for the archive screen, where the question is never "what is this worth" in
+ * the abstract but "what can I do with it *today*" — so the three exits sit side by
+ * side with their actual numbers, and a show with no exits says why.
+ */
+export interface ArchiveSaleOptions {
+  production: Production;
+  /** True once the run is over — the archive proper, rather than the live slate. */
+  finished: boolean;
+  /** Per-week repeat money the best buyer would pay, or 0 if it cannot be sold. */
+  repeatWeekly: number;
+  /** How many buyers are currently in the market for the repeats. */
+  repeatBuyers: number;
+  /** The best second-window offer on the table, if the show is a candidate. */
+  secondWindow?: SecondWindowQuote;
+  /** Lump sum to sell the show and every future penny of it, permanently. */
+  rightsValue: number;
+  /** Repeat money already coming in each week from deals that exist. */
+  earningWeekly: number;
+  /** Set when nothing can be sold, so the UI never shows an empty panel with no reason. */
+  blocker?: string;
+}
+
+/** What a single show you own could fetch right now, by every available route. */
+export function archiveSaleOptions(
+  game: GameState,
+  production: Production,
+): ArchiveSaleOptions {
+  const repeatBids = rerunBidsFor(game, production.id);
+  const windowBids = secondWindowBidsFor(game, production.id);
+  const best = windowBids[0];
+
+  const earningWeekly = production.rerunDeals.reduce((sum, d) => sum + d.weeklyPayment, 0);
+
+  let blocker: string | undefined;
+  if (repeatBids.length === 0 && windowBids.length === 0) {
+    if (production.rightsOwnerId !== game.player.studioId) {
+      blocker = 'You sold this show.';
+    } else if (!canSellReruns(production)) {
+      blocker = `${RERUN_MINIMUM_EPISODES - production.totalEpisodes} more episodes needed`;
+    } else if (earningWeekly > 0) {
+      blocker = 'Every buyer already has it.';
+    } else {
+      blocker = 'No buyers right now.';
+    }
+  }
+
+  return {
+    production,
+    finished: isFinished(production),
+    repeatWeekly: repeatBids[0]?.weeklyPayment ?? 0,
+    repeatBuyers: repeatBids.length,
+    secondWindow: best
+      ? {
+          buyerId: best.buyerId,
+          buyerName: best.buyerName,
+          total: best.total,
+          advance: best.advance,
+          weeklyPayment: best.weeklyPayment,
+          weeks: best.weeks,
+        }
+      : undefined,
+    rightsValue: rightsSaleValue(production),
+    earningWeekly,
+    blocker,
+  };
+}
+
+/**
+ * Everything finished that still has a buyer — the archive as inventory.
+ *
+ * Sorted by the cash a sale would actually put in the bank today rather than by headline
+ * value, because the reason to open this screen at all is usually that you need money
+ * this week.
+ */
+export function sellableArchive(game: GameState): ArchiveSaleOptions[] {
+  return playerArchive(game)
+    .map((production) => archiveSaleOptions(game, production))
+    .filter((entry) => !entry.blocker)
+    .sort((a, b) => cashToday(b) - cashToday(a));
+}
+
+function cashToday(entry: ArchiveSaleOptions): number {
+  return Math.max(entry.secondWindow?.advance ?? 0, entry.repeatWeekly * 52);
+}
+
+/** Shows in the archive that could be packaged and sold on cheaply. */
+export function secondWindowCandidates(game: GameState): ArchiveSaleOptions[] {
+  return playerArchive(game)
+    .filter((production) => canSellSecondWindow(production))
+    .map((production) => archiveSaleOptions(game, production))
+    .filter((entry) => entry.secondWindow)
+    .sort((a, b) => (b.secondWindow?.advance ?? 0) - (a.secondWindow?.advance ?? 0));
+}
+
+// ---------------------------------------------------------------------------
+// Revivals
+// ---------------------------------------------------------------------------
+
+/**
+ * What bringing a show back would actually involve.
+ *
+ * Deliberately reports the risk as well as the price. The cast numbers are the honest
+ * part: `castGone` are people who cannot come back at any price, and `castUncertain` are
+ * the ones the game will roll for — so the player can see that an expensive revival can
+ * still turn up with half a show.
+ */
+export interface RevivalQuote {
+  production: Production;
+  cost: number;
+  affordable: boolean;
+  /** Buzz it launches with, against a cold start of roughly 8–22 for a new show. */
+  startingBuzz: number;
+  /** Fatigue carried in, 0–1. Never zero for a show that ran out of road. */
+  carriedFatigue: number;
+  /** Attached talent who have retired or taken other work — gone regardless of price. */
+  castGone: number;
+  /** Attached talent who are free, and might or might not say yes. */
+  castUncertain: number;
+  /** Episodes it would still need to reach the back end, carried over from its first run. */
+  episodesToSyndication: number;
+  /** Weeks in development before it is ready to be scheduled again. */
+  developmentWeeks: number;
+  /** Set when the show cannot be revived at all. */
+  blocker?: string;
+}
+
+export function revivalQuote(game: GameState, production: Production): RevivalQuote {
+  const studio = playerStudio(game);
+  const cost = revivalCost(production);
+
+  let castGone = 0;
+  let castUncertain = 0;
+  for (const id of attachedIds(production)) {
+    const person = game.talent[id];
+    if (!person || person.retired || person.productionId) castGone += 1;
+    else castUncertain += 1;
+  }
+
+  let blocker: string | undefined;
+  if (production.rightsOwnerId !== game.player.studioId) blocker = 'You sold this show.';
+  else if (!isFinished(production)) blocker = 'Still running.';
+  else if (!canRevive(production)) {
+    blocker = `Only ${production.totalEpisodes} episodes — too little to bring back.`;
+  }
+
+  return {
+    production,
+    cost,
+    affordable: (studio?.cash ?? 0) >= cost,
+    startingBuzz: revivalBuzz(production),
+    carriedFatigue: production.fatigue * ECONOMY.revival.fatigueCarry,
+    castGone,
+    castUncertain,
+    episodesToSyndication: episodesToSyndication(production),
+    developmentWeeks: ECONOMY.revival.developmentWeeks,
+    blocker,
+  };
+}
+
+/** Everything you could bring back, cheapest first — the revival shelf. */
+export function revivableShows(game: GameState): RevivalQuote[] {
+  return playerArchive(game)
+    .map((production) => revivalQuote(game, production))
+    .filter((quote) => !quote.blocker)
+    .sort((a, b) => a.cost - b.cost);
+}
+
+/** What the archive is worth if you sold every second window available today. */
+export function secondWindowWorth(game: GameState): number {
+  return secondWindowCandidates(game).reduce(
+    (sum, entry) => sum + (entry.secondWindow?.advance ?? 0),
+    0,
   );
 }
 

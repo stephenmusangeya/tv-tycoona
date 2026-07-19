@@ -265,12 +265,82 @@ export interface Production {
   /** Repeat deals currently paying out. A show can run several at once. */
   rerunDeals: RerunDeal[];
 
+  /** The treatment the studio is taking on the premise. Changeable between seasons. */
+  angle: Angle;
+  /** Reputations earned from performance — see ShowTag. */
+  tags: ShowTag[];
+  /** Press notices, newest last. Capped so a long-running show cannot bloat a save. */
+  reviews: Review[];
+  /**
+   * Notes the studio gave when commissioning, 0–1 each.
+   *
+   * A pitch arrives as the pitcher's show; notes are how it becomes yours. They move
+   * the attribute vector and carry a quality cost when they fight the material — a
+   * studio that notes everything into the middle gets a show nobody loves.
+   */
+  notes?: Partial<Record<Axis, number>>;
+  /** True if this show was brought back after ending. Revivals carry their old library. */
+  revived?: boolean;
+
   /**
    * Running totals for the season currently on air, folded into `history` when the
    * season wraps. Kept separate so `history` only ever contains completed seasons and
    * "last season's numbers" is never ambiguous.
    */
   runningSeason?: RunningSeason;
+}
+
+/**
+ * What a show is *for* — the angle the studio takes on the premise.
+ *
+ * The archetype is the idea ("blindfolded panellists guess occupations"); the angle is
+ * the treatment. The same format played straight, played for laughs, or played mean
+ * is three different shows to an audience, and being able to change it mid-run is how
+ * a studio responds to the numbers instead of just watching them.
+ */
+export const ANGLES = [
+  'straight',
+  'comic',
+  'gritty',
+  'wholesome',
+  'sensational',
+  'prestige',
+] as const;
+export type Angle = (typeof ANGLES)[number];
+
+/**
+ * A durable reputation a show earns from how it performed, not from what it is.
+ *
+ * These are the words people actually use about television — and they matter
+ * mechanically, because they are what makes a library worth more than its ratings.
+ * A comfort show with modest numbers can out-earn a flashy one in repeats.
+ */
+export const SHOW_TAGS = [
+  'cult-classic',
+  'family-favourite',
+  'comfort-show',
+  'formative',
+  'water-cooler',
+  'critical-darling',
+  'guilty-pleasure',
+  'notorious',
+] as const;
+export type ShowTag = (typeof SHOW_TAGS)[number];
+
+/** A written verdict on a season — why the show is or is not working. */
+export interface Review {
+  /** Absolute week the review was filed. */
+  week: number;
+  season: number;
+  /** 0–100 critical score. */
+  score: number;
+  /** The outlet's name — flavour, but it makes the notice feel like a press cutting. */
+  outlet: string;
+  /** One-line verdict. */
+  verdict: string;
+  /** What is working, and what is not — the actual diagnosis. */
+  praise: string[];
+  criticism: string[];
 }
 
 export interface RunningSeason {
@@ -350,6 +420,32 @@ export interface PlayerEmpire {
   streamerId?: string;
 }
 
+/**
+ * How the public reads your studio, 0–100 on each axis.
+ *
+ * Derived every week from the shows you actually make — you do not choose your brand,
+ * you earn it, which is the point. It feeds back into the game rather than decorating
+ * it: a studio known for tack gets offered tacky pitches and pays more to attract
+ * prestige talent, and a family brand makes wholesome shows land harder.
+ */
+export interface StudioBrand {
+  /** Cheap and loud ↔ expensive and considered. */
+  quality: number;
+  /** Safe for the whole household. */
+  family: number;
+  /** Awards-bait seriousness. */
+  prestige: number;
+  /** Provocative, tabloid, talked-about. */
+  edge: number;
+  /** Reliable comfort viewing. */
+  warmth: number;
+  /**
+   * The single word the public would use. Derived from the axes above, and cached so
+   * the UI and the pitch generator agree on what the studio is known for.
+   */
+  label: string;
+}
+
 export interface GameState {
   /** Seeded RNG cursor — kept in state so saves replay identically. */
   rngState: number;
@@ -375,6 +471,18 @@ export interface GameState {
 
   /** Monotonic counter for generated entity ids — keeps saves deterministic. */
   nextId: number;
+
+  /** How the public reads the player's studio. Recomputed each week from the slate. */
+  brand?: StudioBrand;
+
+  /**
+   * What the audience currently wants, by format, as a multiplier around 1.
+   *
+   * Taste moves on its own. A format drifts in and out of fashion over years, which
+   * is why a show can do everything right and still slide — and why the studio that
+   * reads the room early gets rewarded. Separate from any individual show's fatigue.
+   */
+  trends?: Partial<Record<Format, number>>;
 }
 
 export interface TalentState extends TalentRecord {
@@ -382,6 +490,21 @@ export interface TalentState extends TalentRecord {
   employerId?: string;
   /** Production they are currently attached to. */
   productionId?: string;
+
+  /**
+   * On the payroll: paid every week whether or not they are on a show.
+   *
+   * A studio is not a booking agency. Keeping people between projects is the cost of
+   * having a company at all, and it is what buys you a house style — staff writers
+   * develop shows in their own taste, and get better at it when those shows land.
+   */
+  onPayroll?: boolean;
+  /** Weekly retainer while on the payroll, independent of any per-episode fee. */
+  retainerPerWeek?: number;
+  /** Weeks spent on the player's payroll — the basis of loyalty and of asking price. */
+  weeksEmployed?: number;
+  /** Credited hits. Experience: raises craft over time and hardens their price. */
+  hits?: number;
   /** 0–100. Low morale means walkouts and refused renewals. */
   morale: number;
   /** 0–100. Rises with hits, decays without exposure. Drives asking price. */

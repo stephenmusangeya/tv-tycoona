@@ -1,5 +1,6 @@
 import { SHOW_ARCHETYPES } from '../data';
 import { perturbAttributes } from './production';
+import { generateStaffPitches } from './staff';
 import { clamp } from './rng';
 import type { Rng } from './rng';
 import type {
@@ -55,6 +56,23 @@ export function generatePitches(
   const studioId = state.player.studioId;
   const studio = state.companies[studioId];
   if (!studio) return;
+
+  /*
+   * Staff get the first look, every week.
+   *
+   * They are on a retainer specifically to bring you material, so their odds are an
+   * order of magnitude better than a free agent's and they are checked before the
+   * open-market roll rather than competing in it. A studio with a writing staff should
+   * rarely be short of something to read — that is most of what the weekly bill buys.
+   */
+  const added = generateStaffPitches(
+    state,
+    rng,
+    mintId,
+    emit,
+    MAX_OPEN_PITCHES - state.pitches.length,
+  );
+  if (added > 0 && state.pitches.length >= MAX_OPEN_PITCHES) return;
 
   // A better-regarded studio hears from more people. This is the practical payoff of
   // critical standing: prestige is not a score, it is deal flow.

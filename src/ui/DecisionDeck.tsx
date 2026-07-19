@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useAction, useGame } from '../store/gameStore';
 import { acceptOffer, declineOffer, greenlightPitch, passOnPitch } from '../engine/actions';
@@ -20,7 +20,20 @@ import { colors, formatMoneyShort, space } from './theme';
  * Anything that needs an answer now appears on the desk, so there is always something
  * to do rather than somewhere to go looking.
  */
-export function DecisionDeck({ onOpenShow }: { onOpenShow: (id: string) => void }) {
+/**
+ * Anything with a poster on it should open. A card in the tray names a show the
+ * player is being asked to decide about, and "what actually is this?" is the first
+ * question — but the poster was inert, so the only way to find out was to accept it.
+ * Offers open the production; pitches open the archetype, which is why this needs a
+ * second opener rather than reusing the production one.
+ */
+export function DecisionDeck({
+  onOpenShow,
+  onOpenArchetype,
+}: {
+  onOpenShow: (id: string) => void;
+  onOpenArchetype?: (archetypeId: string) => void;
+}) {
   const game = useGame();
   const run = useAction();
   if (!game) return null;
@@ -55,13 +68,24 @@ export function DecisionDeck({ onOpenShow }: { onOpenShow: (id: string) => void 
         return (
           <FadeIn key={offer.id} delay={index * 50}>
             <View style={styles.card}>
-              <Poster seed={production.id} format={production.format} size="sm" />
+              <Pressable
+                testID={`tray-open-offer-${offer.id}`}
+                onPress={() => onOpenShow(production.id)}
+                style={({ pressed }) => pressed && { opacity: 0.7 }}
+              >
+                <Poster seed={production.id} format={production.format} size="sm" />
+              </Pressable>
 
               <View style={styles.body}>
                 <Text style={styles.kicker}>OFFER · {channel.name.toUpperCase()}</Text>
-                <Text style={styles.title} numberOfLines={1}>
-                  {production.title}
-                </Text>
+                <Pressable
+                  testID={`tray-open-offer-title-${offer.id}`}
+                  onPress={() => onOpenShow(production.id)}
+                >
+                  <Text style={styles.title} numberOfLines={1}>
+                    {production.title}
+                  </Text>
+                </Pressable>
                 <View style={styles.figures}>
                   <Figure label="PER EP" value={formatMoneyShort(offer.licenseFeePerEpisode)} />
                   <Figure label="SLOT" value={formatSlotKey(offer.slotKey)} />
@@ -96,15 +120,26 @@ export function DecisionDeck({ onOpenShow }: { onOpenShow: (id: string) => void 
         return (
           <FadeIn key={pitch.id} delay={(offers.length + index) * 50}>
             <View style={styles.card}>
-              <Poster seed={pitch.archetypeId} format={pitch.format} size="sm" />
+              <Pressable
+                testID={`tray-open-pitch-${pitch.id}`}
+                onPress={() => onOpenArchetype?.(pitch.archetypeId)}
+                style={({ pressed }) => pressed && { opacity: 0.7 }}
+              >
+                <Poster seed={pitch.archetypeId} format={pitch.format} size="sm" />
+              </Pressable>
 
               <View style={styles.body}>
                 <Text style={[styles.kicker, { color: colors.info }]}>
                   PITCH · {(pitcher?.name ?? 'UNKNOWN').toUpperCase()}
                 </Text>
-                <Text style={styles.title} numberOfLines={1}>
-                  {pitch.title}
-                </Text>
+                <Pressable
+                  testID={`tray-open-pitch-title-${pitch.id}`}
+                  onPress={() => onOpenArchetype?.(pitch.archetypeId)}
+                >
+                  <Text style={styles.title} numberOfLines={1}>
+                    {pitch.title}
+                  </Text>
+                </Pressable>
                 <View style={styles.figures}>
                   <Figure
                     label="PER EP"

@@ -35,8 +35,18 @@ const OUTSIDE_OPTIONS = 1.2;
  * This is the absolute-level dial, deliberately separated from OUTSIDE_OPTIONS so the
  * two jobs — "how big is the market" and "how hard do shows fight over it" — can be
  * tuned independently. Conflating them is what made competition toothless before.
+ *
+ * Lowered from 0.4 because the numbers were flattering to the point of meaninglessness:
+ * the player's first show pulled 9M and the chart topped out near 11M, so every show
+ * looked like a phenomenon and nothing felt earned. A hit should read as a hit. At
+ * 0.22 a strong show lands around 5M, a solid one 2–3M, and a flop under 1M — which
+ * is roughly where real broadcast television sits and, more importantly, gives the
+ * ratings room to mean something.
+ *
+ * `ECONOMY.revenuePerViewer` was raised by the reciprocal, so this changes what the
+ * player *reads* without quietly halving every network's income underneath them.
  */
-const MARKET_CAPTURE = 0.4;
+const MARKET_CAPTURE = 0.22;
 
 export interface SlotEntrant {
   production: Production;
