@@ -1,4 +1,4 @@
-import { SHOW_ARCHETYPES, getArchetype } from '../data';
+import { getArchetype, registerConcepts } from '../data';
 import { potentialAudience, totalViewers } from './audience';
 import { licenseFee } from './economy';
 import { createProduction } from './production';
@@ -6,7 +6,8 @@ import { seasonFatigueIncrement } from './ratings';
 import { clamp, createRng } from './rng';
 import type { Rng } from './rng';
 import { allSlotKeys, emptySchedule } from './schedule';
-import { padTalentPool, toTalentState } from './talentGen';
+import { padTalentPool, toTalentState, varyAuthoredTalent } from './talentGen';
+import { generateConcepts } from './worldGen';
 import { TALENT_RECORDS } from '../data';
 import type {
   Company,
@@ -15,6 +16,7 @@ import type {
   RivalPersonality,
   SeasonRecord,
   SegmentId,
+  ShowArchetype,
   TalentState,
 } from './types';
 
@@ -98,21 +100,56 @@ export function newGame(options: NewGameOptions = {}): GameState {
   let idCounter = 0;
   const mintId = (prefix: string) => `${prefix}_${(idCounter++).toString(36)}`;
 
+  // --- The catalogue ------------------------------------------------------
+  // What television exists at all is decided here, from the seed, before anything is
+  // cast or scheduled — so two saves are different worlds rather than the same world
+  // with different dice. See worldGen.ts.
+  const concepts = generateConcepts(rng, seed);
+  registerConcepts(concepts);
+  const conceptPool = Object.values(concepts);
+
   // --- Talent -------------------------------------------------------------
   const talent: Record<string, TalentState> = {};
   for (const record of TALENT_RECORDS) {
-    talent[record.id] = toTalentState(record);
+    // The authored people are the memorable ones and keep their names, but a star who
+    // is identically gifted, identically priced and identically reliable in every save
+    // is a lookup table rather than a character. Their numbers move per world.
+    talent[record.id] = toTalentState(varyAuthoredTalent(record, rng));
   }
 
   // An industry this size needs far more working professionals than the authored
   // list holds — see talentGen.ts.
+  /*
+   * Host and producer counts were raised when the cost ladder was rebuilt.
+   *
+   * The catalogue is now deliberately weighted toward cheap unscripted formats — talk,
+   * games, reality — so the industry needs far more hosts than the 40 that were enough
+   * when the world was mostly drama. Worse than the headcount was the shape: a role
+   * with only 40 people has almost no low-fame tail, and pay follows fame steeply, so
+   * *every free host in the world* was priced above what a $10K-an-episode strip could
+   * pay and the cheapest formats went to air with nobody presenting them.
+   *
+   * A bigger pool is what gives the bottom of the ladder a labour market rather than
+   * just a price list.
+   */
+  /*
+   * These are *minimum pool sizes*, not headcounts of working people — the opening
+   * world immediately binds most of them to the shows already on air.
+   *
+   * At 400 actors the industry went to air with **nine** unattached actors in it. The
+   * player's first show could just about be cast and nothing after it could, which no
+   * check caught because staffing used to ignore budgets and simply take whoever was
+   * nearest. Sizing the pool against the opening slate — roughly sixty productions,
+   * most of them scripted — is what leaves a genuine casting market behind once the
+   * world has helped itself.
+   */
   padTalentPool(talent, rng, mintId, {
-    actor: 400,
-    writer: 200,
-    showrunner: 85,
-    producer: 55,
-    director: 85,
-    host: 40,
+    actor: 900,
+    writer: 320,
+    showrunner: 140,
+    producer: 90,
+    director: 140,
+    host: 150,
   });
 
   // --- Companies ----------------------------------------------------------
@@ -194,9 +231,16 @@ export function newGame(options: NewGameOptions = {}): GameState {
     for (let i = 0; i < fillCount; i++) {
       const key = slots[i];
 
-      const archetype = rng.weighted(
-        SHOW_ARCHETYPES.filter((a) => !usedArchetypes.has(a.id)),
-        (a) => (usedArchetypes.has(a.id) ? 0 : 1),
+      const available: ShowArchetype[] = conceptPool.filter(
+        (a) => !usedArchetypes.has(a.id),
+      );
+      if (available.length === 0) break;
+
+      // Prime time is where the money is: networks put their expensive shows in these
+      // slots, so weighting by cost keeps the cheap end of the catalogue available for
+      // the player rather than having it all pre-spent on the opening grid.
+      const archetype = rng.weighted(available, (a) =>
+        Math.sqrt(a.baseCostPerEpisode * a.episodesPerSeason),
       );
       usedArchetypes.add(archetype.id);
 
@@ -253,9 +297,7 @@ export function newGame(options: NewGameOptions = {}): GameState {
     companies,
     productions,
     talent,
-    // Populated by the world generator; empty here means "fall through to the static
-    // pool", which is exactly right for a save made before concepts existed.
-    concepts: {},
+    concepts,
     pitches: [],
     offers: [],
     events: [],

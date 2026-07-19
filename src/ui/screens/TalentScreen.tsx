@@ -12,8 +12,20 @@ import {
 import { useAction, useGame } from '../../store/gameStore';
 import { freeAgents, playerShows, roster, rosterCostPerEpisode } from '../../store/selectors';
 import { castTalent } from '../../engine/actions';
+import {
+  availableFinds,
+  castingShortlist,
+  discoveredIds,
+  dismissCastingDirector,
+  findFor,
+  hireCastingDirector,
+  readCasting,
+  weeklyCastingCost,
+  weeksPerFind,
+} from '../../engine/casting';
+import type { CastingDirector, CastingFind } from '../../engine/casting';
 import { TALENT_ROLES } from '../../engine/types';
-import type { Production, TalentRole, TalentState } from '../../engine/types';
+import type { GameState, Production, TalentRole, TalentState } from '../../engine/types';
 import { Portrait } from '../Portrait';
 import { Icon, WalkOfFameStar, type IconName } from '../icons';
 import { Room, Deck, Panel, Readout } from '../game/Room';
@@ -39,11 +51,44 @@ export function TalentScreen() {
   const [role, setRole] = useState<TalentRole | undefined>(undefined);
   const [search, setSearch] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  // The office is a mode rather than a fourth panel: at 390px a room with a pavement,
+  // an index, a dossier and a department in it is four things none of which fit.
+  const [office, setOffice] = useState(false);
 
   // Hooks must run unconditionally — see the note in DevelopmentScreen.
-  const agents = useMemo(
-    () => (game ? freeAgents(game, { role, search, limit: 60 }) : []),
-    [game, role, search, game?.absoluteWeek, game?.nextId],
+  //
+  // Your own discoveries are pinned to the front of the drawer, and they have to be:
+  // the index sorts on star power *plus* craft and keeps the top sixty of seven
+  // hundred people, so someone who is all craft and no fame — which is precisely what
+  // a casting director finds — sits below sixty strangers and never appears at all.
+  // The department would have been paying to add invisible people to the world.
+  const agents = useMemo(() => {
+    if (!game) return [];
+    const market = freeAgents(game, { role, search, limit: 60 });
+
+    const inMarket = new Set(market.map((p) => p.id));
+    const needle = search.trim().toLowerCase();
+    const mine = availableFinds(game)
+      .map(({ person }) => person)
+      .filter(
+        (person) =>
+          !inMarket.has(person.id) &&
+          !person.productionId &&
+          (!role || person.role === role) &&
+          (!needle || person.name.toLowerCase().includes(needle)),
+      )
+      // Best find first, so the dossier opens on the person most worth signing rather
+      // than whoever happened to turn up last.
+      .sort((a, b) => b.craft + b.starPower - (a.craft + a.starPower));
+
+    return [...mine, ...market];
+  }, [game, role, search, game?.absoluteWeek, game?.nextId]);
+
+  // Who the department has turned up. Keyed on the same revision markers as the index,
+  // because a find arrives on a tick and has to appear in the room the same week.
+  const found = useMemo(
+    () => (game ? discoveredIds(game) : new Set<string>()),
+    [game, game?.absoluteWeek, game?.nextId],
   );
 
   if (!game) return null;
@@ -64,8 +109,12 @@ export function TalentScreen() {
   // Casting is locked once a season is on air, so only these shows can take a signing.
   const castable = shows.filter((p) => p.status !== 'airing');
 
-  // A card the player actually pulled out of the index.
-  const pulled = selectedId ? (agents.find((p) => p.id === selectedId) ?? null) : null;
+  // A card the player actually pulled out of the index. The fallback to the wider
+  // world is what makes the office's tap-through reliable: a find that has since been
+  // cast is no longer a free agent, and opening their file should still work.
+  const pulled = selectedId
+    ? (agents.find((p) => p.id === selectedId) ?? game.talent[selectedId] ?? null)
+    : null;
   // An empty dossier is a quarter of the room showing nothing, so when no card is
   // pulled the file already open is the best free agent in the index — the one a
   // player would have reached for anyway. The panel is never blank.
@@ -73,20 +122,54 @@ export function TalentScreen() {
 
   const empty = signed.length === 0;
 
+  const casting = readCasting(game);
+  const scoutFee = weeklyCastingCost(game);
+
   return (
     <Room>
       {/* ---------------- Title bar: the wage bill is the number that bites -------- */}
       <View style={styles.topBar}>
         <Text style={styles.roomName}>CASTING</Text>
         <View style={styles.topStats}>
-          <Readout label="SIGNED" value={String(signed.length)} size="sm" />
-          <Readout
-            label="WAGES / EP"
-            value={formatMoneyShort(wageBill)}
-            size="sm"
-            color={wageBill > 0 ? colors.negative : undefined}
-          />
+          {!wide ? null : (
+            <>
+              <Readout label="SIGNED" value={String(signed.length)} size="sm" />
+              <Readout
+                label="WAGES / EP"
+                value={formatMoneyShort(wageBill)}
+                size="sm"
+                color={wageBill > 0 ? colors.negative : undefined}
+              />
+            </>
+          )}
           <Readout label="FREE" value={String(agents.length)} size="sm" />
+
+          {/* The department's own light on the console. A scout you are paying for and
+              have forgotten about is the one way this mechanic could quietly go wrong,
+              so the weekly fee sits in the title bar next to the wage bill. */}
+          <Pressable
+            testID="casting-office-toggle"
+            onPress={() => setOffice((open) => !open)}
+            style={({ pressed }) => [
+              styles.officeTab,
+              office && styles.officeTabActive,
+              pressed && { opacity: 0.75 },
+            ]}
+          >
+            <Icon
+              name="magnifier"
+              size={12}
+              color={office ? '#FBF6EA' : casting.director ? BRASS : colors.textDim}
+            />
+            <View>
+              <Text style={[styles.officeTabLabel, office && styles.officeTabTextActive]}>
+                {casting.director ? 'SCOUTING' : 'NO SCOUT'}
+              </Text>
+              <Text style={[styles.officeTabValue, office && styles.officeTabTextActive]}>
+                {scoutFee > 0 ? `${formatMoneyShort(scoutFee)}/WK` : 'HIRE ONE'}
+              </Text>
+            </View>
+          </Pressable>
         </View>
       </View>
 
@@ -139,8 +222,11 @@ export function TalentScreen() {
         </Panel>
       </View>
 
-      {/* ---------------- Lower deck: the card index, and the dossier -------------- */}
+      {/* ---------------- Lower deck: the card index, the dossier, the office ------ */}
       <Deck flex={1} style={!wide && { flexDirection: 'column' }}>
+        {/* On a phone the office takes the whole deck: the index is still one tap away
+            and a half-height drawer of cards would be neither. */}
+        {office && !wide ? null : (
         <Panel title="ROLODEX" flex={wide ? 5 : pulled ? 3 : 1}>
           <View style={styles.filters}>
             <View style={styles.searchBox}>
@@ -203,16 +289,36 @@ export function TalentScreen() {
                   key={person.id}
                   person={person}
                   selected={selected?.id === person.id}
+                  discovered={found.has(person.id)}
                   onPress={() => setSelectedId(selectedId === person.id ? null : person.id)}
                 />
               ))}
             </ScrollView>
           )}
         </Panel>
+        )}
 
-        {/* The dossier is always present when wide; on a phone it only earns its
-            space once a card is actually pulled out of the index. */}
-        {(wide && selected) || pulled ? (
+        {office ? (
+          <Panel title="CASTING OFFICE" flex={wide ? 4 : 1} accent={BRASS}>
+            <CastingOffice
+              game={game}
+              director={casting.director}
+              spent={casting.spent}
+              onHire={(id) => run((g) => hireCastingDirector(g, id))}
+              onDismiss={() => run((g) => dismissCastingDirector(g))}
+              onOpenFind={(talentId) => {
+                // Pulling the card out of the index is the whole point of the row: a
+                // find is only useful once you are looking at what you can do with them.
+                setSelectedId(talentId);
+                setSearch('');
+                setRole(undefined);
+                setOffice(false);
+              }}
+            />
+          </Panel>
+        ) : (wide && selected) || pulled ? (
+          /* The dossier is always present when wide; on a phone it only earns its
+             space once a card is actually pulled out of the index. */
           <Panel
             title={pulled ? 'DOSSIER' : 'DOSSIER · TOP OF THE INDEX'}
             flex={wide ? 4 : 2}
@@ -222,6 +328,7 @@ export function TalentScreen() {
               person={selected!}
               field={agents}
               castable={castable}
+              find={findFor(game, selected!.id)}
               onCast={(productionId) => {
                 const result = run((g) => castTalent(g, productionId, selected!.id));
                 if (result) setSelectedId(null);
@@ -304,10 +411,12 @@ function StarSlab({
 function RolodexCard({
   person,
   selected,
+  discovered,
   onPress,
 }: {
   person: TalentState;
   selected: boolean;
+  discovered: boolean;
   onPress: () => void;
 }) {
   return (
@@ -317,9 +426,19 @@ function RolodexCard({
       style={({ pressed }) => [
         styles.card,
         selected && styles.cardSelected,
+        discovered && styles.cardFound,
         pressed && { transform: [{ scale: 0.97 }] },
       ]}
     >
+      {/* The index sorts on fame plus craft, so a discovery — all craft, no fame —
+          lands in the middle of sixty cards and reads as one of the crowd. The flag is
+          what stops the thing you paid a department to find from being lost in it. */}
+      {discovered ? (
+        <View style={styles.foundFlag} testID={`found-flag-${person.id}`}>
+          <Text style={styles.foundFlagText}>FOUND</Text>
+        </View>
+      ) : null}
+
       {/* Punch hole and tab — the two details that make a rectangle read as a card
           sitting in an index rather than a tile in a grid. */}
       <View style={styles.punch} />
@@ -357,11 +476,13 @@ function Dossier({
   person,
   field,
   castable,
+  find,
   onCast,
 }: {
   person: TalentState;
   field: TalentState[];
   castable: Production[];
+  find?: CastingFind;
   onCast: (productionId: string) => void;
 }) {
   // Every format they have an opinion about, as bars. Four pills left most of the
@@ -410,6 +531,19 @@ function Dossier({
           size="sm"
         />
       </View>
+
+      {/* Provenance, where there is any. A stranger with craft 88 and a fee of nothing
+          looks like a bug; the same person with a line about where they were found
+          looks like the reason you employ a casting director. */}
+      {find ? (
+        <View style={styles.foundNote} testID={`found-note-${person.id}`}>
+          <Icon name="magnifier" size={10} color={BRASS} />
+          <Text style={styles.foundNoteText}>
+            {find.gem ? 'FOUND BY YOUR DEPARTMENT' : 'BROUGHT IN BY YOUR DEPARTMENT'} ·{' '}
+            {find.directorName.toUpperCase()}, YEAR {find.year} — {find.provenance}
+          </Text>
+        </View>
+      ) : null}
 
       <View style={styles.dossierStats}>
         <Stat label="CRAFT" value={person.craft} big />
@@ -478,6 +612,174 @@ function Dossier({
         ))
       )}
     </ScrollView>
+  );
+}
+
+/**
+ * The casting office: who you employ to look, and what they have turned up.
+ *
+ * The screen has always been able to show you the market. This is the only part of it
+ * that changes what the market contains, so it is written as a department you staff
+ * rather than a filter you set — a name, a weekly fee, and a file of people who did
+ * not exist until somebody was paid to go and find them.
+ */
+function CastingOffice({
+  game,
+  director,
+  spent,
+  onHire,
+  onDismiss,
+  onOpenFind,
+}: {
+  game: GameState;
+  director?: CastingDirector;
+  spent: number;
+  onHire: (directorId: string) => void;
+  onDismiss: () => void;
+  onOpenFind: (talentId: string) => void;
+}) {
+  const finds = availableFinds(game);
+  const gems = finds.filter((f) => f.find.gem).length;
+
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+      testID="casting-office-scroll"
+      contentContainerStyle={{ paddingBottom: space.sm }}
+    >
+      {director ? (
+        <View style={styles.officeHead}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.officeName} numberOfLines={1}>
+              {director.name}
+            </Text>
+            <Text style={styles.officeSub} numberOfLines={2}>
+              {director.reputation}
+            </Text>
+          </View>
+          <Pressable
+            testID="dismiss-casting-director"
+            onPress={onDismiss}
+            style={({ pressed }) => [styles.dismissButton, pressed && { opacity: 0.7 }]}
+          >
+            <Text style={styles.dismissText}>LET GO</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <View style={styles.officePitch}>
+          <Icon name="magnifier" size={16} color={BRASS} />
+          <Text style={styles.officePitchText}>
+            A casting director finds people nobody else has a card on. They cost money
+            every week and promise nothing — but the good ones turn up craft with no
+            price on it yet.
+          </Text>
+        </View>
+      )}
+
+      {director ? (
+        <>
+          <View style={styles.officeStats}>
+            <Stat label="EYE" value={director.quality} big />
+            <Readout label="FEE / WK" value={formatMoneyShort(director.feePerWeek)} size="sm" />
+            <Readout label="WEEKS" value={String(director.weeksEmployed)} size="sm" />
+            <Readout label="SPENT" value={formatMoneyShort(spent)} size="sm" />
+          </View>
+          <Text style={styles.officeLine}>
+            About one find every {weeksPerFind(director.quality)} weeks · {finds.length}{' '}
+            found, {gems} of them worth the money
+          </Text>
+        </>
+      ) : (
+        <>
+          <Text style={styles.sectionLabel}>ON THE AGENCY'S BOOKS</Text>
+          {castingShortlist(game).map((candidate) => (
+            <CandidateRow key={candidate.id} candidate={candidate} onHire={onHire} />
+          ))}
+          {/* The shortlist rolls over, and a player who does not know that will pass on
+              the best scout in the game expecting them to still be there in a year. */}
+          <Text style={styles.officeFoot}>
+            The agency sends new names twice a year. These three do not wait.
+          </Text>
+        </>
+      )}
+
+      {finds.length > 0 ? (
+        <>
+          <View style={styles.officeDivider} />
+          <Text style={styles.sectionLabel}>FOUND · STILL FREE</Text>
+          {finds.map(({ find, person }) => (
+            <Pressable
+              key={find.talentId}
+              testID={`find-${find.talentId}`}
+              onPress={() => onOpenFind(find.talentId)}
+              style={({ pressed }) => [
+                styles.findRow,
+                find.gem && styles.findRowGem,
+                pressed && { opacity: 0.7 },
+              ]}
+            >
+              <Portrait
+                seed={person.id}
+                size={30}
+                age={person.age}
+                role={person.role}
+                starPower={person.starPower}
+                retired={person.retired}
+              />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.findName} numberOfLines={1}>
+                  {person.name}
+                </Text>
+                <Text style={styles.findWhere} numberOfLines={1}>
+                  {person.role.toUpperCase()} · {person.age} · {find.provenance}
+                </Text>
+              </View>
+              <Stat label="CFT" value={person.craft} />
+              <Stat label="STR" value={person.starPower} />
+              <Text style={styles.findFee}>
+                {formatMoneyShort(person.baseSalaryPerEpisode)}
+              </Text>
+            </Pressable>
+          ))}
+        </>
+      ) : null}
+    </ScrollView>
+  );
+}
+
+/** One casting director for hire: what they see, and what they cost to keep. */
+function CandidateRow({
+  candidate,
+  onHire,
+}: {
+  candidate: CastingDirector;
+  onHire: (directorId: string) => void;
+}) {
+  return (
+    <View style={styles.candidate} testID={`casting-candidate-${candidate.id}`}>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.candidateName} numberOfLines={1}>
+          {candidate.name}
+        </Text>
+        <Text style={styles.candidateNote} numberOfLines={2}>
+          {candidate.reputation}
+        </Text>
+        <Text style={styles.candidateRate}>
+          {formatMoneyShort(candidate.feePerWeek)}/WK · A FIND EVERY{' '}
+          {weeksPerFind(candidate.quality)} WEEKS
+        </Text>
+      </View>
+      <Stat label="EYE" value={candidate.quality} big />
+      <Pressable
+        testID={`hire-casting-director-${candidate.id}`}
+        onPress={() => onHire(candidate.id)}
+        style={({ pressed }) => [styles.hireButton, pressed && { opacity: 0.7 }]}
+      >
+        <Icon name="plus" size={12} color="#FBF6EA" />
+        <Text style={styles.hireText}>HIRE</Text>
+      </Pressable>
+    </View>
   );
 }
 
@@ -881,4 +1183,142 @@ const styles = StyleSheet.create({
     borderColor: BRASS,
   },
   attachName: { flex: 1, fontSize: 11, fontWeight: '800', color: colors.text },
+
+  // ---- the casting office -------------------------------------------------
+  officeTab: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: space.sm,
+    paddingVertical: 3,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  officeTabActive: { backgroundColor: BRASS, borderColor: '#8A6112' },
+  officeTabLabel: { fontSize: 7, fontWeight: '900', letterSpacing: 1.2, color: colors.textFaint },
+  officeTabValue: {
+    fontSize: 11,
+    fontWeight: '900',
+    color: colors.text,
+    fontVariant: ['tabular-nums'],
+  },
+  officeTabTextActive: { color: '#FBF6EA' },
+
+  officeHead: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  officeName: { fontSize: 14, fontWeight: '900', color: colors.text },
+  officeSub: { fontSize: 9, color: colors.textDim, marginTop: 1, lineHeight: 12 },
+  officePitch: { flexDirection: 'row', alignItems: 'flex-start', gap: space.sm },
+  officePitchText: { flex: 1, fontSize: 10, color: colors.textDim, lineHeight: 14 },
+  officeStats: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: space.sm,
+    marginTop: space.sm,
+    paddingVertical: space.xs,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.border,
+  },
+  officeLine: { fontSize: 9, color: colors.textDim, marginTop: space.xs, lineHeight: 13 },
+  officeFoot: { fontSize: 8, color: colors.textFaint, marginTop: space.xs, lineHeight: 11 },
+  officeDivider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginVertical: space.md,
+  },
+
+  dismissButton: {
+    paddingHorizontal: space.sm,
+    paddingVertical: 5,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: colors.negative,
+  },
+  dismissText: { fontSize: 8, fontWeight: '900', letterSpacing: 1, color: colors.negative },
+
+  candidate: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.sm,
+    paddingHorizontal: space.sm,
+    paddingVertical: 6,
+    marginBottom: 5,
+    borderRadius: radius.sm,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  candidateName: { fontSize: 11, fontWeight: '900', color: colors.text },
+  candidateNote: { fontSize: 9, color: colors.textDim, lineHeight: 12, marginTop: 1 },
+  candidateRate: {
+    fontSize: 8,
+    fontWeight: '900',
+    letterSpacing: 0.6,
+    color: colors.textFaint,
+    marginTop: 2,
+  },
+  hireButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: space.sm,
+    paddingVertical: 6,
+    borderRadius: radius.sm,
+    backgroundColor: BRASS,
+  },
+  hireText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, color: '#FBF6EA' },
+
+  findRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.sm,
+    paddingHorizontal: space.sm,
+    paddingVertical: 5,
+    marginBottom: 4,
+    borderRadius: radius.sm,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  findRowGem: { borderColor: BRASS, backgroundColor: '#F7E9C8' },
+  findName: { fontSize: 11, fontWeight: '800', color: colors.text },
+  findWhere: { fontSize: 8, color: colors.textFaint, marginTop: 1 },
+  findFee: {
+    width: 46,
+    textAlign: 'right',
+    fontSize: 10,
+    fontWeight: '900',
+    color: colors.textDim,
+    fontVariant: ['tabular-nums'],
+  },
+
+  // ---- discovery markers on the index and the dossier ---------------------
+  cardFound: { borderColor: BRASS },
+  foundFlag: {
+    position: 'absolute',
+    top: -1,
+    right: -1,
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    borderBottomLeftRadius: radius.sm,
+    borderTopRightRadius: radius.sm,
+    backgroundColor: BRASS,
+  },
+  foundFlagText: { fontSize: 6, fontWeight: '900', letterSpacing: 0.8, color: '#FBF6EA' },
+  foundNote: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: space.sm,
+    paddingHorizontal: space.sm,
+    paddingVertical: 4,
+    borderRadius: radius.sm,
+    backgroundColor: '#F7E9C8',
+    borderWidth: 1,
+    borderColor: BRASS,
+  },
+  foundNoteText: { flex: 1, fontSize: 8, fontWeight: '800', color: colors.textDim, lineHeight: 11 },
 });

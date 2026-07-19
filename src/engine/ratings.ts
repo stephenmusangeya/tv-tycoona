@@ -45,8 +45,17 @@ const OUTSIDE_OPTIONS = 1.2;
  *
  * `ECONOMY.revenuePerViewer` was raised by the reciprocal, so this changes what the
  * player *reads* without quietly halving every network's income underneath them.
+ *
+ * Lowered again from 0.22 alongside the cost-ladder rebuild. With a real bottom rung
+ * in the catalogue the game now expects small television to exist, but the floor of
+ * the ratings distribution sat near 0.9M and the lower quartile near 2M — every show
+ * in the world, including the cheap daytime strips, was a broadcast success. A studio
+ * making its first modest thing had no honest frame of reference for what modest looks
+ * like. At 0.15 a few hundred thousand viewers is a normal outcome for a small show,
+ * which is what the bottom of the ladder needs in order to read as a starting point
+ * rather than a failure.
  */
-const MARKET_CAPTURE = 0.22;
+const MARKET_CAPTURE = 0.15;
 
 export interface SlotEntrant {
   production: Production;

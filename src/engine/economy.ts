@@ -27,13 +27,32 @@ export const ECONOMY = {
    * change roughly halved every viewer figure on screen; without this, it would also
    * have halved every network's income and quietly made the whole industry insolvent.
    * The two numbers move together — change one, change the other.
+   *
+   * Raised again to 1.47 as MARKET_CAPTURE went 0.22 → 0.15, which is the same
+   * reciprocal bookkeeping: what the player reads changes, what the industry earns
+   * does not.
    */
-  revenuePerViewer: 1.0,
+  revenuePerViewer: 1.47,
   /** Ratings count double for advertisers during sweeps; revenue premium is milder. */
   sweepsRevenueMultiplier: 1.15,
 
   /** Episodes required before a show can be sold into syndication. */
   syndicationThreshold: 65,
+  /**
+   * Episodes a syndication deal will actually pay for.
+   *
+   * Syndication money scales with episode count, and the annual residual is recomputed
+   * from that count every year — so a daily format banking 165 episodes a season grew
+   * its back end without limit. Two cheap strips turned $10M into $87M inside six
+   * years, which inverts the whole ladder: the correct strategy becomes making nothing
+   * but daytime filler forever.
+   *
+   * A buyer is acquiring a strippable run, not a thousand episodes they will never
+   * air — the same reasoning already applied to `secondWindow.episodeCap`, just at a
+   * package size rather than a burn-off. Set well above the 65-episode threshold so
+   * longevity still pays handsomely; it is unbounded accumulation that does not.
+   */
+  syndicationEpisodeCap: 180,
   /**
    * Syndication value per episode, per million average viewers.
    *
@@ -46,9 +65,20 @@ export const ECONOMY = {
   /** Annual residual as a share of the original syndication sale. */
   syndicationResidualRate: 0.08,
 
-  /** Weekly overhead per company tier. */
+  /**
+   * Weekly overhead per company tier.
+   *
+   * The studio figure was $120K/week — $6.2M a year in fixed costs against $10M of
+   * opening capital, before a single episode was shot. That is not a small studio, it
+   * is a small studio's funeral: the overhead alone outran anything the bottom of the
+   * catalogue could earn, so "start small and grow" was arithmetically closed off.
+   *
+   * At $20K/week a fledgling studio carries ~$1M a year, which a couple of cheap
+   * formats can genuinely cover. The per-show term in `weeklyOverhead` is what makes a
+   * big slate expensive again, so growth still has to be paid for.
+   */
   overheadPerWeek: {
-    studio: 120_000,
+    studio: 20_000,
     network: 900_000,
     streamer: 1_400_000,
   },
@@ -143,6 +173,12 @@ export const ECONOMY = {
     /** What returning talent adds to their asking price for the trouble. */
     returningRaise: 0.15,
   },
+
+  /**
+   * The episode budget the back end is priced around — roughly the median rung of the
+   * cost ladder in engine/worldGen.ts.
+   */
+  referenceBudgetPerEpisode: 380_000,
 
   /**
    * What a finished show is worth in repeats over one still on air.
@@ -257,6 +293,32 @@ export function episodeDeficit(production: Production): number {
 // Syndication — the back end
 // ---------------------------------------------------------------------------
 
+/**
+ * How much the back end respects what a show cost to make.
+ *
+ * Syndication and repeat money used to depend on viewers and episode count alone,
+ * which was fine while everything in the catalogue cost millions. With a real bottom
+ * rung it becomes a loop: a $9K-an-episode game strip that runs 190 episodes a year
+ * would clear the syndication threshold inside one season and be paid as though it
+ * were a drama, making the cheapest possible television the most profitable thing a
+ * studio could ever do.
+ *
+ * Buyers do not pay that way. A cheap daytime strip is cheap inventory; a show with
+ * money on the screen holds up in repeats and is priced accordingly. Scaling the back
+ * end by production value is what keeps the ladder honest end to end — small shows
+ * make small profits, and the expensive rungs stay worth climbing to.
+ *
+ * Sub-linear, and clamped, so it tilts the numbers without ever dominating them:
+ * longevity still beats brilliance, which is the lesson the back end exists to teach.
+ */
+export function productionValueFactor(
+  budgetPerEpisode: number,
+  exponent: number,
+): number {
+  const ratio = Math.max(0.02, budgetPerEpisode / ECONOMY.referenceBudgetPerEpisode);
+  return clamp(ratio ** exponent, 0.3, 2.6);
+}
+
 export function canSyndicate(production: Production): boolean {
   return (
     !production.syndicated && production.totalEpisodes >= ECONOMY.syndicationThreshold
@@ -276,12 +338,15 @@ export function syndicationValue(production: Production): number {
   const averageViewers = averageViewersOf(production);
 
   const prestigeBonus = 1 + (production.attributes.prestige / 100) * 0.25;
+  // A package, not an archive — see ECONOMY.syndicationEpisodeCap.
+  const episodes = Math.min(production.totalEpisodes, ECONOMY.syndicationEpisodeCap);
 
   return Math.round(
-    production.totalEpisodes *
+    episodes *
       averageViewers *
       ECONOMY.syndicationPerEpisodePerMillion *
-      prestigeBonus,
+      prestigeBonus *
+      productionValueFactor(production.budgetPerEpisode, 0.35),
   );
 }
 
@@ -363,8 +428,12 @@ export function rerunWeeklyValue(production: Production): number {
   const prestigeBonus = 1 + (production.attributes.prestige / 100) * 0.3;
   // A closed run is worth more than a live one — see ECONOMY.archiveRepeatPremium.
   const finished = isFinished(production) ? ECONOMY.archiveRepeatPremium : 1;
+  // A gentler exponent than syndication: the weekly repeat cheque is the early game's
+  // first taste of owning something, and flattening it for cheap shows would take that
+  // away from exactly the studio that needs it most.
+  const value = productionValueFactor(production.budgetPerEpisode, 0.18);
 
-  return Math.round(averageViewers * depth * 26_000 * prestigeBonus * finished);
+  return Math.round(averageViewers * depth * 26_000 * prestigeBonus * finished * value);
 }
 
 /** Lifetime studio profit across every completed season. Negative means the show lost money. */
@@ -560,8 +629,15 @@ export function simulateStreamingMonth(input: StreamingInputs): StreamingResult 
 
 export function weeklyOverhead(company: Company, productionCount: number): number {
   const base = ECONOMY.overheadPerWeek[company.type];
-  // Bigger slates cost more to administer, sublinearly.
-  let overhead = base + Math.sqrt(Math.max(0, productionCount)) * 45_000;
+  /*
+   * Bigger slates cost more to administer, sublinearly.
+   *
+   * $45K a week per show was written when the cheapest show in the game cost $160K an
+   * episode. Against the rebuilt ladder it meant administering a $1.1M documentary cost
+   * $2.3M a year — the overhead on a show exceeding the entire cost of making it, which
+   * made a small slate of cheap formats unrunnable no matter how well it rated.
+   */
+  let overhead = base + Math.sqrt(Math.max(0, productionCount)) * 12_000;
 
   // A streaming service's dominant cost is the content budget, which scales with the
   // audience it has to keep — see ECONOMY.streaming.contentSpendPerSubscriberPerYear.

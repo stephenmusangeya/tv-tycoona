@@ -1,5 +1,7 @@
-import { getArchetype } from '../data';
+import { conceptOf, getArchetype } from '../data';
 import { rerunBidsFor, secondWindowBidsFor } from '../engine/actions';
+import { bankPosition as assessBankPosition, isClosedDown } from '../engine/bank';
+import type { BankPosition } from '../engine/bank';
 import {
   ECONOMY,
   RERUN_MINIMUM_EPISODES,
@@ -382,6 +384,28 @@ export function totalDebt(game: GameState): number {
   );
 }
 
+// ---------------------------------------------------------------------------
+// The bank
+// ---------------------------------------------------------------------------
+
+export type { BankPosition } from '../engine/bank';
+
+/**
+ * Where the studio stands with its lender.
+ *
+ * A thin pass-through to the engine so screens never import from `engine/bank`
+ * directly — the ceiling, the headroom and the closure notice are all read through the
+ * same selector layer as every other derived number on the desk.
+ */
+export function bankPosition(game: GameState): BankPosition {
+  return assessBankPosition(game);
+}
+
+/** True once the bank has foreclosed. The run is over; the save is still readable. */
+export function studioClosedDown(game: GameState): boolean {
+  return isClosedDown(game);
+}
+
 /**
  * What the player's slate costs them each week, net of license fees.
  *
@@ -626,8 +650,16 @@ export function pitcherOf(game: GameState, pitch: Pitch): TalentState | undefine
   return game.talent[pitch.pitcherId];
 }
 
-export function archetypeOf(production: Production | Pitch) {
-  return getArchetype(production.archetypeId);
+/**
+ * The concept behind a production or a pitch.
+ *
+ * Takes the save, because a concept invented in *this* game exists only in this save.
+ * Resolving it from the static catalogue instead is what forced a global registry to
+ * be kept in sync with save data — a mutable module-level cache mirroring per-save
+ * state, which works right up until two saves disagree.
+ */
+export function archetypeOf(game: GameState, production: Production | Pitch) {
+  return conceptOf(game.concepts, production.archetypeId);
 }
 
 /** Player-relevant news, newest first. */

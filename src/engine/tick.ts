@@ -1,4 +1,4 @@
-import { AUDIENCE_SEGMENTS, getArchetype } from '../data';
+import { AUDIENCE_SEGMENTS, conceptOf, getArchetype } from '../data';
 import {
   ECONOMY,
   adRevenueForEpisode,
@@ -10,6 +10,7 @@ import {
   weeklyInterest,
   weeklyOverhead,
 } from './economy';
+import { isClosedDown, reviewBank } from './bank';
 import { refreshQuality, releaseTalent } from './production';
 import { rollChemistry } from './quality';
 import { decayBuzz, seasonFatigueIncrement, simulateSlot } from './ratings';
@@ -40,6 +41,7 @@ import { generateRookieClass, padTalentPool } from './talentGen';
 import { runRivalTurn } from './rivals';
 import { generatePitches } from './pitches';
 import { creditSeason, tickStaff } from './staff';
+import { tickCasting } from './casting';
 import type {
   Company,
   GameEvent,
@@ -79,6 +81,23 @@ function newRunningSeason(): RunningSeason {
 }
 
 export function advanceWeek(state: GameState): WeekResult {
+  /**
+   * A closed-down studio has no next week.
+   *
+   * Returning the current position unchanged rather than throwing keeps every caller —
+   * the store, the harnesses, a player mashing PLAY WEEK — working without a special
+   * case, while making it impossible to quietly keep playing a run that is over.
+   */
+  if (isClosedDown(state)) {
+    return {
+      year: state.year,
+      week: state.week,
+      events: [],
+      playerCashDelta: 0,
+      airedThisWeek: [],
+    };
+  }
+
   const rng = createRng(state.rngState);
   const events: GameEvent[] = [];
   const cashBefore = playerCash(state);
@@ -123,6 +142,12 @@ export function advanceWeek(state: GameState): WeekResult {
   // into debt in the same week, rather than leaving cash visibly negative until the
   // next tick picks it up.
   tickStaff(state, rng, emit);
+  // Scouting sits between payroll and overheads on purpose: a casting director is a
+  // standing cost, so an unaffordable fee has to land as debt in the same week it is
+  // incurred rather than being quietly deferred. Returns before touching the RNG when
+  // nobody is employed, so a studio with no casting department cannot have its stream
+  // shifted by a department it does not have.
+  tickCasting(state, rng, mintId, emit);
   applyOverheads(ctx);
 
   // Streaming settles monthly, not weekly.
@@ -146,6 +171,10 @@ export function advanceWeek(state: GameState): WeekResult {
 
   generatePitches(state, rng, mintId, emit);
   runRivalTurn(state, rng, mintId, emit);
+
+  // Last, so the bank's letter quotes the position the player is about to read on the
+  // desk rather than a figure the rest of the week then moved.
+  reviewBank(state, emit);
 
   // --- Roll the calendar ---------------------------------------------------
   state.week += 1;
@@ -207,7 +236,7 @@ function airWeek(ctx: TickContext): WeekResult['airedThisWeek'] {
 
     const entrant: SlotEntrant = {
       production,
-      archetype: getArchetype(production.archetypeId),
+      archetype: conceptOf(state.concepts, production.archetypeId),
       network,
     };
 
@@ -360,7 +389,7 @@ function wrapSeason(ctx: TickContext, production: Production): void {
     networkProfit: running.networkProfit,
   };
 
-  const archetype = getArchetype(production.archetypeId);
+  const archetype = conceptOf(state.concepts, production.archetypeId);
 
   production.history.push(record);
 
@@ -520,7 +549,7 @@ function launchScheduledShows(ctx: TickContext): void {
 
     // Fresh chemistry roll each season — casts change, rooms change, luck changes.
     production.chemistry = rollChemistry(production, state.talent, (m, s) => rng.normal(m, s));
-    refreshQuality(production, getArchetype(production.archetypeId), state.talent);
+    refreshQuality(production, conceptOf(state.concepts, production.archetypeId), state.talent);
     production.buzz = clamp(production.buzz + 20);
 
     if (isPlayerCompany(state, production.ownerId)) {
@@ -810,7 +839,7 @@ function updateTalent(ctx: TickContext): void {
 
       production.buzz = clamp(production.buzz + 12); // scandal is still attention
       production.chemistry = clamp(production.chemistry - rng.range(6, 18));
-      refreshQuality(production, getArchetype(production.archetypeId), state.talent);
+      refreshQuality(production, conceptOf(state.concepts, production.archetypeId), state.talent);
       person.morale = clamp(person.morale - rng.range(5, 20));
 
       emit('scandal', `${person.name} in trouble on ${production.title}`, {

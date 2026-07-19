@@ -87,21 +87,51 @@ export function autoStaff(
   budget: StaffingBudget,
 ): void {
   const taken = new Set<string>();
-  let spend = 0;
   const ceiling = budget.maxTalentSpendPerEpisode ?? Infinity;
+
+  /*
+   * The wage bill is split into two purses before anyone is hired.
+   *
+   * It used to be one running total spent in hiring order — showrunner, director,
+   * writers, then cast. That was harmless while the cheapest show cost millions, and
+   * catastrophic the moment a real cost ladder arrived: the crew consumed the whole
+   * allowance and *every scripted show in the game was commissioned with no actors*.
+   * Nothing caught it, because no check asserted a show had a cast.
+   *
+   * Hiring order must not decide who gets paid. Cast and crew now draw from separate
+   * purses, so a thin budget produces a cheaper cast rather than no cast — which is
+   * what a real production does when money is short.
+   */
+  const castShare = isScripted(production.format) ? 0.55 : 0.45;
+  const purse = {
+    cast: ceiling === Infinity ? Infinity : ceiling * castShare,
+    crew: ceiling === Infinity ? Infinity : ceiling * (1 - castShare),
+  };
+  const spent = { cast: 0, crew: 0 };
 
   const hire = (role: TalentRole): TalentState | undefined => {
     const pool = candidatesFor(role, production.format, talent, { excludeIds: taken });
     if (pool.length === 0) return undefined;
 
+    // Actors and hosts are the faces; everyone else is crew for budgeting purposes.
+    const purseKey = role === 'actor' || role === 'host' ? 'cast' : 'crew';
+    const room = purse[purseKey] - spent[purseKey];
+
     // Reach into the top slice of the list; ambition decides how thin that slice is.
     const window = Math.max(1, Math.round(pool.length * (1 - budget.ambition * 0.85)));
-    const shortlist = pool.slice(0, window).filter((p) => spend + p.baseSalaryPerEpisode <= ceiling);
+    let shortlist = pool.slice(0, window).filter((p) => p.baseSalaryPerEpisode <= room);
+
+    // Nobody in the ambitious slice is affordable — widen to the whole pool before
+    // giving up, because the cheap unknown further down the list is exactly who a
+    // stretched production hires, and returning nothing leaves a hole on screen.
+    if (shortlist.length === 0) {
+      shortlist = pool.filter((p) => p.baseSalaryPerEpisode <= room);
+    }
     if (shortlist.length === 0) return undefined;
 
     const chosen = rng.weighted(shortlist, (p) => fitScore(p, production.format) ** 2);
     taken.add(chosen.id);
-    spend += chosen.baseSalaryPerEpisode;
+    spent[purseKey] += chosen.baseSalaryPerEpisode;
     return chosen;
   };
 
@@ -218,6 +248,21 @@ export function createProduction(
 
   const budgetPerEpisode = Math.round(archetype.baseCostPerEpisode * budgetMultiplier);
 
+  /*
+   * Casting has to live inside the budget.
+   *
+   * `maxTalentSpendPerEpisode` has existed on StaffingBudget since the beginning and
+   * no caller ever passed it, so every show — a $20K daytime strip included — went
+   * shopping in the same talent market as a prestige drama and hired whoever `ambition`
+   * pointed at. That was invisible while the cheapest show in the game still cost
+   * millions; against a real cost ladder it means a cheap format's wage bill lands at
+   * eight times its own budget, which is not a cheap format at all.
+   *
+   * 70% leaves room for the crew and overheads the sim does not itemise, and it is what
+   * makes "we cannot afford him" a real sentence at the bottom of the ladder.
+   */
+  const talentCeiling = Math.max(1_000, Math.round(budgetPerEpisode * 0.7));
+
   const production: Production = {
     id: mintId('prod'),
     archetypeId: archetype.id,
@@ -251,7 +296,10 @@ export function createProduction(
   };
 
   if (!unstaffed) {
-    autoStaff(production, archetype, talent, rng, { ambition });
+    autoStaff(production, archetype, talent, rng, {
+      ambition,
+      maxTalentSpendPerEpisode: talentCeiling,
+    });
     bindTalent(production, talent, ownerId);
   }
 

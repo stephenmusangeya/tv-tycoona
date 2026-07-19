@@ -16,7 +16,7 @@
       "heart": 70,
       "complexity": 8
     },
-    "baseCostPerEpisode": 1400000,
+    "baseCostPerEpisode": 170000,
     "episodesPerSeason": 24,
     "castSize": 5,
     "requiredRoles": [
@@ -48,7 +48,7 @@
       "heart": 48,
       "complexity": 6
     },
-    "baseCostPerEpisode": 900000,
+    "baseCostPerEpisode": 71000,
     "episodesPerSeason": 30,
     "castSize": 9,
     "requiredRoles": [
@@ -80,7 +80,7 @@
       "heart": 52,
       "complexity": 66
     },
-    "baseCostPerEpisode": 3200000,
+    "baseCostPerEpisode": 250000,
     "episodesPerSeason": 26,
     "castSize": 4,
     "requiredRoles": [
@@ -112,7 +112,7 @@
       "heart": 50,
       "complexity": 24
     },
-    "baseCostPerEpisode": 3400000,
+    "baseCostPerEpisode": 310000,
     "episodesPerSeason": 26,
     "castSize": 6,
     "requiredRoles": [
@@ -144,7 +144,7 @@
       "heart": 72,
       "complexity": 10
     },
-    "baseCostPerEpisode": 1200000,
+    "baseCostPerEpisode": 160000,
     "episodesPerSeason": 22,
     "castSize": 4,
     "requiredRoles": [
@@ -175,7 +175,7 @@
       "heart": 36,
       "complexity": 6
     },
-    "baseCostPerEpisode": 180000,
+    "baseCostPerEpisode": 41000,
     "episodesPerSeason": 160,
     "castSize": 5,
     "requiredRoles": [
@@ -205,7 +205,7 @@
       "heart": 80,
       "complexity": 8
     },
-    "baseCostPerEpisode": 1300000,
+    "baseCostPerEpisode": 110000,
     "episodesPerSeason": 24,
     "castSize": 6,
     "requiredRoles": [
@@ -236,7 +236,7 @@
       "heart": 26,
       "complexity": 22
     },
-    "baseCostPerEpisode": 2600000,
+    "baseCostPerEpisode": 310000,
     "episodesPerSeason": 26,
     "castSize": 4,
     "requiredRoles": [
@@ -267,7 +267,7 @@
       "heart": 66,
       "complexity": 4
     },
-    "baseCostPerEpisode": 420000,
+    "baseCostPerEpisode": 25000,
     "episodesPerSeason": 52,
     "castSize": 4,
     "requiredRoles": [
@@ -298,7 +298,7 @@
       "heart": 30,
       "complexity": 30
     },
-    "baseCostPerEpisode": 260000,
+    "baseCostPerEpisode": 27000,
     "episodesPerSeason": 200,
     "castSize": 3,
     "requiredRoles": [
@@ -329,7 +329,7 @@
       "heart": 70,
       "complexity": 12
     },
-    "baseCostPerEpisode": 1600000,
+    "baseCostPerEpisode": 97000,
     "episodesPerSeason": 30,
     "castSize": 6,
     "requiredRoles": [
@@ -361,7 +361,7 @@
       "heart": 62,
       "complexity": 52
     },
-    "baseCostPerEpisode": 4200000,
+    "baseCostPerEpisode": 390000,
     "episodesPerSeason": 26,
     "castSize": 8,
     "requiredRoles": [
@@ -393,7 +393,7 @@
       "heart": 58,
       "complexity": 44
     },
-    "baseCostPerEpisode": 3600000,
+    "baseCostPerEpisode": 350000,
     "episodesPerSeason": 26,
     "castSize": 4,
     "requiredRoles": [
@@ -425,7 +425,7 @@
       "heart": 54,
       "complexity": 6
     },
-    "baseCostPerEpisode": 1500000,
+    "baseCostPerEpisode": 86000,
     "episodesPerSeason": 30,
     "castSize": 7,
     "requiredRoles": [
@@ -456,7 +456,7 @@
       "heart": 40,
       "complexity": 10
     },
-    "baseCostPerEpisode": 3000000,
+    "baseCostPerEpisode": 230000,
     "episodesPerSeason": 34,
     "castSize": 7,
     "requiredRoles": [
@@ -488,7 +488,7 @@
       "heart": 88,
       "complexity": 10
     },
-    "baseCostPerEpisode": 1400000,
+    "baseCostPerEpisode": 100000,
     "episodesPerSeason": 30,
     "castSize": 6,
     "requiredRoles": [
@@ -519,7 +519,7 @@
       "heart": 24,
       "complexity": 48
     },
-    "baseCostPerEpisode": 3800000,
+    "baseCostPerEpisode": 490000,
     "episodesPerSeason": 26,
     "castSize": 6,
     "requiredRoles": [
@@ -551,7 +551,7 @@
       "heart": 62,
       "complexity": 6
     },
-    "baseCostPerEpisode": 1600000,
+    "baseCostPerEpisode": 130000,
     "episodesPerSeason": 26,
     "castSize": 5,
     "requiredRoles": [
@@ -582,7 +582,7 @@
       "heart": 40,
       "complexity": 6
     },
-    "baseCostPerEpisode": 300000,
+    "baseCostPerEpisode": 15000,
     "episodesPerSeason": 190,
     "castSize": 3,
     "requiredRoles": [
@@ -613,7 +613,7 @@
       "heart": 38,
       "complexity": 56
     },
-    "baseCostPerEpisode": 3100000,
+    "baseCostPerEpisode": 57000,
     "episodesPerSeason": 150,
     "castSize": 9,
     "requiredRoles": [
@@ -645,7 +645,7 @@
       "heart": 66,
       "complexity": 30
     },
-    "baseCostPerEpisode": 1800000,
+    "baseCostPerEpisode": 690000,
     "episodesPerSeason": 24,
     "castSize": 5,
     "requiredRoles": [
@@ -677,7 +677,7 @@
       "heart": 88,
       "complexity": 42
     },
-    "baseCostPerEpisode": 2200000,
+    "baseCostPerEpisode": 1300000,
     "episodesPerSeason": 24,
     "castSize": 8,
     "requiredRoles": [
@@ -709,7 +709,7 @@
       "heart": 82,
       "complexity": 20
     },
-    "baseCostPerEpisode": 1700000,
+    "baseCostPerEpisode": 280000,
     "episodesPerSeason": 24,
     "castSize": 7,
     "requiredRoles": [
@@ -741,7 +741,7 @@
       "heart": 86,
       "complexity": 74
     },
-    "baseCostPerEpisode": 6800000,
+    "baseCostPerEpisode": 6200000,
     "episodesPerSeason": 8,
     "castSize": 12,
     "requiredRoles": [
@@ -774,7 +774,7 @@
       "heart": 34,
       "complexity": 18
     },
-    "baseCostPerEpisode": 1100000,
+    "baseCostPerEpisode": 170000,
     "episodesPerSeason": 22,
     "castSize": 10,
     "requiredRoles": [
@@ -806,7 +806,7 @@
       "heart": 30,
       "complexity": 14
     },
-    "baseCostPerEpisode": 2900000,
+    "baseCostPerEpisode": 300000,
     "episodesPerSeason": 24,
     "castSize": 5,
     "requiredRoles": [
@@ -838,7 +838,7 @@
       "heart": 44,
       "complexity": 54
     },
-    "baseCostPerEpisode": 3200000,
+    "baseCostPerEpisode": 4500000,
     "episodesPerSeason": 8,
     "castSize": 4,
     "requiredRoles": [
@@ -870,7 +870,7 @@
       "heart": 44,
       "complexity": 4
     },
-    "baseCostPerEpisode": 220000,
+    "baseCostPerEpisode": 9000,
     "episodesPerSeason": 190,
     "castSize": 3,
     "requiredRoles": [
@@ -900,7 +900,7 @@
       "heart": 92,
       "complexity": 6
     },
-    "baseCostPerEpisode": 700000,
+    "baseCostPerEpisode": 140000,
     "episodesPerSeason": 52,
     "castSize": 8,
     "requiredRoles": [
@@ -932,7 +932,7 @@
       "heart": 92,
       "complexity": 24
     },
-    "baseCostPerEpisode": 3300000,
+    "baseCostPerEpisode": 350000,
     "episodesPerSeason": 24,
     "castSize": 10,
     "requiredRoles": [
@@ -964,7 +964,7 @@
       "heart": 84,
       "complexity": 26
     },
-    "baseCostPerEpisode": 2100000,
+    "baseCostPerEpisode": 350000,
     "episodesPerSeason": 24,
     "castSize": 8,
     "requiredRoles": [
@@ -996,7 +996,7 @@
       "heart": 90,
       "complexity": 10
     },
-    "baseCostPerEpisode": 2400000,
+    "baseCostPerEpisode": 160000,
     "episodesPerSeason": 24,
     "castSize": 8,
     "requiredRoles": [
@@ -1028,7 +1028,7 @@
       "heart": 30,
       "complexity": 48
     },
-    "baseCostPerEpisode": 4600000,
+    "baseCostPerEpisode": 230000,
     "episodesPerSeason": 26,
     "castSize": 11,
     "requiredRoles": [
@@ -1060,7 +1060,7 @@
       "heart": 34,
       "complexity": 40
     },
-    "baseCostPerEpisode": 5200000,
+    "baseCostPerEpisode": 540000,
     "episodesPerSeason": 22,
     "castSize": 7,
     "requiredRoles": [
@@ -1092,7 +1092,7 @@
       "heart": 62,
       "complexity": 76
     },
-    "baseCostPerEpisode": 4400000,
+    "baseCostPerEpisode": 1800000,
     "episodesPerSeason": 22,
     "castSize": 12,
     "requiredRoles": [
@@ -1124,7 +1124,7 @@
       "heart": 86,
       "complexity": 12
     },
-    "baseCostPerEpisode": 1900000,
+    "baseCostPerEpisode": 220000,
     "episodesPerSeason": 24,
     "castSize": 4,
     "requiredRoles": [
@@ -1156,7 +1156,7 @@
       "heart": 38,
       "complexity": 10
     },
-    "baseCostPerEpisode": 3100000,
+    "baseCostPerEpisode": 400000,
     "episodesPerSeason": 22,
     "castSize": 4,
     "requiredRoles": [
@@ -1188,7 +1188,7 @@
       "heart": 40,
       "complexity": 16
     },
-    "baseCostPerEpisode": 1500000,
+    "baseCostPerEpisode": 81000,
     "episodesPerSeason": 52,
     "castSize": 6,
     "requiredRoles": [
@@ -1219,7 +1219,7 @@
       "heart": 22,
       "complexity": 10
     },
-    "baseCostPerEpisode": 1300000,
+    "baseCostPerEpisode": 120000,
     "episodesPerSeason": 24,
     "castSize": 5,
     "requiredRoles": [
@@ -1250,7 +1250,7 @@
       "heart": 38,
       "complexity": 8
     },
-    "baseCostPerEpisode": 260000,
+    "baseCostPerEpisode": 19000,
     "episodesPerSeason": 195,
     "castSize": 2,
     "requiredRoles": [
@@ -1280,7 +1280,7 @@
       "heart": 40,
       "complexity": 26
     },
-    "baseCostPerEpisode": 520000,
+    "baseCostPerEpisode": 66000,
     "episodesPerSeason": 22,
     "castSize": 3,
     "requiredRoles": [
@@ -1311,7 +1311,7 @@
       "heart": 76,
       "complexity": 72
     },
-    "baseCostPerEpisode": 3600000,
+    "baseCostPerEpisode": 570000,
     "episodesPerSeason": 22,
     "castSize": 8,
     "requiredRoles": [
@@ -1343,7 +1343,7 @@
       "heart": 36,
       "complexity": 8
     },
-    "baseCostPerEpisode": 3400000,
+    "baseCostPerEpisode": 390000,
     "episodesPerSeason": 22,
     "castSize": 5,
     "requiredRoles": [
@@ -1375,7 +1375,7 @@
       "heart": 56,
       "complexity": 8
     },
-    "baseCostPerEpisode": 620000,
+    "baseCostPerEpisode": 110000,
     "episodesPerSeason": 20,
     "castSize": 5,
     "requiredRoles": [
@@ -1406,7 +1406,7 @@
       "heart": 50,
       "complexity": 12
     },
-    "baseCostPerEpisode": 320000,
+    "baseCostPerEpisode": 120000,
     "episodesPerSeason": 18,
     "castSize": 2,
     "requiredRoles": [
@@ -1436,7 +1436,7 @@
       "heart": 88,
       "complexity": 22
     },
-    "baseCostPerEpisode": 8000000,
+    "baseCostPerEpisode": 270000,
     "episodesPerSeason": 24,
     "castSize": 6,
     "requiredRoles": [
@@ -1468,7 +1468,7 @@
       "heart": 30,
       "complexity": 38
     },
-    "baseCostPerEpisode": 8000000,
+    "baseCostPerEpisode": 1100000,
     "episodesPerSeason": 22,
     "castSize": 4,
     "requiredRoles": [
@@ -1500,7 +1500,7 @@
       "heart": 50,
       "complexity": 68
     },
-    "baseCostPerEpisode": 4800000,
+    "baseCostPerEpisode": 1400000,
     "episodesPerSeason": 22,
     "castSize": 10,
     "requiredRoles": [
@@ -1532,7 +1532,7 @@
       "heart": 58,
       "complexity": 72
     },
-    "baseCostPerEpisode": 5400000,
+    "baseCostPerEpisode": 910000,
     "episodesPerSeason": 22,
     "castSize": 5,
     "requiredRoles": [
@@ -1564,7 +1564,7 @@
       "heart": 80,
       "complexity": 64
     },
-    "baseCostPerEpisode": 7200000,
+    "baseCostPerEpisode": 1100000,
     "episodesPerSeason": 22,
     "castSize": 11,
     "requiredRoles": [
@@ -1596,7 +1596,7 @@
       "heart": 32,
       "complexity": 42
     },
-    "baseCostPerEpisode": 3800000,
+    "baseCostPerEpisode": 1200000,
     "episodesPerSeason": 24,
     "castSize": 8,
     "requiredRoles": [
@@ -1628,7 +1628,7 @@
       "heart": 70,
       "complexity": 34
     },
-    "baseCostPerEpisode": 2600000,
+    "baseCostPerEpisode": 470000,
     "episodesPerSeason": 24,
     "castSize": 6,
     "requiredRoles": [
@@ -1659,7 +1659,7 @@
       "heart": 54,
       "complexity": 40
     },
-    "baseCostPerEpisode": 3200000,
+    "baseCostPerEpisode": 200000,
     "episodesPerSeason": 26,
     "castSize": 10,
     "requiredRoles": [
@@ -1691,7 +1691,7 @@
       "heart": 42,
       "complexity": 18
     },
-    "baseCostPerEpisode": 420000,
+    "baseCostPerEpisode": 240000,
     "episodesPerSeason": 20,
     "castSize": 7,
     "requiredRoles": [
@@ -1721,7 +1721,7 @@
       "heart": 78,
       "complexity": 62
     },
-    "baseCostPerEpisode": 3400000,
+    "baseCostPerEpisode": 850000,
     "episodesPerSeason": 22,
     "castSize": 8,
     "requiredRoles": [
@@ -1753,7 +1753,7 @@
       "heart": 76,
       "complexity": 30
     },
-    "baseCostPerEpisode": 3500000,
+    "baseCostPerEpisode": 640000,
     "episodesPerSeason": 24,
     "castSize": 6,
     "requiredRoles": [
@@ -1785,7 +1785,7 @@
       "heart": 88,
       "complexity": 10
     },
-    "baseCostPerEpisode": 400000,
+    "baseCostPerEpisode": 51000,
     "episodesPerSeason": 180,
     "castSize": 2,
     "requiredRoles": [
@@ -1815,7 +1815,7 @@
       "heart": 26,
       "complexity": 16
     },
-    "baseCostPerEpisode": 1700000,
+    "baseCostPerEpisode": 290000,
     "episodesPerSeason": 26,
     "castSize": 4,
     "requiredRoles": [
@@ -1846,7 +1846,7 @@
       "heart": 8,
       "complexity": 4
     },
-    "baseCostPerEpisode": 160000,
+    "baseCostPerEpisode": 12000,
     "episodesPerSeason": 190,
     "castSize": 2,
     "requiredRoles": [
@@ -1876,7 +1876,7 @@
       "heart": 44,
       "complexity": 94
     },
-    "baseCostPerEpisode": 5600000,
+    "baseCostPerEpisode": 5700000,
     "episodesPerSeason": 10,
     "castSize": 11,
     "requiredRoles": [
@@ -1908,7 +1908,7 @@
       "heart": 58,
       "complexity": 88
     },
-    "baseCostPerEpisode": 9500000,
+    "baseCostPerEpisode": 8400000,
     "episodesPerSeason": 13,
     "castSize": 11,
     "requiredRoles": [
@@ -1941,7 +1941,7 @@
       "heart": 62,
       "complexity": 97
     },
-    "baseCostPerEpisode": 8200000,
+    "baseCostPerEpisode": 10800000,
     "episodesPerSeason": 13,
     "castSize": 12,
     "requiredRoles": [
@@ -1973,7 +1973,7 @@
       "heart": 48,
       "complexity": 34
     },
-    "baseCostPerEpisode": 1700000,
+    "baseCostPerEpisode": 370000,
     "episodesPerSeason": 14,
     "castSize": 12,
     "requiredRoles": [
@@ -2004,7 +2004,7 @@
       "heart": 72,
       "complexity": 14
     },
-    "baseCostPerEpisode": 2000000,
+    "baseCostPerEpisode": 150000,
     "episodesPerSeason": 18,
     "castSize": 6,
     "requiredRoles": [
@@ -2035,7 +2035,7 @@
       "heart": 30,
       "complexity": 30
     },
-    "baseCostPerEpisode": 900000,
+    "baseCostPerEpisode": 150000,
     "episodesPerSeason": 20,
     "castSize": 12,
     "requiredRoles": [
@@ -2065,7 +2065,7 @@
       "heart": 72,
       "complexity": 92
     },
-    "baseCostPerEpisode": 9000000,
+    "baseCostPerEpisode": 2500000,
     "episodesPerSeason": 22,
     "castSize": 12,
     "requiredRoles": [
@@ -2097,7 +2097,7 @@
       "heart": 26,
       "complexity": 26
     },
-    "baseCostPerEpisode": 4400000,
+    "baseCostPerEpisode": 380000,
     "episodesPerSeason": 24,
     "castSize": 7,
     "requiredRoles": [
@@ -2129,7 +2129,7 @@
       "heart": 50,
       "complexity": 48
     },
-    "baseCostPerEpisode": 4900000,
+    "baseCostPerEpisode": 890000,
     "episodesPerSeason": 24,
     "castSize": 7,
     "requiredRoles": [
@@ -2161,7 +2161,7 @@
       "heart": 82,
       "complexity": 44
     },
-    "baseCostPerEpisode": 6200000,
+    "baseCostPerEpisode": 900000,
     "episodesPerSeason": 24,
     "castSize": 12,
     "requiredRoles": [
@@ -2193,7 +2193,7 @@
       "heart": 84,
       "complexity": 34
     },
-    "baseCostPerEpisode": 2300000,
+    "baseCostPerEpisode": 560000,
     "episodesPerSeason": 24,
     "castSize": 10,
     "requiredRoles": [
@@ -2225,7 +2225,7 @@
       "heart": 36,
       "complexity": 70
     },
-    "baseCostPerEpisode": 7000000,
+    "baseCostPerEpisode": 960000,
     "episodesPerSeason": 24,
     "castSize": 9,
     "requiredRoles": [
@@ -2257,7 +2257,7 @@
       "heart": 46,
       "complexity": 84
     },
-    "baseCostPerEpisode": 8600000,
+    "baseCostPerEpisode": 7100000,
     "episodesPerSeason": 12,
     "castSize": 12,
     "requiredRoles": [
@@ -2289,7 +2289,7 @@
       "heart": 68,
       "complexity": 86
     },
-    "baseCostPerEpisode": 7400000,
+    "baseCostPerEpisode": 3800000,
     "episodesPerSeason": 20,
     "castSize": 11,
     "requiredRoles": [
@@ -2321,7 +2321,7 @@
       "heart": 54,
       "complexity": 84
     },
-    "baseCostPerEpisode": 7800000,
+    "baseCostPerEpisode": 2300000,
     "episodesPerSeason": 13,
     "castSize": 11,
     "requiredRoles": [
@@ -2353,7 +2353,7 @@
       "heart": 36,
       "complexity": 70
     },
-    "baseCostPerEpisode": 5600000,
+    "baseCostPerEpisode": 3000000,
     "episodesPerSeason": 12,
     "castSize": 8,
     "requiredRoles": [
@@ -2385,7 +2385,7 @@
       "heart": 50,
       "complexity": 26
     },
-    "baseCostPerEpisode": 800000,
+    "baseCostPerEpisode": 1100000,
     "episodesPerSeason": 14,
     "castSize": 10,
     "requiredRoles": [
@@ -2416,7 +2416,7 @@
       "heart": 44,
       "complexity": 16
     },
-    "baseCostPerEpisode": 1100000,
+    "baseCostPerEpisode": 100000,
     "episodesPerSeason": 12,
     "castSize": 12,
     "requiredRoles": [
@@ -2446,7 +2446,7 @@
       "heart": 24,
       "complexity": 4
     },
-    "baseCostPerEpisode": 340000,
+    "baseCostPerEpisode": 330000,
     "episodesPerSeason": 12,
     "castSize": 8,
     "requiredRoles": [
@@ -2476,7 +2476,7 @@
       "heart": 30,
       "complexity": 18
     },
-    "baseCostPerEpisode": 2400000,
+    "baseCostPerEpisode": 270000,
     "episodesPerSeason": 22,
     "castSize": 6,
     "requiredRoles": [
@@ -2507,7 +2507,7 @@
       "heart": 70,
       "complexity": 8
     },
-    "baseCostPerEpisode": 1100000,
+    "baseCostPerEpisode": 55000,
     "episodesPerSeason": 40,
     "castSize": 6,
     "requiredRoles": [
@@ -2538,7 +2538,7 @@
       "heart": 48,
       "complexity": 30
     },
-    "baseCostPerEpisode": 760000,
+    "baseCostPerEpisode": 77000,
     "episodesPerSeason": 16,
     "castSize": 5,
     "requiredRoles": [
@@ -2569,7 +2569,7 @@
       "heart": 76,
       "complexity": 36
     },
-    "baseCostPerEpisode": 1500000,
+    "baseCostPerEpisode": 370000,
     "episodesPerSeason": 11,
     "castSize": 1,
     "requiredRoles": [
@@ -2600,7 +2600,7 @@
       "heart": 94,
       "complexity": 10
     },
-    "baseCostPerEpisode": 1300000,
+    "baseCostPerEpisode": 110000,
     "episodesPerSeason": 18,
     "castSize": 7,
     "requiredRoles": [
@@ -2631,7 +2631,7 @@
       "heart": 48,
       "complexity": 16
     },
-    "baseCostPerEpisode": 380000,
+    "baseCostPerEpisode": 110000,
     "episodesPerSeason": 16,
     "castSize": 4,
     "requiredRoles": [
@@ -2661,7 +2661,7 @@
       "heart": 46,
       "complexity": 8
     },
-    "baseCostPerEpisode": 480000,
+    "baseCostPerEpisode": 15000,
     "episodesPerSeason": 170,
     "castSize": 3,
     "requiredRoles": [
@@ -2691,7 +2691,7 @@
       "heart": 42,
       "complexity": 16
     },
-    "baseCostPerEpisode": 1400000,
+    "baseCostPerEpisode": 770000,
     "episodesPerSeason": 12,
     "castSize": 4,
     "requiredRoles": [
@@ -2722,7 +2722,7 @@
       "heart": 38,
       "complexity": 30
     },
-    "baseCostPerEpisode": 1000000,
+    "baseCostPerEpisode": 1100000,
     "episodesPerSeason": 12,
     "castSize": 7,
     "requiredRoles": [
@@ -2753,7 +2753,7 @@
       "heart": 18,
       "complexity": 10
     },
-    "baseCostPerEpisode": 410000,
+    "baseCostPerEpisode": 54000,
     "episodesPerSeason": 20,
     "castSize": 2,
     "requiredRoles": [
@@ -2783,7 +2783,7 @@
       "heart": 16,
       "complexity": 36
     },
-    "baseCostPerEpisode": 320000,
+    "baseCostPerEpisode": 9500,
     "episodesPerSeason": 200,
     "castSize": 2,
     "requiredRoles": [
@@ -2814,7 +2814,7 @@
       "heart": 40,
       "complexity": 10
     },
-    "baseCostPerEpisode": 330000,
+    "baseCostPerEpisode": 74000,
     "episodesPerSeason": 20,
     "castSize": 5,
     "requiredRoles": [
@@ -2844,7 +2844,7 @@
       "heart": 56,
       "complexity": 86
     },
-    "baseCostPerEpisode": 6500000,
+    "baseCostPerEpisode": 7800000,
     "episodesPerSeason": 13,
     "castSize": 8,
     "requiredRoles": [
@@ -2876,7 +2876,7 @@
       "heart": 50,
       "complexity": 92
     },
-    "baseCostPerEpisode": 20000000,
+    "baseCostPerEpisode": 13000000,
     "episodesPerSeason": 10,
     "castSize": 12,
     "requiredRoles": [
@@ -2909,7 +2909,7 @@
       "heart": 82,
       "complexity": 54
     },
-    "baseCostPerEpisode": 5200000,
+    "baseCostPerEpisode": 1400000,
     "episodesPerSeason": 9,
     "castSize": 12,
     "requiredRoles": [
@@ -2941,7 +2941,7 @@
       "heart": 48,
       "complexity": 56
     },
-    "baseCostPerEpisode": 7000000,
+    "baseCostPerEpisode": 1100000,
     "episodesPerSeason": 16,
     "castSize": 12,
     "requiredRoles": [
@@ -2973,7 +2973,7 @@
       "heart": 58,
       "complexity": 64
     },
-    "baseCostPerEpisode": 4800000,
+    "baseCostPerEpisode": 8600000,
     "episodesPerSeason": 8,
     "castSize": 6,
     "requiredRoles": [
@@ -3005,7 +3005,7 @@
       "heart": 90,
       "complexity": 10
     },
-    "baseCostPerEpisode": 700000,
+    "baseCostPerEpisode": 740000,
     "episodesPerSeason": 12,
     "castSize": 6,
     "requiredRoles": [
@@ -3036,7 +3036,7 @@
       "heart": 56,
       "complexity": 72
     },
-    "baseCostPerEpisode": 900000,
+    "baseCostPerEpisode": 800000,
     "episodesPerSeason": 10,
     "castSize": 2,
     "requiredRoles": [
@@ -3067,7 +3067,7 @@
       "heart": 88,
       "complexity": 58
     },
-    "baseCostPerEpisode": 9500000,
+    "baseCostPerEpisode": 1800000,
     "episodesPerSeason": 9,
     "castSize": 11,
     "requiredRoles": [
@@ -3099,7 +3099,7 @@
       "heart": 80,
       "complexity": 56
     },
-    "baseCostPerEpisode": 1800000,
+    "baseCostPerEpisode": 5400000,
     "episodesPerSeason": 6,
     "castSize": 6,
     "requiredRoles": [
@@ -3130,7 +3130,7 @@
       "heart": 42,
       "complexity": 62
     },
-    "baseCostPerEpisode": 2200000,
+    "baseCostPerEpisode": 3400000,
     "episodesPerSeason": 10,
     "castSize": 5,
     "requiredRoles": [
@@ -3161,7 +3161,7 @@
       "heart": 86,
       "complexity": 74
     },
-    "baseCostPerEpisode": 2000000,
+    "baseCostPerEpisode": 1700000,
     "episodesPerSeason": 12,
     "castSize": 6,
     "requiredRoles": [
@@ -3192,7 +3192,7 @@
       "heart": 72,
       "complexity": 66
     },
-    "baseCostPerEpisode": 12000000,
+    "baseCostPerEpisode": 1900000,
     "episodesPerSeason": 10,
     "castSize": 12,
     "requiredRoles": [
@@ -3225,7 +3225,7 @@
       "heart": 66,
       "complexity": 88
     },
-    "baseCostPerEpisode": 6000000,
+    "baseCostPerEpisode": 7100000,
     "episodesPerSeason": 10,
     "castSize": 9,
     "requiredRoles": [
@@ -3257,7 +3257,7 @@
       "heart": 40,
       "complexity": 70
     },
-    "baseCostPerEpisode": 5800000,
+    "baseCostPerEpisode": 2800000,
     "episodesPerSeason": 6,
     "castSize": 6,
     "requiredRoles": [
@@ -3289,7 +3289,7 @@
       "heart": 18,
       "complexity": 20
     },
-    "baseCostPerEpisode": 700000,
+    "baseCostPerEpisode": 78000,
     "episodesPerSeason": 18,
     "castSize": 8,
     "requiredRoles": [
@@ -3319,7 +3319,7 @@
       "heart": 34,
       "complexity": 14
     },
-    "baseCostPerEpisode": 900000,
+    "baseCostPerEpisode": 63000,
     "episodesPerSeason": 20,
     "castSize": 12,
     "requiredRoles": [
@@ -3349,7 +3349,7 @@
       "heart": 92,
       "complexity": 12
     },
-    "baseCostPerEpisode": 800000,
+    "baseCostPerEpisode": 450000,
     "episodesPerSeason": 16,
     "castSize": 6,
     "requiredRoles": [
@@ -3380,7 +3380,7 @@
       "heart": 66,
       "complexity": 82
     },
-    "baseCostPerEpisode": 2600000,
+    "baseCostPerEpisode": 5100000,
     "episodesPerSeason": 10,
     "castSize": 6,
     "requiredRoles": [
@@ -3412,7 +3412,7 @@
       "heart": 58,
       "complexity": 26
     },
-    "baseCostPerEpisode": 1000000,
+    "baseCostPerEpisode": 190000,
     "episodesPerSeason": 20,
     "castSize": 7,
     "requiredRoles": [
@@ -3442,7 +3442,7 @@
       "heart": 72,
       "complexity": 40
     },
-    "baseCostPerEpisode": 1200000,
+    "baseCostPerEpisode": 430000,
     "episodesPerSeason": 6,
     "castSize": 2,
     "requiredRoles": [
@@ -3472,7 +3472,7 @@
       "heart": 96,
       "complexity": 6
     },
-    "baseCostPerEpisode": 600000,
+    "baseCostPerEpisode": 83000,
     "episodesPerSeason": 52,
     "castSize": 5,
     "requiredRoles": [
@@ -3503,7 +3503,7 @@
       "heart": 58,
       "complexity": 58
     },
-    "baseCostPerEpisode": 4200000,
+    "baseCostPerEpisode": 6000000,
     "episodesPerSeason": 9,
     "castSize": 12,
     "requiredRoles": [
@@ -3535,7 +3535,7 @@
       "heart": 96,
       "complexity": 30
     },
-    "baseCostPerEpisode": 3400000,
+    "baseCostPerEpisode": 1000000,
     "episodesPerSeason": 12,
     "castSize": 10,
     "requiredRoles": [
@@ -3567,7 +3567,7 @@
       "heart": 86,
       "complexity": 70
     },
-    "baseCostPerEpisode": 4800000,
+    "baseCostPerEpisode": 1800000,
     "episodesPerSeason": 10,
     "castSize": 9,
     "requiredRoles": [
@@ -3599,7 +3599,7 @@
       "heart": 26,
       "complexity": 84
     },
-    "baseCostPerEpisode": 11000000,
+    "baseCostPerEpisode": 3000000,
     "episodesPerSeason": 10,
     "castSize": 10,
     "requiredRoles": [
@@ -3631,7 +3631,7 @@
       "heart": 94,
       "complexity": 42
     },
-    "baseCostPerEpisode": 3000000,
+    "baseCostPerEpisode": 720000,
     "episodesPerSeason": 16,
     "castSize": 8,
     "requiredRoles": [
@@ -3663,7 +3663,7 @@
       "heart": 52,
       "complexity": 90
     },
-    "baseCostPerEpisode": 8800000,
+    "baseCostPerEpisode": 4900000,
     "episodesPerSeason": 9,
     "castSize": 9,
     "requiredRoles": [
@@ -3695,7 +3695,7 @@
       "heart": 58,
       "complexity": 44
     },
-    "baseCostPerEpisode": 6000000,
+    "baseCostPerEpisode": 1500000,
     "episodesPerSeason": 8,
     "castSize": 11,
     "requiredRoles": [
@@ -3727,7 +3727,7 @@
       "heart": 80,
       "complexity": 48
     },
-    "baseCostPerEpisode": 4600000,
+    "baseCostPerEpisode": 1400000,
     "episodesPerSeason": 10,
     "castSize": 8,
     "requiredRoles": [
@@ -3759,7 +3759,7 @@
       "heart": 26,
       "complexity": 30
     },
-    "baseCostPerEpisode": 180000,
+    "baseCostPerEpisode": 16000,
     "episodesPerSeason": 200,
     "castSize": 3,
     "requiredRoles": [

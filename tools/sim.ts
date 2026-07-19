@@ -135,6 +135,120 @@ check('talent pool has not run dry', freeShowrunners > 5, `${freeShowrunners} fr
 const unstaffed = live.filter((p) => !p.showrunnerId && !p.hostId).length;
 check('shows are getting staffed', unstaffed < live.length * 0.2, `${unstaffed} unstaffed`);
 
+// ---------------------------------------------------------------------------
+// The catalogue: is the ladder actually a ladder?
+// ---------------------------------------------------------------------------
+
+console.log('\n--- cost ladder (this save) ---');
+
+const catalogue = Object.values(state.concepts);
+const seasonCost = (c: (typeof catalogue)[number]) =>
+  c.baseCostPerEpisode * c.episodesPerSeason;
+const bySeason = [...catalogue].sort((a, b) => seasonCost(a) - seasonCost(b));
+const rung = (q: number) => bySeason[Math.floor((bySeason.length - 1) * q)];
+
+console.log(`concepts     ${catalogue.length}`);
+for (const [label, q] of [['cheapest', 0], ['p25', 0.25], ['median', 0.5], ['p75', 0.75], ['dearest', 1]] as const) {
+  const c = rung(q);
+  console.log(
+    `${label.padEnd(12)} ${formatMoney(seasonCost(c)).padStart(8)}/season  ` +
+      `${formatMoney(c.baseCostPerEpisode).padStart(7)}/ep x${String(c.episodesPerSeason).padStart(3)}  ${c.format.padEnd(11)} ${c.title}`,
+  );
+}
+
+// A studio opens with $10M. The deficit on a season is roughly 45% of its cost, so a
+// bottom rung worth having is one a new studio can carry more than one of.
+const STARTING_CASH = 10_000_000;
+const affordable = catalogue.filter((c) => seasonCost(c) * 0.45 < STARTING_CASH * 0.5);
+check(
+  'a new studio can afford a real slate',
+  affordable.length >= 20,
+  `${affordable.length} concepts deficit-financeable on half of opening cash`,
+);
+
+check(
+  'the top of the ladder is out of reach at the start',
+  seasonCost(rung(1)) > STARTING_CASH * 5,
+  `dearest season ${formatMoney(seasonCost(rung(1)))}`,
+);
+
+// ---------------------------------------------------------------------------
+// Determinism and divergence — two saves must differ, and each must be reproducible
+// ---------------------------------------------------------------------------
+
+console.log('\n--- world generation ---');
+
+/** Concepts are the whole world model, so comparing them compares the worlds. */
+const conceptFingerprint = (g: GameState) =>
+  JSON.stringify(
+    Object.values(g.concepts)
+      .map((c) => `${c.title}|${c.format}|${c.baseCostPerEpisode}|${c.episodesPerSeason}`)
+      .sort(),
+  );
+
+const a1 = newGame({ seed: 7 });
+const a2 = newGame({ seed: 7 });
+const b1 = newGame({ seed: 8 });
+
+check(
+  'the same seed builds a byte-identical world',
+  conceptFingerprint(a1) === conceptFingerprint(a2),
+  `${Object.keys(a1.concepts).length} concepts`,
+);
+
+// Talent is re-rolled per save too, so the same person is not identical in every run.
+const talentFingerprint = (g: GameState) =>
+  JSON.stringify(
+    Object.values(g.talent)
+      .filter((p) => !p.id.startsWith('tal_'))
+      .map((p) => `${p.name}|${Math.round(p.craft)}|${Math.round(p.starPower)}|${p.baseSalaryPerEpisode}`)
+      .sort(),
+  );
+
+check(
+  'the same seed re-rolls the authored cast identically',
+  talentFingerprint(a1) === talentFingerprint(a2),
+  'authored talent reproducible',
+);
+
+const titlesOf = (g: GameState) => new Set(Object.values(g.concepts).map((c) => c.title));
+const titlesA = titlesOf(a1);
+const titlesB = titlesOf(b1);
+const shared = [...titlesA].filter((t) => titlesB.has(t)).length;
+const overlap = shared / Math.max(titlesA.size, titlesB.size);
+
+check(
+  'two seeds build visibly different worlds',
+  overlap < 0.6,
+  `${(overlap * 100).toFixed(0)}% of titles shared (${shared} of ${titlesA.size} vs ${titlesB.size})`,
+);
+
+check(
+  'the authored cast differs between seeds',
+  talentFingerprint(a1) !== talentFingerprint(b1),
+  'same people, different numbers',
+);
+
+// The authored shows that *do* appear should not be identical copies either.
+const authoredIn = (g: GameState) =>
+  new Map(
+    Object.values(g.concepts)
+      .filter((c) => !c.id.includes('-o'))
+      .map((c) => [c.title, c.baseCostPerEpisode] as const),
+  );
+const authoredA = authoredIn(a1);
+const authoredB = authoredIn(b1);
+let sameTitleDifferentPrice = 0;
+for (const [title, cost] of authoredA) {
+  const other = authoredB.get(title);
+  if (other !== undefined && other !== cost) sameTitleDifferentPrice++;
+}
+check(
+  'a returning authored show is priced differently',
+  sameTitleDifferentPrice > 5,
+  `${sameTitleDifferentPrice} shared titles at different costs`,
+);
+
 console.log();
 void getArchetype;
 void (state as GameState);

@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } fr
 import { useGame, useGameStore } from '../../store/gameStore';
 import { episodeCost, episodeDeficit } from '../../engine/economy';
 import {
+  bankPosition,
   latestBreakdown,
   latestViewers,
   libraryWorth,
@@ -13,16 +14,16 @@ import {
   playerStudio,
   rerunIncome,
   totalCash,
-  totalDebt,
   weeklyNet,
 } from '../../store/selectors';
+import type { BankPosition } from '../../store/selectors';
 import { TVScreen } from '../TVScreen';
 import { Poster } from '../Poster';
 import { CountUp, Flash, WeekSweep } from '../motion';
 import type { ResultLine } from '../TVScreen';
 import { DecisionDeck } from '../DecisionDeck';
 import { Room, Deck, Panel, Readout } from '../game/Room';
-import { Plus } from '../icons';
+import { Icon, Plus } from '../icons';
 import { PlayButton } from '../game/PlayButton';
 import { colors, deltaColor, formatMoneyShort, scoreColor, space } from '../theme';
 import type { Production } from '../../engine/types';
@@ -64,6 +65,7 @@ export function DeskRoom({
   const money = moneyBreakdown(game);
   const net = weeklyNet(game);
   const cash = totalCash(game);
+  const bank = bankPosition(game);
 
   const mine = new Set(shows.map((s) => s.id));
   const airedLines: ResultLine[] =
@@ -95,14 +97,41 @@ export function DeskRoom({
             {studio?.name ?? 'STUDIO'}
           </Text>
         ) : null}
-        <PlayButton
-          year={game.year}
-          week={game.week}
-          busy={advancing}
-          onAdvance={() => advance(1)}
-          onSkip={() => advance(4)}
-        />
+        {/* Once the bank has foreclosed there is no next week, so the dial is replaced
+            rather than left to be pressed to no effect — a control that silently does
+            nothing reads as a bug, not as an ending. */}
+        {bank.closed ? (
+          <View testID="closed-clock" style={styles.closedClock}>
+            <Text style={styles.closedClockLabel}>CLOSED</Text>
+            <Text style={styles.closedClockWeek}>
+              Y{game.year} W{game.week}
+            </Text>
+          </View>
+        ) : (
+          <PlayButton
+            year={game.year}
+            week={game.week}
+            busy={advancing}
+            onAdvance={() => advance(1)}
+            onSkip={() => advance(4)}
+          />
+        )}
       </View>
+
+      {/* The ledger is hidden on a phone, so the closure notice cannot live inside it.
+          It sits across the top of the room where the week used to be advanced from. */}
+      {bank.closed ? (
+        <View testID="closed-banner" style={styles.closedBanner}>
+          <Icon name="key" size={18} color={colors.negative} />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.closedTitle}>THE BANK HAS CLOSED YOUR STUDIO DOWN</Text>
+            <Text style={styles.closedBody}>
+              {bank.closedReason ?? 'The facility was withdrawn.'} The run is over — your
+              slate and library are here to look through.
+            </Text>
+          </View>
+        </View>
+      ) : null}
 
       {/* ---------------- Upper deck: the set + the ledger ---------------- */}
       <Deck flex={wide ? 3 : 4} style={!wide && { flexDirection: 'column' }}>
@@ -161,7 +190,11 @@ export function DeskRoom({
             {/* The ledger used to run its figures at the top, pin its gauges to the
                 bottom, and leave a large hole between them. Runway fills it with the
                 one number a studio losing money actually needs: how long it has. */}
-            <Runway cash={cash} net={net} debt={totalDebt(game)} />
+            <Runway cash={cash} net={net} />
+
+            {/* Debt on its own is a number with no scale. Against the ceiling it is a
+                position: how much rope is left, and how fast it is running out. */}
+            <Facility bank={bank} />
 
             <View style={styles.gauges}>
               <Readout label="LIBRARY" value={formatMoneyShort(libraryWorth(game))} size="sm" />
@@ -233,7 +266,7 @@ export function DeskRoom({
  * A weekly loss is abstract; "9 WEEKS LEFT" is not. When the studio is profitable the
  * same space carries the debt position instead, so the block is never dead weight.
  */
-function Runway({ cash, net, debt }: { cash: number; net: number; debt: number }) {
+function Runway({ cash, net }: { cash: number; net: number }) {
   const losing = net < 0;
   // Twenty-six weeks — half a broadcast year — is the point past which the runway
   // stops being the thing you worry about, so that is where the bar tops out.
@@ -271,15 +304,66 @@ function Runway({ cash, net, debt }: { cash: number; net: number; debt: number }
         />
       </View>
 
+    </View>
+  );
+}
+
+/**
+ * The bank's position on the studio: what you owe, what the ceiling is, and how close
+ * together those two numbers are.
+ *
+ * This is the losing condition made legible before it is a crisis. The bar is the
+ * point — a player who has never read a word about credit limits can still see the
+ * gap closing, and the colour turns long before the letters start arriving.
+ */
+function Facility({ bank }: { bank: BankPosition }) {
+  const fill = Math.min(1, Math.max(0, bank.ratio));
+  const color =
+    bank.tier >= 3
+      ? colors.negative
+      : bank.tier >= 1
+        ? colors.warning
+        : colors.positive;
+
+  const status = bank.closed
+    ? 'CLOSED DOWN'
+    : bank.weeksToForeclosure !== undefined
+      ? `${bank.weeksToForeclosure}W TO CLOSURE`
+      : bank.headroom >= 0
+        ? `${formatMoneyShort(bank.headroom)} LEFT`
+        : `${formatMoneyShort(-bank.headroom)} OVER`;
+
+  return (
+    <View style={styles.facility} testID="bank-facility">
+      <View style={styles.runwayHead}>
+        <Text style={styles.runwayLabel}>BANK</Text>
+        <Text
+          style={[
+            styles.runwayValue,
+            { color: bank.tier >= 1 || bank.closed ? color : colors.textDim },
+          ]}
+        >
+          {status}
+        </Text>
+      </View>
+
+      <View style={styles.runwayTrack}>
+        <View style={[styles.runwayFill, { width: `${fill * 100}%`, backgroundColor: color }]} />
+      </View>
+
       <View style={styles.runwayFoot}>
         <Text style={styles.runwayFootLabel}>DEBT</Text>
         <Text
           style={[
             styles.runwayFootValue,
-            { color: debt > 0 ? colors.negative : colors.textDim },
+            { color: bank.debt > 0 ? colors.negative : colors.textDim },
           ]}
         >
-          {debt > 0 ? formatMoneyShort(debt) : 'NONE'}
+          {bank.debt > 0 ? formatMoneyShort(bank.debt) : 'NONE'}
+          <Text style={{ color: colors.textFaint }}>
+            {' / '}
+            {formatMoneyShort(bank.limit)}
+          </Text>
         </Text>
       </View>
     </View>
@@ -417,7 +501,49 @@ const styles = StyleSheet.create({
   netLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1.2, color: colors.textDim },
   netValue: { fontSize: 16, fontWeight: '900', fontVariant: ['tabular-nums'] },
 
+  closedClock: {
+    alignItems: 'flex-end',
+    paddingHorizontal: space.sm,
+    paddingVertical: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.negative,
+    backgroundColor: colors.negativeSoft,
+  },
+  closedClockLabel: {
+    fontSize: 11,
+    fontWeight: '900',
+    letterSpacing: 1.6,
+    color: colors.negative,
+  },
+  closedClockWeek: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: colors.textDim,
+    fontVariant: ['tabular-nums'],
+  },
+
+  closedBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.sm,
+    marginHorizontal: space.sm,
+    padding: space.sm,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.negative,
+    backgroundColor: colors.negativeSoft,
+  },
+  closedTitle: {
+    fontSize: 11,
+    fontWeight: '900',
+    letterSpacing: 1,
+    color: colors.negative,
+  },
+  closedBody: { fontSize: 10, color: colors.textDim, marginTop: 2 },
+
   runway: { marginTop: space.md, gap: 5 },
+  facility: { marginTop: space.sm, gap: 5 },
   runwayHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   runwayLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1.2, color: colors.textDim },
   runwayValue: { fontSize: 12, fontWeight: '900', fontVariant: ['tabular-nums'] },

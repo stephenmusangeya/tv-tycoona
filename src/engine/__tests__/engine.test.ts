@@ -17,7 +17,7 @@ import {
   rerunBidsFor,
   sellRights,
 } from '../actions';
-import { SHOW_ARCHETYPES } from '../../data';
+import { SHOW_ARCHETYPES, conceptOf } from '../../data';
 import type { Attributes, GameState } from '../types';
 
 const attrs = (overrides: Partial<Attributes> = {}): Attributes => ({
@@ -161,7 +161,10 @@ describe('slot competition', () => {
     const [a, b] = airing;
 
     const network = state.companies[a.deal!.networkId];
-    const archetypeOf = (id: string) => SHOW_ARCHETYPES.find((s) => s.id === id)!;
+    // A show on air belongs to *this save's* catalogue, not the authored pool — see
+    // GameState.concepts. Resolving through the static array only worked while every
+    // world was handed the same 120 shows.
+    const archetypeOf = (id: string) => conceptOf(state.concepts, id);
 
     const solo = simulateSlot(
       [{ production: a, archetype: archetypeOf(a.archetypeId), network }],
@@ -186,7 +189,7 @@ describe('slot competition', () => {
     const state = baseState();
     const production = Object.values(state.productions).find((p) => p.status === 'airing')!;
     const network = state.companies[production.deal!.networkId];
-    const archetype = SHOW_ARCHETYPES.find((s) => s.id === production.archetypeId)!;
+    const archetype = conceptOf(state.concepts, production.archetypeId);
 
     const familyShow = {
       ...production,
@@ -233,7 +236,7 @@ describe('slot competition', () => {
     const state = baseState();
     const production = Object.values(state.productions).find((p) => p.status === 'airing')!;
     const network = state.companies[production.deal!.networkId];
-    const archetype = SHOW_ARCHETYPES.find((s) => s.id === production.archetypeId)!;
+    const archetype = conceptOf(state.concepts, production.archetypeId);
     const kidsShow = { ...production, attributes: SEGMENTS_BY_ID.kids.ideal };
 
     const early = simulateSlot([{ production: kidsShow, archetype, network }], state.talent, { hour: 20 });

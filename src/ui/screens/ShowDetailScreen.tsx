@@ -130,7 +130,7 @@ function ProductionDetail({
   );
 
   const archetype = useMemo(
-    () => (production ? archetypeOf(production) : undefined),
+    () => (production ? archetypeOf(game, production) : undefined),
     [production],
   );
 

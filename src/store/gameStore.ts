@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 
+import { registerConcepts } from '../data';
 import { advanceWeek } from '../engine/tick';
 import { looksLikeSave, migrateSave } from '../engine/migrate';
 import { AUTOSAVE_ID, listSaves, newSlotId, readSlot, writeSlot } from './saves';
@@ -85,6 +86,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           // Saves written by older builds are missing fields today's code assumes
           // exist — see engine/migrate.ts.
           migrateSave(parsed);
+          // Concepts invented in this save have to be resolvable before anything reads
+          // a production — see registerConcepts.
+          registerConcepts(parsed.concepts);
           set({ game: parsed, loading: false, revision: get().revision + 1 });
           return;
         }
@@ -193,6 +197,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   async loadSlot(id: string) {
     const loaded = await readSlot(id);
     if (!loaded) return false;
+    registerConcepts(loaded.concepts);
     set({
       game: loaded,
       lastWeek: null,

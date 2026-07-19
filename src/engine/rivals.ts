@@ -1,4 +1,4 @@
-import { SHOW_ARCHETYPES, getArchetype } from '../data';
+import { SHOW_ARCHETYPES, conceptOf, getArchetype } from '../data';
 import { desirability, licenseFee } from './economy';
 import { createProduction } from './production';
 import { clamp } from './rng';
@@ -112,7 +112,7 @@ function stockStreamers(
       ),
     );
 
-    const archetype = getArchetype(pick.archetypeId);
+    const archetype = conceptOf(state.concepts, pick.archetypeId);
     // No ad revenue to recoup against, so they simply pay more than a network would.
     const fee = Math.round(
       licenseFee(archetype, desirability(pick, archetype, peakStarPower(pick, state.talent)), pick.history.length) *
@@ -301,7 +301,7 @@ function fillEmptySlots(
       ),
     );
 
-    const archetype = getArchetype(pick.archetypeId);
+    const archetype = conceptOf(state.concepts, pick.archetypeId);
     const slot = rng.pick(empty);
     const fee = licenseFee(
       archetype,
@@ -349,7 +349,7 @@ function bidForPlayerShows(
       state.offers.filter((o) => o.productionId === production.id).map((o) => o.networkId),
     );
 
-    const archetype = getArchetype(production.archetypeId);
+    const archetype = conceptOf(state.concepts, production.archetypeId);
     const want = desirability(production, archetype, peakStarPower(production, state.talent));
 
     for (const network of Object.values(state.companies)) {

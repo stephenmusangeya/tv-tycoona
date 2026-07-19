@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { useGame, useGameStore } from '../../store/gameStore';
+import { bankPosition } from '../../store/selectors';
 import { AUTOSAVE_ID, deleteSlot, formatSavedAt } from '../../store/saves';
 import { Button, Card, EmptyState } from '../components';
 import { colors, formatMoneyShort, space, type } from '../theme';
@@ -27,6 +28,7 @@ export function MenuScreen({ onClose }: { onClose: () => void }) {
   const [busy, setBusy] = useState(false);
   const [flash, setFlash] = useState<string | null>(null);
   const [confirmQuit, setConfirmQuit] = useState(false);
+  const bank = game ? bankPosition(game) : undefined;
 
   useEffect(() => {
     void refreshSlots();
@@ -62,6 +64,23 @@ export function MenuScreen({ onClose }: { onClose: () => void }) {
       {flash ? (
         <View style={styles.flash}>
           <Text style={styles.flashText}>{flash}</Text>
+        </View>
+      ) : null}
+
+      {/* The menu is where a player goes when the desk has stopped responding, so it
+          has to answer "why can I not play?" before it offers anything else. The run
+          is kept — the save is still loadable, and worth looking at. */}
+      {bank?.closed ? (
+        <View testID="closed-down-notice">
+          <Card style={[styles.closedCard, { marginTop: space.lg }]}>
+            <Text style={styles.closedLabel}>STUDIO CLOSED DOWN</Text>
+            <Text style={styles.closedReason}>{bank.closedReason}</Text>
+            <Text style={styles.closedNote}>
+              The bank foreclosed. This run cannot be advanced any further, but it is
+              saved and you can still look through everything you built. Quit to the
+              title to start again.
+            </Text>
+          </Card>
         </View>
       ) : null}
 
@@ -271,4 +290,9 @@ const styles = StyleSheet.create({
   deleteText: { fontSize: 10, color: colors.negative, fontWeight: '600' },
 
   quitNote: { fontSize: 12, color: colors.textDim, marginTop: space.sm },
+
+  closedCard: { borderColor: colors.negative, backgroundColor: colors.negativeSoft },
+  closedLabel: { fontSize: 11, fontWeight: '900', letterSpacing: 1.4, color: colors.negative },
+  closedReason: { fontSize: 13, color: colors.text, marginTop: space.sm, fontWeight: '600' },
+  closedNote: { fontSize: 12, color: colors.textDim, marginTop: space.sm, lineHeight: 17 },
 });

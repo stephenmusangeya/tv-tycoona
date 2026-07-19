@@ -1,4 +1,4 @@
-import { getArchetype } from '../data';
+import { conceptOf } from '../data';
 import {
   ECONOMY,
   RERUN_MINIMUM_EPISODES,
@@ -78,7 +78,7 @@ export function greenlightPitch(
   const studio = studioOf(state);
   if (!studio) return fail('No studio.');
 
-  const archetype = getArchetype(pitch.archetypeId);
+  const archetype = conceptOf(state.concepts, pitch.archetypeId);
   const rng = createRng(state.rngState);
 
   const production = createProduction(archetype, state.talent, rng, (p) => mintId(state, p), {
@@ -161,7 +161,7 @@ export function developOriginal(
   );
   if (inProduction) return fail('Someone is already making that show.');
 
-  const archetype = getArchetype(archetypeId);
+  const archetype = conceptOf(state.concepts, archetypeId);
   const rng = createRng(state.rngState);
 
   const production = createProduction(archetype, state.talent, rng, (p) => mintId(state, p), {
@@ -250,7 +250,7 @@ export function setBudget(
     production.marketingPerEpisode = Math.max(0, Math.round(marketingPerEpisode));
   }
 
-  refreshQuality(production, getArchetype(production.archetypeId), state.talent);
+  refreshQuality(production, conceptOf(state.concepts, production.archetypeId), state.talent);
   return ok(production);
 }
 
@@ -270,7 +270,7 @@ export function castTalent(
   if (person.productionId) return fail(`${person.name} is already attached to a show.`);
   if (production.status === 'airing') return fail('Casting is locked once a season is on air.');
 
-  const archetype = getArchetype(production.archetypeId);
+  const archetype = conceptOf(state.concepts, production.archetypeId);
 
   switch (person.role) {
     case 'actor':
@@ -324,7 +324,7 @@ export function dropTalent(
   person.contractSalaryPerEpisode = undefined;
   person.morale = clamp(person.morale - 15);
 
-  refreshQuality(production, getArchetype(production.archetypeId), state.talent);
+  refreshQuality(production, conceptOf(state.concepts, production.archetypeId), state.talent);
   return ok(production);
 }
 
@@ -646,7 +646,7 @@ export function reviveShow(state: GameState, productionId: string): Result<Reviv
 
   const cfg = ECONOMY.revival;
   const rng = createRng(state.rngState);
-  const archetype = getArchetype(production.archetypeId);
+  const archetype = conceptOf(state.concepts, production.archetypeId);
 
   const returning: string[] = [];
   const departed: string[] = [];
@@ -834,7 +834,7 @@ export function scheduleShow(
   if (production.deal) return fail('That show is already committed elsewhere.');
   if (production.status !== 'hiatus') return fail('That show is not ready to air.');
 
-  const archetype = getArchetype(production.archetypeId);
+  const archetype = conceptOf(state.concepts, production.archetypeId);
   const fee =
     licenseFeePerEpisode ??
     (isPlayerOwned(state, production.ownerId)
@@ -888,3 +888,31 @@ export function productionRoster(
 }
 
 export { bindTalent };
+
+/**
+ * Making a show is a player action like any other, so it is reachable from here.
+ *
+ * The arithmetic lives in development.ts because it is a lot of it — format baselines,
+ * genre and angle vectors, what a producer is worth — and none of it belongs in the
+ * action layer.
+ */
+export {
+  GENRES,
+  availableFor,
+  availableProducers,
+  blueprintFor,
+  createShow,
+  formatBaseCost,
+  formatShape,
+  genresFor,
+  greenlightRevisedPitch,
+  orderOptions,
+  previewShow,
+  revisionPreview,
+  rolesFor,
+  type GenreOption,
+  type PitchRevision,
+  type RevisedPitch,
+  type ShowBlueprint,
+  type ShowPreview,
+} from './development';
