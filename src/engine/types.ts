@@ -414,6 +414,32 @@ export interface Pitch {
 // Root state
 // ---------------------------------------------------------------------------
 
+/**
+ * The bank.
+ *
+ * A studio runs on borrowed money — that is the premise of deficit financing and it
+ * is the whole reason the library matters. But borrowing without a ceiling is not a
+ * business, it is a sandbox, and the game had no point at which anyone said no.
+ *
+ * The limit scales with what the studio is actually worth (library, standing), so
+ * success buys headroom and a failing studio's rope gets shorter as it needs it most.
+ */
+export interface BankState {
+  /** Maximum debt the bank will carry before it forecloses. */
+  creditLimit: number;
+  /** Absolute week the last warning was issued, so we do not nag every tick. */
+  lastWarningWeek?: number;
+  /** How many formal warnings have been served. Three is the usual limit. */
+  warnings: number;
+  /**
+   * Set when the studio is closed down. The run is over; the save stays readable so
+   * the player can look at what they built rather than being ejected to the title.
+   */
+  closedDownWeek?: number;
+  /** Why the bank pulled the plug — shown on the game-over screen. */
+  closedDownReason?: string;
+}
+
 export interface PlayerEmpire {
   studioId: string;
   networkId?: string;
@@ -464,10 +490,33 @@ export interface GameState {
   /** Runtime talent state, seeded from the static database. */
   talent: Record<string, TalentState>;
 
+  /**
+   * Every show concept that exists in *this save*.
+   *
+   * The catalogue used to be a static JSON file, which meant every playthrough was
+   * handed the same 120 shows at the same prices — two saves could not diverge, and
+   * the player was shopping from a fixed menu rather than running a studio. Concepts
+   * now live in the save: seeded variants of the authored pool, procedurally generated
+   * originals, and anything the player commissions themselves.
+   *
+   * Resolve through `conceptOf(state, id)` rather than reaching for the static data,
+   * so a player-created show and a generated one behave identically everywhere.
+   */
+  concepts: Record<string, ShowArchetype>;
+
   pitches: Pitch[];
   /** Live bids from networks for the player's finished shows. */
   offers: NetworkOffer[];
   events: GameEvent[];
+
+  /**
+   * The bank's position on the studio.
+   *
+   * The game had no losing condition — you could run at a loss for twenty years and
+   * nothing came to collect. Debt now has a ceiling, the bank warns as you approach
+   * it, and crossing it ends the run.
+   */
+  bank: BankState;
 
   /** Monotonic counter for generated entity ids — keeps saves deterministic. */
   nextId: number;

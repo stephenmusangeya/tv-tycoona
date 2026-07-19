@@ -22,4 +22,33 @@ export function getArchetype(id: string): ShowArchetype {
   return archetype;
 }
 
+/**
+ * Resolve a concept for a given save.
+ *
+ * Concepts live in the save (see `GameState.concepts`) so that two playthroughs can
+ * diverge and so a show the player invented is indistinguishable from one the world
+ * generated. The static pool is the fallback, which keeps every existing save and
+ * every tool that reaches for a known id working unchanged.
+ *
+ * Takes the concepts map rather than the whole state so the engine, the selectors and
+ * the tools can all call it without dragging a circular import between data/ and
+ * engine/ into existence.
+ */
+export function conceptOf(
+  concepts: Record<string, ShowArchetype> | undefined,
+  id: string,
+): ShowArchetype {
+  const own = concepts?.[id];
+  if (own) return own;
+  return getArchetype(id);
+}
+
+/** Non-throwing variant, for UI that may hold a stale or unknown id. */
+export function findConcept(
+  concepts: Record<string, ShowArchetype> | undefined,
+  id: string,
+): ShowArchetype | undefined {
+  return concepts?.[id] ?? ARCHETYPES_BY_ID[id];
+}
+
 export { AUDIENCE_SEGMENTS, SEGMENTS_BY_ID, TOTAL_AUDIENCE } from './segments';

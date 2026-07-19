@@ -231,6 +231,18 @@ export function newGame(options: NewGameOptions = {}): GameState {
     }
   }
 
+  /**
+   * What the bank will lend a studio with no track record.
+   *
+   * Twice opening cash: enough that deficit-financing a first show is genuinely
+   * possible, tight enough that a second expensive commission before the first pays
+   * back is a decision rather than a formality. The limit is re-assessed as the studio
+   * builds a library — see the bank module.
+   */
+  function openingFacility(cash: number) {
+    return { creditLimit: Math.round(cash * 2), warnings: 0 };
+  }
+
   const state: GameState = {
     rngState: rng.state(),
     seed,
@@ -241,9 +253,13 @@ export function newGame(options: NewGameOptions = {}): GameState {
     companies,
     productions,
     talent,
+    // Populated by the world generator; empty here means "fall through to the static
+    // pool", which is exactly right for a save made before concepts existed.
+    concepts: {},
     pitches: [],
     offers: [],
     events: [],
+    bank: openingFacility(playerStudio.cash),
     nextId: idCounter,
   };
 

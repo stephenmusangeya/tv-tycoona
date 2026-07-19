@@ -40,6 +40,27 @@ export function migrateSave(state: GameState): MigrationReport {
     notes.push('reset id counter');
   }
 
+  // Concepts moved into the save so playthroughs can diverge. An older save's shows
+  // all reference static catalogue ids, and `conceptOf` falls through to those, so an
+  // empty map is the correct backfill rather than a broken one.
+  if (!state.concepts || typeof state.concepts !== 'object') {
+    state.concepts = {};
+    notes.push('added concept store');
+  }
+
+  // The bank arrived after launch. An existing studio has been operating without a
+  // ceiling, so it gets a generous one rather than being foreclosed on load — being
+  // shut down by a migration would be an outrageous way to lose a twenty-year run.
+  if (!state.bank || typeof state.bank !== 'object') {
+    const player = state.companies?.[state.player?.studioId ?? ''];
+    const debt = player?.debt ?? 0;
+    state.bank = {
+      creditLimit: Math.max(25_000_000, Math.ceil(debt * 2)),
+      warnings: 0,
+    };
+    notes.push('opened a bank facility');
+  }
+
   // --- Productions ------------------------------------------------------
   let ownerlessShows = 0;
   let dealless = 0;
